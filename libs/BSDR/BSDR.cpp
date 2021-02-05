@@ -5,8 +5,8 @@
 #include <sstream>
 #include <vector>
 
-#define BSDR_TSE_FOLDER "../BuySellDailyReport/TSE/"
-#define BSDR_OTC_FOLDER "../BuySellDailyReport/OTC/"
+#define BSDR_TSE_FOLDER "../../data/BuySellDailyReport/TSE/"
+#define BSDR_OTC_FOLDER "../../data/BuySellDailyReport/OTC/"
 
 std::ostream& operator<<(std::ostream& os, const BSDR_record& record) {
 	os << record.seq << " " << record.issuer_name << " " << record.px << " " << record.b_lot << " " << record.s_lot;
@@ -66,7 +66,7 @@ BSDR* read_file(fs::directory_entry file) {
 	bsdr_ptr->filename = file.path().filename();
 	split(fn, sv);
 	bsdr_ptr->stock_fc = sv[0];
-	OUTPUT(bsdr_ptr->stock_fc);
+	// OUTPUT(bsdr_ptr->stock_fc);
 
 	// read
 	// std::cout << "read " << file.path().filename() << std::endl;
@@ -83,34 +83,40 @@ BSDR* read_file(fs::directory_entry file) {
 			// 	std::cout << i++ << ":" << only_number_and_str(token) << " " << std::endl;
 			// }
 
-			record_ptr = new BSDR_record();
-			record_ptr->seq = std::stoi(only_number_and_str(sv[0]));
-			// record_ptr->issuer_name = only_number_and_str(sv[1]);
-			record_ptr->issuer_name = sv[1].substr(0, 4);
-			record_ptr->px = std::stof(sv[2]);
-			record_ptr->b_lot = std::stoi(sv[3]);
-			record_ptr->s_lot = std::stoi(sv[4]);
+			try {
 
-			// std::cout << *record_ptr << std::endl;
-
-			bsdr_ptr->records.emplace_back(record_ptr);
-
-			if (only_number_and_str(sv[6]) != "") {
 				record_ptr = new BSDR_record();
-				record_ptr->seq = std::stoi(only_number_and_str(sv[6]));
-				// record_ptr->issuer_name = only_number_and_str(sv[7]);
-				record_ptr->issuer_name = sv[7].substr(0, 4);
-				record_ptr->px = std::stof(sv[8]);
-				record_ptr->b_lot = std::stoi(sv[9]);
-				record_ptr->s_lot = std::stoi(sv[10]);
+				record_ptr->seq = std::stoi(only_number_and_str(sv[0]));
+				// record_ptr->issuer_name = only_number_and_str(sv[1]);
+				record_ptr->issuer_name = sv[1].substr(0, 4);
+				record_ptr->px = std::stof(sv[2]);
+				record_ptr->b_lot = std::stoi(sv[3]);
+				record_ptr->s_lot = std::stoi(sv[4]);
 
 				// std::cout << *record_ptr << std::endl;
 
 				bsdr_ptr->records.emplace_back(record_ptr);
-			}
 
-			// exit(-1);
-			// goto close_file;
+				if (only_number_and_str(sv[6]) != "") {
+					record_ptr = new BSDR_record();
+					record_ptr->seq = std::stoi(only_number_and_str(sv[6]));
+					// record_ptr->issuer_name = only_number_and_str(sv[7]);
+					record_ptr->issuer_name = sv[7].substr(0, 4);
+					record_ptr->px = std::stof(sv[8]);
+					record_ptr->b_lot = std::stoi(sv[9]);
+					record_ptr->s_lot = std::stoi(sv[10]);
+
+					// std::cout << *record_ptr << std::endl;
+
+					bsdr_ptr->records.emplace_back(record_ptr);
+				}
+
+			} catch(...) {
+				std::cerr << "throw error" << std::endl;;
+				OUTPUT(fn);
+				OUTPUT(line_str);
+				exit(-1);
+			}
 		}
 	}
 
@@ -138,7 +144,7 @@ BSDR* read_file(fs::directory_entry file) {
 
 			if (fs::exists(dir)) {
 
-				OUTPUT(dir);
+				// OUTPUT(dir);
 
 				for (const auto &file: fs::directory_iterator(dir)) {
 
