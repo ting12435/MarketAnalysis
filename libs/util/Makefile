@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -std=c++17
 
-LIB=util.a
+LIB=libutil.a
 LIBOBJS=util.o
 
 all: $(LIB)

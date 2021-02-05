@@ -4,7 +4,7 @@ LIBS_PATH=../../libs
 CC=g++
 CFLAGS=-O3 -Wall -g -std=c++17  -I$(LIBS_PATH)
 DFLAGS=
-LDLIBS=-L$(LIBS_PATH)/BSDR -lbsdr
+LDLIBS=-L$(LIBS_PATH)/BSDR -lbsdr -L$(LIBS_PATH)/util -lutil
 
 EXT_CFLAGS=
 EXT_LDLIBS=

@@ -22,7 +22,7 @@ std::ostream& operator<<(std::ostream& os, const BSDR& bsdr) {
 	return os;
 }
 
-BSDR* BSDR::read_file(fs::directory_entry file) {
+BSDR* read_file(fs::directory_entry file) {
 
 	// std::cout << file.path() << std::endl;
 	// std::cout << file.path().stem().string() << std::endl;
@@ -120,7 +120,7 @@ BSDR* BSDR::read_file(fs::directory_entry file) {
 	return bsdr_ptr;
 }
 
- int BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market) {
+ void BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market) {
 	BSDR *bsdr;
 	std::vector<fs::path> dirs;
 
@@ -147,7 +147,7 @@ BSDR* BSDR::read_file(fs::directory_entry file) {
 
 					if (file_ex == ".csv" || file_ex == ".CSV") {
 
-						bsdr = BSDR::read_file(file);
+						bsdr = read_file(file);
 
 						if (bsdr != NULL) {
 							// OUTPUT(*bsdr);
@@ -161,8 +161,6 @@ BSDR* BSDR::read_file(fs::directory_entry file) {
 
 		current_date.add(1);
 	}
-
-	return 1;
 }
 
 

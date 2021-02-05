@@ -5,7 +5,7 @@ INCLUDES=$(ABSDIR)/..
 
 CFLAGS=-c -std=c++17 $(addprefix -I, $(INCLUDES))
 
-LIB=bsdr.a
+LIB=libbsdr.a
 LIBOBJS=BSDR.o
 
 all: $(LIB)

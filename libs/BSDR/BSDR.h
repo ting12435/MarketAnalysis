@@ -9,14 +9,13 @@
 // #include <ostream>
 
 #include "util/util.h"
+#include "util/market_util.h"
 
 namespace fs = std::filesystem;
 
 class BSDR;
 
 typedef std::map<std::string, std::vector<BSDR*>> bsdr_data_t;  // key: date string
-
-enum Market { ALL, TSE, OTC };
 
 class BSDR_record {
 public:
@@ -33,8 +32,8 @@ class BSDR {
 public:
 	explicit BSDR();
 
-	static BSDR* read_file(fs::directory_entry);
-	static int get_data(bsdr_data_t*, Date *st_date, Date *ed_date, Market);
+	// static BSDR* read_file(fs::directory_entry);
+	static void get_data(bsdr_data_t*, Date *st_date, Date *ed_date, Market);
 
 	friend std::ostream& operator<<(std::ostream&, const BSDR&);
 
