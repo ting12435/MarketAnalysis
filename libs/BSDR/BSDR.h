@@ -34,6 +34,7 @@ public:
 
 	// static BSDR* read_file(fs::directory_entry);
 	static void get_data(bsdr_data_t*, Date *st_date, Date *ed_date, Market);
+	static void tester();
 
 	friend std::ostream& operator<<(std::ostream&, const BSDR&);
 

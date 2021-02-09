@@ -19,23 +19,26 @@ static std::string bsdr_trim(const std::string& s) {
 
 static void split_otc(const std::string& s, std::vector<std::string>& sv) {
 	// "1","9100  ¸s¯q","1.26","68,000","0",,"2","9A00  ¥ÃÂ×ª÷","1.26","0","68,000"
-	bool find_entry_flag = false;
+	bool entry_start = false;
 	std::string entry_str = "";
 	for (const auto &c: s) {
 
-		if (c == '"' && !find_entry_flag) {
-			find_entry_flag = true;
-			entry_str = "";
-			continue;
-		}
+		if (c == '"')
+			entry_start = !entry_start;
 
-		if (c == '"') {
-			sv.emplace_back(entry_str);
-		}
+		if (!entry_start) {
 
-		if (find_entry_flag)
+			if (c == ',') {
+				sv.emplace_back(entry_str);
+				entry_str = "";
+			}
+
+		} else if (c != '"') {
 			entry_str += c;
+		}
 	}
+
+	sv.emplace_back(entry_str);
 }
 
 std::ostream& operator<<(std::ostream& os, const BSDR_record& record) {
@@ -179,7 +182,7 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 	return bsdr_ptr;
 }
 
- void BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market) {
+void BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market) {
 	BSDR *bsdr;
 	std::vector<fs::path> dirs;
 	Market current_marekt;
@@ -227,6 +230,17 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 		}
 
 		current_date.add(1);
+	}
+}
+
+void BSDR::tester() {
+	const std::string s = "\"1234\",\"111\",\"\",\"222\",,\"333\"";
+	std::vector<std::string> sv;
+
+	split_otc(s, sv);
+
+	for (const auot &t: sv) {
+		OUTPUT(t);
 	}
 }
 
