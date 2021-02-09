@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <initializer_list>
 
 #define OUTPUT(msg) std::cout << msg << std::endl;
 
@@ -31,5 +32,7 @@ void split(const std::string& s, std::vector<std::string>& sv, std::string delim
 
 std::string only_number_and_str(const std::string& s);
 
+void output_csv(std::ostream& os, std::initializer_list<std::string> args);
+void output_delimiter_str(std::ostream& os, std::string delimiter, std::initializer_list<std::string> args);
 
 #endif /* UTIL_H */

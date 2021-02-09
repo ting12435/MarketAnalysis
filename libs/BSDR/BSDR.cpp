@@ -8,6 +8,36 @@
 #define BSDR_TSE_FOLDER "../../data/BuySellDailyReport/TSE/"
 #define BSDR_OTC_FOLDER "../../data/BuySellDailyReport/OTC/"
 
+static std::string bsdr_trim(const std::string& s) {
+	std::string result_s;
+	for (const auto &c: s) {
+		if (c != '"')
+			result_s += c;
+	}
+	return result_s;
+}
+
+static void split_otc(const std::string& s, std::vector<std::string>& sv) {
+	// "1","9100  ¸s¯q","1.26","68,000","0",,"2","9A00  ¥ÃÂ×ª÷","1.26","0","68,000"
+	bool find_entry_flag = false;
+	std::string entry_str = "";
+	for (const auto &c: s) {
+
+		if (c == '"' && !find_entry_flag) {
+			find_entry_flag = true;
+			entry_str = "";
+			continue;
+		}
+
+		if (c == '"') {
+			sv.emplace_back(entry_str);
+		}
+
+		if (find_entry_flag)
+			entry_str += c;
+	}
+}
+
 std::ostream& operator<<(std::ostream& os, const BSDR_record& record) {
 	os << record.seq << " " << record.issuer_name << " " << record.px << " " << record.b_lot << " " << record.s_lot;
 	return os;
@@ -22,7 +52,7 @@ std::ostream& operator<<(std::ostream& os, const BSDR& bsdr) {
 	return os;
 }
 
-BSDR* read_file(fs::directory_entry file) {
+BSDR* read_file(fs::directory_entry file, Market market) {
 
 	// std::cout << file.path() << std::endl;
 	// std::cout << file.path().stem().string() << std::endl;
@@ -76,7 +106,18 @@ BSDR* read_file(fs::directory_entry file) {
 		if (!line_str.empty()) {
 			// std::cout << line_str << std::endl;
 
-			split(line_str, sv);
+			if (market == Market::TSE)
+				split(line_str, sv);
+			else if (market == Market::OTC)
+				split(line_str, sv, ",\"");
+			else {
+				std::cerr << "throw error" << std::endl;;
+				OUTPUT("error market");
+				OUTPUT(fn);
+				OUTPUT(line_str);
+				exit(-1);
+			}
+
 			// std::cout << "[" << sv[1] << "] [" << only_number_and_str(sv[1]) << "]" << std::endl;
 			// int i = 0;
 			// for (const auto &token: sv) {
@@ -85,13 +126,24 @@ BSDR* read_file(fs::directory_entry file) {
 
 			try {
 
+				// debug
+				if (fn == "73735P_1100202") {
+					output_delimiter_str(std::cout, ": ", { "0", bsdr_trim(sv[0]) });
+					output_delimiter_str(std::cout, ": ", { "1", bsdr_trim(sv[1]) });
+					output_delimiter_str(std::cout, ": ", { "2", bsdr_trim(sv[2]) });
+					output_delimiter_str(std::cout, ": ", { "3", bsdr_trim(sv[3]) });
+					output_delimiter_str(std::cout, ": ", { "4", bsdr_trim(sv[4]) });
+					output_delimiter_str(std::cout, ": ", { "5", bsdr_trim(sv[5]) });
+					output_delimiter_str(std::cout, ": ", { "6", bsdr_trim(sv[6]) });
+				}
+
 				record_ptr = new BSDR_record();
 				record_ptr->seq = std::stoi(only_number_and_str(sv[0]));
 				// record_ptr->issuer_name = only_number_and_str(sv[1]);
 				record_ptr->issuer_name = sv[1].substr(0, 4);
-				record_ptr->px = std::stof(sv[2]);
-				record_ptr->b_lot = std::stoi(sv[3]);
-				record_ptr->s_lot = std::stoi(sv[4]);
+				record_ptr->px = std::stof(bsdr_trim(sv[2]));
+				record_ptr->b_lot = std::stoi(bsdr_trim(sv[3]));
+				record_ptr->s_lot = std::stoi(bsdr_trim(sv[4]));
 
 				// std::cout << *record_ptr << std::endl;
 
@@ -102,9 +154,9 @@ BSDR* read_file(fs::directory_entry file) {
 					record_ptr->seq = std::stoi(only_number_and_str(sv[6]));
 					// record_ptr->issuer_name = only_number_and_str(sv[7]);
 					record_ptr->issuer_name = sv[7].substr(0, 4);
-					record_ptr->px = std::stof(sv[8]);
-					record_ptr->b_lot = std::stoi(sv[9]);
-					record_ptr->s_lot = std::stoi(sv[10]);
+					record_ptr->px = std::stof(bsdr_trim(sv[8]));
+					record_ptr->b_lot = std::stoi(bsdr_trim(sv[9]));
+					record_ptr->s_lot = std::stoi(bsdr_trim(sv[10]));
 
 					// std::cout << *record_ptr << std::endl;
 
@@ -113,6 +165,7 @@ BSDR* read_file(fs::directory_entry file) {
 
 			} catch(...) {
 				std::cerr << "throw error" << std::endl;;
+				OUTPUT(market);
 				OUTPUT(fn);
 				OUTPUT(line_str);
 				exit(-1);
@@ -129,6 +182,7 @@ BSDR* read_file(fs::directory_entry file) {
  void BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market) {
 	BSDR *bsdr;
 	std::vector<fs::path> dirs;
+	Market current_marekt;
 
 	Date current_date(st_date->date_str);
 	while (current_date <= *ed_date) {
@@ -146,6 +200,13 @@ BSDR* read_file(fs::directory_entry file) {
 
 				// OUTPUT(dir);
 
+				if (dir.string().find(BSDR_TSE_FOLDER) != std::string::npos)
+					current_marekt = Market::TSE;
+				else if (dir.string().find(BSDR_OTC_FOLDER) != std::string::npos)
+					current_marekt = Market::OTC;
+
+				// OUTPUT(current_marekt);
+
 				for (const auto &file: fs::directory_iterator(dir)) {
 
 					std::string file_ex = file.path().extension().string();
@@ -153,7 +214,7 @@ BSDR* read_file(fs::directory_entry file) {
 
 					if (file_ex == ".csv" || file_ex == ".CSV") {
 
-						bsdr = read_file(file);
+						bsdr = read_file(file, current_marekt);
 
 						if (bsdr != NULL) {
 							// OUTPUT(*bsdr);

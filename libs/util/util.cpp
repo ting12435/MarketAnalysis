@@ -81,3 +81,20 @@ std::string only_number_and_str(const std::string& s) {
 	}
 	return result_s;
 }
+
+void output_csv(std::ostream& os, std::initializer_list<std::string> args) {
+	output_delimiter_str(os, ",", args);
+}
+
+void output_delimiter_str(std::ostream& os, std::string delimiter, std::initializer_list<std::string> args) {
+	bool f = false;
+	for (const auto &arg: args) {
+		if (f) os << delimiter;
+		os << arg;
+		f = true;
+	}
+	os << std::endl;
+}
+
+
+

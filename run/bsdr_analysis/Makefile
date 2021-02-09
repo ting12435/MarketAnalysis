@@ -13,7 +13,7 @@ EXT_LDLIBS=
 
 BIN=parse
 
-all: $(BIN)
+all: clean $(BIN)
 
 clean:
 	rm -f $(BIN)
