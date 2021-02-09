@@ -5,19 +5,21 @@
 #include "util/util.h"
 
 void parse_one_issuer(bsdr_data_t*);
+void parse(bsdr_data_t*);
 
 int main(int argc, char *argv[]) {
 
 	Date *st_date, *ed_date;
 	bsdr_data_t *bsdr_data;
 
-	st_date = new Date("2021-02-02");
-	ed_date = new Date("2021-02-02");
+	st_date = new Date("2021-02-05");
+	ed_date = new Date("2021-02-05");
 
 	bsdr_data = new bsdr_data_t;
 	BSDR::get_data(bsdr_data, st_date, ed_date, Market::ALL);
 
-	parse_one_issuer(bsdr_data);
+	// parse_one_issuer(bsdr_data);
+	parse(bsdr_data);
 
 
 	return 0;
@@ -60,6 +62,14 @@ void parse_one_issuer(bsdr_data_t *bsdr_data) {
 	my_file.close();
 }
 
-
+void parse(bsdr_data_t *bsdr_data) {
+	std::ofstream my_file("output");
+	for (const auto &bsdr_d: *bsdr_data) {
+		for (const auto &bsdr: bsdr_d.second) {
+			my_file << bsdr->stock_fc << std::endl;
+		}
+	}
+	my_file.close();
+}
 
 

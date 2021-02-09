@@ -25,7 +25,7 @@ SERVER=192.168.172.251
 SERVER_PATH=/data/database/daily_fetch/${MARKET}/${DATA_DATE}/RPT/BIG5
 SERVER_USERNAME=tim
 
-DEST_FOLDER=${MARKET}
+DEST_FOLDER=../data/BuySellDailyReport/${MARKET}
 
 echo "get data from ${SERVER_PATH}"
 
