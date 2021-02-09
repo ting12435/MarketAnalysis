@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "BSDR/BSDR.h"
 #include "util/util.h"
@@ -50,9 +51,13 @@ void parse_one_issuer(bsdr_data_t *bsdr_data) {
 		}
 	}
 
-	// for (const auto &issuer_d: d) {
-	// 	std::cout << issuer_d.first << ": " << issuer_d.second.b_amount << " " << issuer_d.second.s_amount << std::endl;
-	// }
+	// output
+	std::ofstream my_file("output");
+	for (const auto &issuer_d: d) {
+		// my_file << issuer_d.first << ": " << issuer_d.second.b_amount << " " << issuer_d.second.s_amount << std::endl;
+		output_delimiter_str(my_file, ",", {std::string("=\"" + issuer_d.first + "\""), std::to_string(issuer_d.second.b_amount), std::to_string(issuer_d.second.s_amount)});
+	}
+	my_file.close();
 }
 
 

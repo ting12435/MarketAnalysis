@@ -51,6 +51,7 @@ void split(const std::string& s, std::vector<std::string>& sv, std::string delim
     int i;
     std::string temp;
     std::istringstream iss(s);
+    
     sv.clear();
 
     i = 0;

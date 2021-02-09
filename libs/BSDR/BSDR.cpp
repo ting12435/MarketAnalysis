@@ -19,6 +19,9 @@ static std::string bsdr_trim(const std::string& s) {
 
 static void split_otc(const std::string& s, std::vector<std::string>& sv) {
 	// "1","9100  ¸s¯q","1.26","68,000","0",,"2","9A00  ¥ÃÂ×ª÷","1.26","0","68,000"
+
+	sv.clear();
+
 	bool entry_start = false;
 	std::string entry_str = "";
 	for (const auto &c: s) {
@@ -112,7 +115,7 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 			if (market == Market::TSE)
 				split(line_str, sv);
 			else if (market == Market::OTC)
-				split(line_str, sv, ",\"");
+				split_otc(line_str, sv);
 			else {
 				std::cerr << "throw error" << std::endl;;
 				OUTPUT("error market");
@@ -130,15 +133,22 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 			try {
 
 				// debug
-				if (fn == "73735P_1100202") {
-					output_delimiter_str(std::cout, ": ", { "0", bsdr_trim(sv[0]) });
-					output_delimiter_str(std::cout, ": ", { "1", bsdr_trim(sv[1]) });
-					output_delimiter_str(std::cout, ": ", { "2", bsdr_trim(sv[2]) });
-					output_delimiter_str(std::cout, ": ", { "3", bsdr_trim(sv[3]) });
-					output_delimiter_str(std::cout, ": ", { "4", bsdr_trim(sv[4]) });
-					output_delimiter_str(std::cout, ": ", { "5", bsdr_trim(sv[5]) });
-					output_delimiter_str(std::cout, ": ", { "6", bsdr_trim(sv[6]) });
-				}
+				// if (fn == "718157_1100202") {
+				// // if (market == Market::OTC) {
+				// 	std::cout << "line_str = [" << line_str << "]" << std::endl;
+				// 	std::cout << "sv.size() = " << sv.size() << std::endl;
+				// 	for (const auto &t: sv) {
+				// 		std::cout << "{" << t << "} " << std::endl;
+				// 	}
+				// 	// output_delimiter_str(std::cout, ": ", { "0", bsdr_trim(sv[0]) });
+				// 	// output_delimiter_str(std::cout, ": ", { "1", bsdr_trim(sv[1]) });
+				// 	// output_delimiter_str(std::cout, ": ", { "2", bsdr_trim(sv[2]) });
+				// 	// output_delimiter_str(std::cout, ": ", { "3", bsdr_trim(sv[3]) });
+				// 	// output_delimiter_str(std::cout, ": ", { "4", bsdr_trim(sv[4]) });
+				// 	// output_delimiter_str(std::cout, ": ", { "5", bsdr_trim(sv[5]) });
+				// 	// output_delimiter_str(std::cout, ": ", { "6", bsdr_trim(sv[6]) });
+				// 	exit(-1);
+				// }
 
 				record_ptr = new BSDR_record();
 				record_ptr->seq = std::stoi(only_number_and_str(sv[0]));
@@ -152,7 +162,7 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 
 				bsdr_ptr->records.emplace_back(record_ptr);
 
-				if (only_number_and_str(sv[6]) != "") {
+				if (sv.size() > 5 && sv[5] != "") {
 					record_ptr = new BSDR_record();
 					record_ptr->seq = std::stoi(only_number_and_str(sv[6]));
 					// record_ptr->issuer_name = only_number_and_str(sv[7]);
@@ -168,7 +178,7 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 
 			} catch(...) {
 				std::cerr << "throw error" << std::endl;;
-				OUTPUT(market);
+				std::cout << "Market=" << market << std::endl;
 				OUTPUT(fn);
 				OUTPUT(line_str);
 				exit(-1);
@@ -234,12 +244,14 @@ void BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market)
 }
 
 void BSDR::tester() {
-	const std::string s = "\"1234\",\"111\",\"\",\"222\",,\"333\"";
+	// const std::string s = "\"1234\",\"111\",\"\",\"222\",,\"333\"";
+	// const std::string s = "\"1\",\"9100  ¸s¯q\",\"1.26\",\"68,000\",\"0\",,\"2\",\"9A00  ¥ÃÂ×ª÷\",\"1.26\",\"0\",\"68,000\"";
+	const std::string s = "\"1\",\"7790  ?겼\",\"0.60\",\"25,000\",\"0\",,\"2\",\"9647  ?I???ثH\",\"0.60\",\"0\",\"25,000\"";
 	std::vector<std::string> sv;
 
 	split_otc(s, sv);
 
-	for (const auot &t: sv) {
+	for (const auto &t: sv) {
 		OUTPUT(t);
 	}
 }

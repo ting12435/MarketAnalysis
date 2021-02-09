@@ -11,13 +11,12 @@ EXT_LDLIBS=
 
 # LIB=bsdr.a
 
-BIN=parse
+BIN=tester
 
 all: clean $(BIN)
 
 clean:
 	rm -f $(BIN)
 
-# parse: parse.cpp $(BSDR_PATH)$(LIB)
-parse: parse.cpp
+tester: tester.cpp
 	$(CC) $(CFLAGS) $(DFLAGS) $(EXT_CFLAGS) $(LDLIBS) $(EXT_LDLIBS) -o $@ $^
