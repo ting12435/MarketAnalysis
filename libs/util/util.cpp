@@ -26,6 +26,11 @@ Date::Date(time_t date_t) {
 	this->date_str = buffer;
 }
 
+Date::Date() {
+	this->date_t = 0;
+	this->date_str = "";
+}
+
 std::ostream& operator<<(std::ostream& os, const Date& d) {
 	os << d.date_str;
 	return os;

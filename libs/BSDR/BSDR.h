@@ -15,7 +15,7 @@ namespace fs = std::filesystem;
 
 class BSDR;
 
-typedef std::map<std::string, std::vector<BSDR*>> bsdr_data_t;  // key: date string
+typedef std::map<std::string, std::vector<BSDR*>> bsdr_data_t;  // K: date_str
 
 class BSDR_record {
 public:
@@ -33,7 +33,7 @@ public:
 	explicit BSDR();
 
 	// static BSDR* read_file(fs::directory_entry);
-	static void get_data(bsdr_data_t*, Date *st_date, Date *ed_date, Market);
+	static bsdr_data_t get_data(Date st_date, Date ed_date, Market);
 	static void tester();
 
 	friend std::ostream& operator<<(std::ostream&, const BSDR&);

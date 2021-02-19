@@ -4,11 +4,7 @@
 #	sh get_data.sh
 #	sh get_data.sh TSE 20210127
 
-if [ "$#" = 0 ]
-then
-	MARKET=TSE
-	DATA_DATE=2021-01-28
-elif [ "$#" = 2 ]
+if [ "$#" = 2 ]
 then
 	MARKET=$1
 	tmp=$2
@@ -16,7 +12,6 @@ then
 else
 	echo "usage:"
 	echo " e.g."
-	echo "  sh get_data.sh"
 	echo "  sh get_data.sh TSE 20210127"
 	exit
 fi

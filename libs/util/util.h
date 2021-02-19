@@ -15,6 +15,7 @@ class Date {
 public:
 	explicit Date(std::string date_str);  // 2021-01-29
 	explicit Date(time_t date_t);
+	explicit Date();
 
 	void add(int add_days);
 

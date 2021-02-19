@@ -11,7 +11,7 @@
 static std::string bsdr_trim(const std::string& s) {
 	std::string result_s;
 	for (const auto &c: s) {
-		if (c != '"')
+		if (c != '"' && c != ',')
 			result_s += c;
 	}
 	return result_s;
@@ -100,7 +100,14 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 	// file info
 	bsdr_ptr = new BSDR;
 	bsdr_ptr->filename = file.path().filename();
-	split(fn, sv);
+	if (market == Market::TSE)
+		split(fn, sv);
+	else if (market == Market::OTC)
+		split(fn, sv, "_");
+	else {
+		std::cerr << "error market" << std::endl;;
+		exit(-1);
+	}
 	bsdr_ptr->stock_fc = sv[0];
 	// OUTPUT(bsdr_ptr->stock_fc);
 
@@ -133,7 +140,7 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 			try {
 
 				// debug
-				// if (fn == "718157_1100202") {
+				// if (fn == "4966_1100217") {
 				// // if (market == Market::OTC) {
 				// 	std::cout << "line_str = [" << line_str << "]" << std::endl;
 				// 	std::cout << "sv.size() = " << sv.size() << std::endl;
@@ -158,11 +165,18 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 				record_ptr->b_lot = std::stoi(bsdr_trim(sv[3]));
 				record_ptr->s_lot = std::stoi(bsdr_trim(sv[4]));
 
-				// std::cout << *record_ptr << std::endl;
+				// if (bsdr_ptr->stock_fc == "4966" && record_ptr->issuer_name == "9200") {
+				// 	std::cout << "line_str = [" << line_str << "]" << std::endl;
+				// 	std::cout << "sv.size() = " << sv.size() << std::endl;
+				// 	for (const auto &t: sv)
+				// 		std::cout << "{" << t << "} " << std::endl;
+				// 	std::cout << *record_ptr << std::endl;
+					
+				// }
 
 				bsdr_ptr->records.emplace_back(record_ptr);
 
-				if (sv.size() > 5 && sv[5] != "") {
+				if ((market == Market::OTC && sv.size() > 5) || (market == Market::TSE && sv[6] != "")) {
 					record_ptr = new BSDR_record();
 					record_ptr->seq = std::stoi(only_number_and_str(sv[6]));
 					// record_ptr->issuer_name = only_number_and_str(sv[7]);
@@ -171,7 +185,8 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 					record_ptr->b_lot = std::stoi(bsdr_trim(sv[9]));
 					record_ptr->s_lot = std::stoi(bsdr_trim(sv[10]));
 
-					// std::cout << *record_ptr << std::endl;
+					// if (bsdr_ptr->stock_fc == "2330" && record_ptr->issuer_name == "9200")
+					// 	std::cout << *record_ptr << std::endl;
 
 					bsdr_ptr->records.emplace_back(record_ptr);
 				}
@@ -192,14 +207,17 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 	return bsdr_ptr;
 }
 
-void BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market) {
+bsdr_data_t BSDR::get_data(Date st_date, Date ed_date, Market market) {
+	bsdr_data_t d;
 	BSDR *bsdr;
 	std::vector<fs::path> dirs;
 	Market current_marekt;
 
-	Date current_date(st_date->date_str);
-	while (current_date <= *ed_date) {
+	Date current_date(st_date.date_str);
+	while (current_date <= ed_date) {
 
+		// dir
+		dirs.clear();
 		if (market == Market::TSE || market == Market::ALL)
 			dirs.emplace_back(fs::path{BSDR_TSE_FOLDER + current_date.date_str});
 		if (market == Market::OTC || market == Market::ALL)
@@ -212,6 +230,7 @@ void BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market)
 			if (fs::exists(dir)) {
 
 				// OUTPUT(dir);
+				std::cout << " -- reading dir:" << dir << std::endl;
 
 				if (dir.string().find(BSDR_TSE_FOLDER) != std::string::npos)
 					current_marekt = Market::TSE;
@@ -231,8 +250,7 @@ void BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market)
 
 						if (bsdr != NULL) {
 							// OUTPUT(*bsdr);
-
-							(*d)[current_date.date_str].emplace_back(bsdr);
+							d[current_date.date_str].emplace_back(bsdr);
 						}
 					}
 				}
@@ -241,15 +259,22 @@ void BSDR::get_data(bsdr_data_t *d, Date *st_date, Date *ed_date, Market market)
 
 		current_date.add(1);
 	}
+
+	return d;
 }
 
 void BSDR::tester() {
 	// const std::string s = "\"1234\",\"111\",\"\",\"222\",,\"333\"";
+	// const std::string s = "\"1\",\"9A00  ¥ÃÂ×ª÷\",\"1.10\",\"16,000\",\"16,000\"";
 	// const std::string s = "\"1\",\"9100  ¸s¯q\",\"1.26\",\"68,000\",\"0\",,\"2\",\"9A00  ¥ÃÂ×ª÷\",\"1.26\",\"0\",\"68,000\"";
-	const std::string s = "\"1\",\"7790  ?겼\",\"0.60\",\"25,000\",\"0\",,\"2\",\"9647  ?I???ثH\",\"0.60\",\"0\",\"25,000\"";
+	// const std::string s = "\"1\",\"7790  ?겼\",\"0.60\",\"25,000\",\"0\",,\"2\",\"9647  ?I???ثH\",\"0.60\",\"0\",\"25,000\"";
+	const std::string s = "\"585\",\"9200  ³Í°ò\",\"1,360.00\",\"50\",\"0\",,\"586\",\"9200  ³Í°ò\",\"1,370.00\",\"2,000\",\"0\"";
+	// const std::string s = "1,9A00¥ÃÂ×ª÷,0.89,21000,21000,,,,,, ";
+	// const std::string s = "4197,9200³Í°ò,631.00,1000,0,,4198,9200³Í°ò,632.00,92000,0 ";
 	std::vector<std::string> sv;
 
 	split_otc(s, sv);
+	// split(s, sv);
 
 	for (const auto &t: sv) {
 		OUTPUT(t);
