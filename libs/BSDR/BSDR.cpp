@@ -263,6 +263,114 @@ bsdr_data_t BSDR::get_data(Date st_date, Date ed_date, Market market) {
 	return d;
 }
 
+bsdr_date_issuer_stock_t BSDR::get_analysis_data_date_issuer_stock(Date st_date, Date ed_date, Market market) {
+	bsdr_data_t bsdr_data = BSDR::get_data(st_date, ed_date, market);
+	bsdr_date_issuer_stock_t d;
+
+	for (const auto &bsdr_d: bsdr_data) {
+		for (const auto &bsdr: bsdr_d.second) {
+			for (const auto &record: bsdr->records) {
+				d[bsdr_d.first][record->issuer_name][bsdr->stock_fc].b_lot += record->b_lot;
+				d[bsdr_d.first][record->issuer_name][bsdr->stock_fc].s_lot += record->s_lot;
+				d[bsdr_d.first][record->issuer_name][bsdr->stock_fc].b_amount += record->b_lot * record->px;
+				d[bsdr_d.first][record->issuer_name][bsdr->stock_fc].s_amount += record->s_lot * record->px;
+			}
+		}
+	}
+
+	return d;
+}
+
+bsdr_date_stock_issuer_t BSDR::get_analysis_data_date_stock_issuer(Date st_date, Date ed_date, Market market) {
+	bsdr_data_t bsdr_data = BSDR::get_data(st_date, ed_date, market);
+	bsdr_date_stock_issuer_t d;
+
+	for (const auto &bsdr_d: bsdr_data) {
+		for (const auto &bsdr: bsdr_d.second) {
+			for (const auto &record: bsdr->records) {
+				d[bsdr_d.first][bsdr->stock_fc][record->issuer_name].b_lot += record->b_lot;
+				d[bsdr_d.first][bsdr->stock_fc][record->issuer_name].s_lot += record->s_lot;
+				d[bsdr_d.first][bsdr->stock_fc][record->issuer_name].b_amount += record->b_lot * record->px;
+				d[bsdr_d.first][bsdr->stock_fc][record->issuer_name].s_amount += record->s_lot * record->px;
+			}
+		}
+	}
+
+	return d;
+}
+bsdr_issuer_date_stock_t BSDR::get_analysis_data_issuer_date_stock(Date st_date, Date ed_date, Market market) {
+	bsdr_data_t bsdr_data = BSDR::get_data(st_date, ed_date, market);
+	bsdr_issuer_date_stock_t d;
+
+	for (const auto &bsdr_d: bsdr_data) {
+		for (const auto &bsdr: bsdr_d.second) {
+			for (const auto &record: bsdr->records) {
+				d[record->issuer_name][bsdr_d.first][bsdr->stock_fc].b_lot += record->b_lot;
+				d[record->issuer_name][bsdr_d.first][bsdr->stock_fc].s_lot += record->s_lot;
+				d[record->issuer_name][bsdr_d.first][bsdr->stock_fc].b_amount += record->b_lot * record->px;
+				d[record->issuer_name][bsdr_d.first][bsdr->stock_fc].s_amount += record->s_lot * record->px;
+			}
+		}
+	}
+
+	return d;
+}
+
+bsdr_issuer_stock_date_t BSDR::get_analysis_data_issuer_stock_date(Date st_date, Date ed_date, Market market) {
+	bsdr_data_t bsdr_data = BSDR::get_data(st_date, ed_date, market);
+	bsdr_issuer_stock_date_t d;
+
+	for (const auto &bsdr_d: bsdr_data) {
+		for (const auto &bsdr: bsdr_d.second) {
+			for (const auto &record: bsdr->records) {
+				d[record->issuer_name][bsdr->stock_fc][bsdr_d.first].b_lot += record->b_lot;
+				d[record->issuer_name][bsdr->stock_fc][bsdr_d.first].s_lot += record->s_lot;
+				d[record->issuer_name][bsdr->stock_fc][bsdr_d.first].b_amount += record->b_lot * record->px;
+				d[record->issuer_name][bsdr->stock_fc][bsdr_d.first].s_amount += record->s_lot * record->px;
+			}
+		}
+	}
+
+	return d;
+}
+
+bsdr_stock_issuer_date_t BSDR::get_analysis_data_stock_issuer_date(Date st_date, Date ed_date, Market market) {
+	bsdr_data_t bsdr_data = BSDR::get_data(st_date, ed_date, market);
+	bsdr_stock_issuer_date_t d;
+
+	for (const auto &bsdr_d: bsdr_data) {
+		for (const auto &bsdr: bsdr_d.second) {
+			for (const auto &record: bsdr->records) {
+				d[bsdr->stock_fc][record->issuer_name][bsdr_d.first].b_lot += record->b_lot;
+				d[bsdr->stock_fc][record->issuer_name][bsdr_d.first].s_lot += record->s_lot;
+				d[bsdr->stock_fc][record->issuer_name][bsdr_d.first].b_amount += record->b_lot * record->px;
+				d[bsdr->stock_fc][record->issuer_name][bsdr_d.first].s_amount += record->s_lot * record->px;
+			}
+		}
+	}
+
+	return d;
+}
+
+bsdr_stock_date_issuer_t BSDR::get_analysis_data_stock_date_issuer(Date st_date, Date ed_date, Market market) {
+	bsdr_data_t bsdr_data = BSDR::get_data(st_date, ed_date, market);
+	bsdr_stock_date_issuer_t d;
+
+	for (const auto &bsdr_d: bsdr_data) {
+		for (const auto &bsdr: bsdr_d.second) {
+			for (const auto &record: bsdr->records) {
+				d[bsdr->stock_fc][bsdr_d.first][record->issuer_name].b_lot += record->b_lot;
+				d[bsdr->stock_fc][bsdr_d.first][record->issuer_name].s_lot += record->s_lot;
+				d[bsdr->stock_fc][bsdr_d.first][record->issuer_name].b_amount += record->b_lot * record->px;
+				d[bsdr->stock_fc][bsdr_d.first][record->issuer_name].s_amount += record->s_lot * record->px;
+			}
+		}
+	}
+
+	return d;
+}
+
+
 void BSDR::tester() {
 	// const std::string s = "\"1234\",\"111\",\"\",\"222\",,\"333\"";
 	// const std::string s = "\"1\",\"9A00  ¥ÃÂ×ª÷\",\"1.10\",\"16,000\",\"16,000\"";

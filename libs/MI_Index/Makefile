@@ -1,19 +1,22 @@
-# CC=g++
-# CFLAGS=-c -std=c++17
+CC=g++
 
-# LIB=mi_index.a
-# LIBOBJS=mi_index.o
+ABSDIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+INCLUDES=$(ABSDIR)/..
 
-all:
-# all: $(LIB)
+CFLAGS=-c -std=c++17 $(addprefix -I, $(INCLUDES))
 
-# $(LIB): $(LIBOBJS)
-# 	ar rcs $@ $^
-# 	rm -f *.o
+LIB=mi_index.a
+LIBOBJS=mi_index.o
 
-# mi_index.o: mi_index.cpp
-# 	c++ $(CFLAGS) $^ -o $@
+all: $(LIB)
 
-# clean:
-# 	rm -f $(LIB) $(LIBOBJS)
+$(LIB): $(LIBOBJS)
+	ar rcs $@ $^
+	rm -f *.o
+
+mi_index.o: mi_index.cpp
+	c++ $(CFLAGS) $^ -o $@
+
+clean:
+	rm -f $(LIB) $(LIBOBJS)
 
