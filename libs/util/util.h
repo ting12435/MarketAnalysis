@@ -36,4 +36,6 @@ std::string only_number_and_str(const std::string& s);
 void output_csv(std::ostream& os, std::initializer_list<std::string> args);
 void output_delimiter_str(std::ostream& os, std::string delimiter, std::initializer_list<std::string> args);
 
+std::vector<std::string> get_files_in_dir(const std::string& dir_name);
+
 #endif /* UTIL_H */

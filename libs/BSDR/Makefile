@@ -3,7 +3,8 @@ CC=g++
 ABSDIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 INCLUDES=$(ABSDIR)/..
 
-CFLAGS=-c -std=c++17 $(addprefix -I, $(INCLUDES))
+# CFLAGS=-c -std=c++17 $(addprefix -I, $(INCLUDES))
+CFLAGS=-c -std=c++11 -lstdc++fs $(addprefix -I, $(INCLUDES))
 
 LIB=libbsdr.a
 LIBOBJS=BSDR.o
@@ -15,7 +16,7 @@ $(LIB): $(LIBOBJS)
 	rm -f *.o
 
 BSDR.o: BSDR.cpp
-	c++ $(CFLAGS) $^ -o $@
+	$(CC) $^ $(CFLAGS) -o $@
 
 clean:
 	rm -f $(LIB) $(LIBOBJS)

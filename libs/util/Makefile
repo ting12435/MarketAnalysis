@@ -1,5 +1,6 @@
 CC=g++
-CFLAGS=-c -std=c++17
+# CFLAGS=-c -std=c++17
+CFLAGS=-c -std=c++11
 
 LIB=libutil.a
 LIBOBJS=util.o
@@ -11,7 +12,7 @@ $(LIB): $(LIBOBJS)
 	rm -f *.o
 
 util.o: util.cpp
-	c++ $(CFLAGS) $^ -o $@
+	$(CC) $^ $(CFLAGS) -o $@
 
 clean:
 	rm -f $(LIB) $(LIBOBJS)

@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 
+
 #define BSDR_TSE_FOLDER "../../data/BuySellDailyReport/TSE/"
 #define BSDR_OTC_FOLDER "../../data/BuySellDailyReport/OTC/"
 
@@ -58,6 +59,13 @@ std::ostream& operator<<(std::ostream& os, const BSDR& bsdr) {
 	return os;
 }
 
+#if __cplusplus < 201703L
+BSDR* read_file(std::string filename, Market market) {
+	BSDR *bsdr_ptr = NULL;
+
+	return bsdr_ptr;
+}
+#else  // c++17
 BSDR* read_file(fs::directory_entry file, Market market) {
 
 	// std::cout << file.path() << std::endl;
@@ -206,7 +214,15 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 
 	return bsdr_ptr;
 }
+#endif
 
+#if __cplusplus < 201703L
+bsdr_data_t BSDR::get_data(Date st_date, Date ed_date, Market market) {
+	bsdr_data_t d;
+
+	return d;
+}
+#else  // c++17
 bsdr_data_t BSDR::get_data(Date st_date, Date ed_date, Market market) {
 	bsdr_data_t d;
 	BSDR *bsdr;
@@ -262,6 +278,7 @@ bsdr_data_t BSDR::get_data(Date st_date, Date ed_date, Market market) {
 
 	return d;
 }
+#endif
 
 bsdr_date_issuer_stock_t BSDR::get_analysis_data_date_issuer_stock(Date st_date, Date ed_date, Market market) {
 	bsdr_data_t bsdr_data = BSDR::get_data(st_date, ed_date, market);
@@ -372,20 +389,25 @@ bsdr_stock_date_issuer_t BSDR::get_analysis_data_stock_date_issuer(Date st_date,
 
 
 void BSDR::tester() {
-	// const std::string s = "\"1234\",\"111\",\"\",\"222\",,\"333\"";
-	// const std::string s = "\"1\",\"9A00  ¥ÃÂ×ª÷\",\"1.10\",\"16,000\",\"16,000\"";
-	// const std::string s = "\"1\",\"9100  ¸s¯q\",\"1.26\",\"68,000\",\"0\",,\"2\",\"9A00  ¥ÃÂ×ª÷\",\"1.26\",\"0\",\"68,000\"";
-	// const std::string s = "\"1\",\"7790  ?겼\",\"0.60\",\"25,000\",\"0\",,\"2\",\"9647  ?I???ثH\",\"0.60\",\"0\",\"25,000\"";
-	const std::string s = "\"585\",\"9200  ³Í°ò\",\"1,360.00\",\"50\",\"0\",,\"586\",\"9200  ³Í°ò\",\"1,370.00\",\"2,000\",\"0\"";
-	// const std::string s = "1,9A00¥ÃÂ×ª÷,0.89,21000,21000,,,,,, ";
-	// const std::string s = "4197,9200³Í°ò,631.00,1000,0,,4198,9200³Í°ò,632.00,92000,0 ";
-	std::vector<std::string> sv;
+	// // const std::string s = "\"1234\",\"111\",\"\",\"222\",,\"333\"";
+	// // const std::string s = "\"1\",\"9A00  ¥ÃÂ×ª÷\",\"1.10\",\"16,000\",\"16,000\"";
+	// // const std::string s = "\"1\",\"9100  ¸s¯q\",\"1.26\",\"68,000\",\"0\",,\"2\",\"9A00  ¥ÃÂ×ª÷\",\"1.26\",\"0\",\"68,000\"";
+	// // const std::string s = "\"1\",\"7790  ?겼\",\"0.60\",\"25,000\",\"0\",,\"2\",\"9647  ?I???ثH\",\"0.60\",\"0\",\"25,000\"";
+	// const std::string s = "\"585\",\"9200  ³Í°ò\",\"1,360.00\",\"50\",\"0\",,\"586\",\"9200  ³Í°ò\",\"1,370.00\",\"2,000\",\"0\"";
+	// // const std::string s = "1,9A00¥ÃÂ×ª÷,0.89,21000,21000,,,,,, ";
+	// // const std::string s = "4197,9200³Í°ò,631.00,1000,0,,4198,9200³Í°ò,632.00,92000,0 ";
+	// std::vector<std::string> sv;
 
-	split_otc(s, sv);
-	// split(s, sv);
+	// split_otc(s, sv);
+	// // split(s, sv);
 
-	for (const auto &t: sv) {
-		OUTPUT(t);
+	// for (const auto &t: sv) {
+	// 	OUTPUT(t);
+	// }
+
+	std::vector<std::string> v = get_files_in_dir("/home/tim/");
+	for (const auto &fn: v) {
+		OUTPUT(fn);
 	}
 }
 

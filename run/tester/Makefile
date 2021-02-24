@@ -2,9 +2,10 @@
 LIBS_PATH=../../libs
 
 CC=g++
-CFLAGS=-O3 -Wall -g -std=c++17  -I$(LIBS_PATH)
+CFLAGS=-O3 -Wall -g -std=c++11  -I$(LIBS_PATH)
 DFLAGS=
-LDLIBS=-L$(LIBS_PATH)/BSDR -lbsdr -L$(LIBS_PATH)/util -lutil
+# LDLIBS=-L$(LIBS_PATH)/BSDR -lbsdr -L$(LIBS_PATH)/util -lutil
+LDLIBS=-L/home/tim/MarketAnalysis/libs/BSDR -lbsdr -L/home/tim/MarketAnalysis/libs/util -lutil
 
 EXT_CFLAGS=
 EXT_LDLIBS=
@@ -19,4 +20,4 @@ clean:
 	rm -f $(BIN)
 
 tester: tester.cpp
-	$(CC) $(CFLAGS) $(DFLAGS) $(EXT_CFLAGS) $(LDLIBS) $(EXT_LDLIBS) -o $@ $^
+	$(CC) $^ $(CFLAGS) $(DFLAGS) $(EXT_CFLAGS) $(LDLIBS) $(EXT_LDLIBS) -o $@

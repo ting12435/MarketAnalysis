@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <cstring>
+#include <dirent.h>
 
 Date::Date(std::string date_str) {
 	struct tm timeinfo;
@@ -100,6 +102,19 @@ void output_delimiter_str(std::ostream& os, std::string delimiter, std::initiali
 		f = true;
 	}
 	os << std::endl;
+}
+
+#include <dirent.h>
+ 
+std::vector<std::string> get_files_in_dir(const std::string& dir_name) {
+	std::vector<std::string> v;
+	DIR* dirp = opendir(dir_name.c_str());
+	struct dirent * dp;
+	while ((dp = readdir(dirp)) != NULL) {
+		v.push_back(dp->d_name);
+	}
+	closedir(dirp);
+	return v;
 }
 
 

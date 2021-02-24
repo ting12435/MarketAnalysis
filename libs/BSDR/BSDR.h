@@ -2,7 +2,8 @@
 #define BSDR_H
 
 #include <iostream>
-#include <filesystem>
+// #include <experimental/filesystem>
+// #include <filesystem> // c++ 17
 #include <string>
 #include <map>
 #include <vector>
@@ -11,7 +12,9 @@
 #include "util/util.h"
 #include "util/market_util.h"
 
-namespace fs = std::filesystem;
+
+// namespace fs = std::experimental::filesystem;
+// namespace fs = std::filesystem; // c++ 17
 
 class BSDR;
 
