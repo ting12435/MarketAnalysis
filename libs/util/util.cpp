@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstring>
 #include <dirent.h>
+#include <sys/stat.h>
 
 Date::Date(std::string date_str) {
 	struct tm timeinfo;
@@ -54,12 +55,11 @@ void Date::add(int add_days) {
 	date_str = buffer;
 }
 
-void split(const std::string& s, std::vector<std::string>& sv, std::string delim, int split_cnt) {
+std::vector<std::string> split(const std::string& s, std::string delim, int split_cnt) {
+	std::vector<std::string> sv;
     int i;
     std::string temp;
     std::istringstream iss(s);
-    
-    sv.clear();
 
     i = 0;
     auto start = 0U;
@@ -77,6 +77,8 @@ void split(const std::string& s, std::vector<std::string>& sv, std::string delim
     }
     end = s.size();
     sv.emplace_back(s.substr(start, end - start));
+
+    return sv;
 }
 
 std::string only_number_and_str(const std::string& s) {
@@ -104,18 +106,60 @@ void output_delimiter_str(std::ostream& os, std::string delimiter, std::initiali
 	os << std::endl;
 }
 
-#include <dirent.h>
+File::File(std::string s) {
+	std::vector<std::string> folder_sv = split(s, "/");
+	std::vector<std::string> fn_sv = split(folder_sv[folder_sv.size()-1], ".");
+	this->full_name = s;
+	this->fn = fn_sv[0];
+	if (fn_sv.size() > 1) this->extension = fn_sv[1];
+	for (int i = 0; i < folder_sv.size() - 1; i++) {
+		this->path += folder_sv[i] + "/";
+	}
+}
+
+std::ostream& operator<<(std::ostream& os, const File& f) {
+	os << "fn: " << f.fn << std::endl;;
+	os << "full_name: " << f.full_name << std::endl;;
+	os << "path: " << f.path << std::endl;;
+	os << "extension: " << f.extension << std::endl;;
+	return os;
+}
  
-std::vector<std::string> get_files_in_dir(const std::string& dir_name) {
+std::vector<std::string> File::get_files_in_dir(const std::string& dir_name) {
 	std::vector<std::string> v;
-	DIR* dirp = opendir(dir_name.c_str());
+	std::string file_full_name, _dir_name = dir_name;
+
+	if (_dir_name.empty()) return v;
+
+	DIR* dirp = opendir(_dir_name.c_str());
 	struct dirent * dp;
+
+	if (_dir_name.back() != '/') _dir_name += "/";
+
 	while ((dp = readdir(dirp)) != NULL) {
-		v.push_back(dp->d_name);
+		file_full_name = _dir_name + dp->d_name;
+		if (File::file_exists(file_full_name))
+			v.push_back(file_full_name);
 	}
 	closedir(dirp);
 	return v;
 }
+
+bool File::file_exists(const std::string& fn) {
+	struct stat info;
+	if (stat(fn.c_str(), &info) == 0 && !(info.st_mode & S_IFDIR))
+		return true;
+	return false;
+}
+
+bool File::dir_exists(const std::string& dir_name) {
+	struct stat info;
+	if (stat(dir_name.c_str(), &info) == 0 && info.st_mode & S_IFDIR)
+		return true;
+	return false;
+}
+
+
 
 
 

@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-
+#include <algorithm>
 
 #define BSDR_TSE_FOLDER "../../data/BuySellDailyReport/TSE/"
 #define BSDR_OTC_FOLDER "../../data/BuySellDailyReport/OTC/"
@@ -59,14 +59,26 @@ std::ostream& operator<<(std::ostream& os, const BSDR& bsdr) {
 	return os;
 }
 
-#if __cplusplus < 201703L
-BSDR* read_file(std::string filename, Market market) {
-	BSDR *bsdr_ptr = NULL;
+// #if __cplusplus < 201703L
+// BSDR* read_file(std::string filename, Market market) {
+// 	BSDR *bsdr_ptr = NULL;
+// 	std::ifstream ifs;
 
-	return bsdr_ptr;
-}
-#else  // c++17
-BSDR* read_file(fs::directory_entry file, Market market) {
+// 	File file(filename);
+
+// 	// filter
+// 	if (file.fn.find("(1)") != std::string::npos) return NULL;
+
+// 	ifs.open(file.full_name, std::ios::in);
+// 	if (!ifs) return NULL;
+
+
+
+// 	return bsdr_ptr;
+// }
+// #else  // c++17
+// BSDR* read_file(fs::directory_entry file, Market market) {
+BSDR* read_file(std::string filename, Market market) {
 
 	// std::cout << file.path() << std::endl;
 	// std::cout << file.path().stem().string() << std::endl;
@@ -74,21 +86,31 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 
 	#define LINE_MAX_LEN 2000
 	char line_c[LINE_MAX_LEN];
-	std::string line_str;
+	std::string line_str, fn, full_name;
 	std::ifstream ifs;
 	std::vector<std::string> sv;
 
 	BSDR *bsdr_ptr = NULL;
 	BSDR_record *record_ptr;
 
-	std::string fn = file.path().stem().string();
+	#if __cplusplus < 201703L
+	File file(filename);
+	fn = file.fn;
+	full_name = file.full_name;
+	#else
+	fs::path p = filename;
+	fs::directory_entry file(p);
+	fn = file.path().stem().string();
+	full_name = file.path().string();
+	#endif
 
 	// filter
-	// if (file.path().stem().string().size() != 4) return NULL;
+	if (filename.find("crdownload") != std::string::npos) return NULL;
 	if (fn.find("(1)") != std::string::npos) return NULL;
 
 	// OUTPUT(fn);
-	ifs.open(file.path().string(), std::ios::in);
+
+	ifs.open(full_name, std::ios::in);
 
 	if(!ifs) {
 		// throw std::runtime_error(file.path().string() + ": " + std::strerror(errno));
@@ -107,11 +129,11 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 
 	// file info
 	bsdr_ptr = new BSDR;
-	bsdr_ptr->filename = file.path().filename();
+	bsdr_ptr->filename = full_name;
 	if (market == Market::TSE)
-		split(fn, sv);
+		sv = split(fn);
 	else if (market == Market::OTC)
-		split(fn, sv, "_");
+		sv = split(fn, "_");
 	else {
 		std::cerr << "error market" << std::endl;;
 		exit(-1);
@@ -125,10 +147,11 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 		ifs.getline(line_c, sizeof(line_c));
 		line_str = line_c;
 		if (!line_str.empty()) {
+
 			// std::cout << line_str << std::endl;
 
 			if (market == Market::TSE)
-				split(line_str, sv);
+				sv = split(line_str);
 			else if (market == Market::OTC)
 				split_otc(line_str, sv);
 			else {
@@ -214,11 +237,52 @@ BSDR* read_file(fs::directory_entry file, Market market) {
 
 	return bsdr_ptr;
 }
-#endif
+// #endif
 
 #if __cplusplus < 201703L
 bsdr_data_t BSDR::get_data(Date st_date, Date ed_date, Market market) {
 	bsdr_data_t d;
+	BSDR *bsdr;
+	std::vector<std::string> dirs;
+	Market current_marekt;
+
+	Date current_date(st_date.date_str);
+	while (current_date <= ed_date) {
+
+		// dir
+		dirs.clear();
+		if (market == Market::TSE || market == Market::ALL)
+			dirs.emplace_back(std::string{BSDR_TSE_FOLDER + current_date.date_str});
+		if (market == Market::OTC || market == Market::ALL)
+			dirs.emplace_back(std::string{BSDR_OTC_FOLDER + current_date.date_str});
+
+		for (const auto &dir: dirs) {
+			if (File::dir_exists(dir)) {
+				std::cout << " -- reading dir:" << dir << std::endl;
+
+				// market
+				if (dir.find(BSDR_TSE_FOLDER) != std::string::npos)
+					current_marekt = Market::TSE;
+				else if (dir.find(BSDR_OTC_FOLDER) != std::string::npos)
+					current_marekt = Market::OTC;
+
+				for (const auto &filename: File::get_files_in_dir(dir)) {
+
+					// OUTPUT(filename);
+
+					File file(filename);
+					std::string ex = file.extension;
+					std::transform(ex.begin(), ex.end(), ex.begin(), ::tolower);
+
+					if (ex == "csv") {
+						if ((bsdr = read_file(filename, current_marekt)) != NULL)
+							d[current_date.date_str].emplace_back(bsdr);
+					}
+				}
+			}
+		}
+		current_date.add(1);
+	}
 
 	return d;
 }
@@ -405,10 +469,13 @@ void BSDR::tester() {
 	// 	OUTPUT(t);
 	// }
 
-	std::vector<std::string> v = get_files_in_dir("/home/tim/");
+	std::vector<std::string> v = File::get_files_in_dir("/home/tim/");
 	for (const auto &fn: v) {
 		OUTPUT(fn);
 	}
+
+	// File f("aaa.csv");
+	// std::cout << f << std::endl;
 }
 
 

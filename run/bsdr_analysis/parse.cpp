@@ -73,7 +73,7 @@ void parse_trade_detail() {
 	// 		}
 	// 	}
 	// }
-	bsdr_date_issuer_stock_t d = BSDR::get_analysis_data_date_issuer_stock(Date("2021-02-22"), Date("2021-02-22"), Market::ALL);
+	bsdr_date_issuer_stock_t d = BSDR::get_analysis_data_date_issuer_stock(Date("2021-03-02"), Date("2021-03-02"), Market::ALL);
 
 	// output
 	for (const auto &date_d: d) {
@@ -99,6 +99,8 @@ void parse_trade_detail() {
 				for (const auto &stock_d: issuer_d.second) {
 					m[stock_d.first].b_lot += stock_d.second.b_lot;
 					m[stock_d.first].s_lot += stock_d.second.s_lot;
+					m[stock_d.first].b_amount += stock_d.second.b_amount;
+					m[stock_d.first].s_amount += stock_d.second.s_amount;
 				}
 			}
 		}
