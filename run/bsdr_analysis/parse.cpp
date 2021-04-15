@@ -73,7 +73,7 @@ void parse_trade_detail() {
 	// 		}
 	// 	}
 	// }
-	bsdr_date_issuer_stock_t d = BSDR::get_analysis_data_date_issuer_stock(Date("2021-03-02"), Date("2021-03-02"), Market::ALL);
+	bsdr_date_issuer_stock_t d = BSDR::get_analysis_data_date_issuer_stock(Date("2021-04-14"), Date("2021-04-14"), Market::ALL);
 
 	// output
 	for (const auto &date_d: d) {
