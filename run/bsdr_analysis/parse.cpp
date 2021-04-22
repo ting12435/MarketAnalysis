@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
+#include <cstring>
 #include <cassert>
+#include <getopt.h>
 
 #include "BSDR/BSDR.h"
 #include "util/util.h"
