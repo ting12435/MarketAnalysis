@@ -74,6 +74,13 @@ int main(int argc, char *argv[]) {
 	// parse();
 
 	return 0;
+
+	usage_error:
+	fprintf(stderr, "Usage: %s\n", argv[0]);
+	fprintf(stderr, "%9s [--d1] [--d2]\n", " ");
+	fprintf(stderr, "\ne.g.\n");
+	fprintf(stderr, "taskset -c 5 %s --d1 2021-04-20 --d2 2021-04-21\n", argv[0]);
+	return EXIT_FAILURE;
 }
 
 void parse() {
