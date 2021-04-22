@@ -1,8 +1,14 @@
 #include <iostream>
 #include <fstream>
+#include <cassert>
 
 #include "BSDR/BSDR.h"
 #include "util/util.h"
+
+struct var {
+	Date *d1;
+	Date *d2;
+} g_var;
 
 void parse();
 void parse_trade_detail();
@@ -10,7 +16,43 @@ void parse_one_issuer();
 void parse_issuers();
 void parse_debug(bsdr_data_t*);
 
+void init_g_var() {
+	memset(&g_var, 0, sizeof(g_var));
+}
+
+bool check_g_var() {
+	if (g_var.d1 == nullptr || g_var.d2 == nullptr)
+		return false;
+	return true;
+}
+
+static struct option long_options[] = {
+	{"d1", required_argument, NULL, 0},
+	{"d2", required_argument, NULL, 1}
+};
+
 int main(int argc, char *argv[]) {
+
+	int c;
+
+	init_g_var();
+
+	if (argc < 2) goto usage_error;
+
+	while ((c = getopt_long (argc, argv, "", long_options, NULL)) != -1) {
+		switch (c) {
+			case 0:
+				g_var.d1 = new Date(optarg);
+				break;
+			case 1:
+				g_var.d2 = new Date(optarg);
+				break;
+			default:
+				goto usage_error;
+		}
+	}
+
+	assert(check_g_var());
 
 	// Date *st_date, *ed_date;
 	// bsdr_data_t *bsdr_data;
