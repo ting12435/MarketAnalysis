@@ -1,4 +1,5 @@
 data/*
+run/bsdr_analysis/output/*
 
 # Prerequisites
 *.d
