@@ -19,7 +19,7 @@ void parse();
 void parse_one_issuer_bsnet();
 void parse_one_issuer();
 void parse_issuers();
-void parse_debug(bsdr_data_t*);
+void parse_debug();
 void parse_one_stock_issuers_distribution();
 
 void init_g_var() {
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 	assert(check_g_var());
 
 	if (g_var.parse_type == "debug")
-		parse_debug(bsdr_data);
+		parse_debug();
 	else if (g_var.parse_type == "one_issuer")
 		parse_one_issuer();
 	else if (g_var.parse_type == "one_issuer_bsnet")
@@ -272,20 +272,20 @@ void parse_issuers() {
 	my_file.close();
 }
 
-void parse_debug(bsdr_data_t *bsdr_data) {
-	std::ofstream my_file("output");
-	for (const auto &bsdr_d: *bsdr_data) {
-		for (const auto &bsdr: bsdr_d.second) {
-			// my_file << bsdr->stock_fc << std::endl;
+void parse_debug() {
+	// std::ofstream my_file("output");
+	// for (const auto &bsdr_d: *bsdr_data) {
+	// 	for (const auto &bsdr: bsdr_d.second) {
+	// 		// my_file << bsdr->stock_fc << std::endl;
 
-			for (const auto &record: bsdr->records) {
-				if (bsdr->stock_fc == "4966" && record->issuer_name == "9200") {
-					my_file << *record << std::endl;
-				}
-			}
-		}
-	}
-	my_file.close();
+	// 		for (const auto &record: bsdr->records) {
+	// 			if (bsdr->stock_fc == "4966" && record->issuer_name == "9200") {
+	// 				my_file << *record << std::endl;
+	// 			}
+	// 		}
+	// 	}
+	// }
+	// my_file.close();
 }
 
 void parse_one_stock_issuers_distribution() {
