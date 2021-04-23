@@ -32,7 +32,7 @@ void init_g_var() {
 }
 
 bool check_g_var() {
-	if (g_var.d1 == nullptr || g_var.d2 == nullptr)
+	if (g_var.d1 == nullptr && g_var.d2 == nullptr)
 		return false;
 	else if (g_var.d1 == nullptr)
 		g_var.d1 = g_var.d2;
