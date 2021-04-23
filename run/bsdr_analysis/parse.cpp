@@ -23,6 +23,7 @@ void parse_debug();
 void parse_one_stock_issuers_distribution();
 
 void init_g_var() {
+	printf("size()=%d\n", sizeof(g_var));
 	memset(&g_var, 0, sizeof(g_var));
 }
 
@@ -44,7 +45,7 @@ int main(int argc, char *argv[]) {
 
 	int c;
 
-	// init_g_var();
+	init_g_var();
 
 	if (argc < 2) goto usage_error;
 
