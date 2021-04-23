@@ -23,8 +23,12 @@ void parse_debug();
 void parse_one_stock_issuers_distribution();
 
 void init_g_var() {
-	printf("size()=%d\n", sizeof(g_var));
-	memset(&g_var, 0, sizeof(g_var));
+	// memset(&g_var, 0, sizeof(g_var));
+	g_var.parse_type = "";
+	g_var.d1 = nullptr;
+	g_var.d2 = nullptr;
+	g_var.issuer = "";
+	g_var.stock = "";
 }
 
 bool check_g_var() {
