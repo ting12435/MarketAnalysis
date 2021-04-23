@@ -34,6 +34,10 @@ void init_g_var() {
 bool check_g_var() {
 	if (g_var.d1 == nullptr || g_var.d2 == nullptr)
 		return false;
+	else if (g_var.d1 == nullptr)
+		g_var.d1 = g_var.d2;
+	else if (g_var.d2 == nullptr)
+		g_var.d2 = g_var.d1;
 	return true;
 }
 
@@ -94,9 +98,11 @@ int main(int argc, char *argv[]) {
 
 	usage_error:
 	fprintf(stderr, "Usage: %s\n", argv[0]);
-	fprintf(stderr, "%9s [--type] [--d1] [--d2] [--issuer]\n", " ");
+	fprintf(stderr, "%9s [--type] [--d1] [--d2] [--issuer] [--stock]\n", " ");
+	fprintf(stderr, "  --type: [debug], [one_issuer], [one_issuer_bsnet], [issuers], [test], [one_stock_issuers_distribution]\n");
 	fprintf(stderr, "\ne.g.\n");
 	fprintf(stderr, "taskset -c 5 %s --type one_issuer_bsnet --d1 2021-04-20 --d2 2021-04-21 --issuer 5850\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type one_stock_issuers_distribution --d1 2021-04-22 --d2 2021-04-22 --stock 3661\n", argv[0]);
 	return EXIT_FAILURE;
 }
 
