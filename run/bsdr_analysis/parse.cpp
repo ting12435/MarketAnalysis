@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "  --type: [debug], [one_issuer], [one_issuer_bsnet], [issuers], [test], [one_stock_issuers_distribution]\n");
 	fprintf(stderr, "\ne.g.\n");
 	fprintf(stderr, "taskset -c 5 %s --type one_issuer_bsnet --d1 2021-04-20 --d2 2021-04-21 --issuer 5850\n", argv[0]);
-	fprintf(stderr, "taskset -c 5 %s --type one_stock_issuers_distribution --d1 2021-04-22 --stock 3661 > output/output\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type one_stock_issuers_distribution --d1 2021-04-22 --stock 3661\n", argv[0]);
 	return EXIT_FAILURE;
 }
 
@@ -324,9 +324,11 @@ void parse_one_stock_issuers_distribution() {
 	}
 
 	// output
+	std::ofstream my_file("output/output");
 	for (const auto &issuer_d: m) {
-		std::cout << "=\"" << issuer_d.first << "\"," << issuer_d.second.b_lot << "," << issuer_d.second.s_lot << "," << issuer_d.second.b_lot - issuer_d.second.s_lot << "," << issuer_d.second.b_amount - issuer_d.second.s_amount << std::endl;
+		my_file << "=\"" << issuer_d.first << "\"," << issuer_d.second.b_lot << "," << issuer_d.second.s_lot << "," << issuer_d.second.b_lot - issuer_d.second.s_lot << "," << issuer_d.second.b_amount - issuer_d.second.s_amount << std::endl;
 	}
+	my_file.close();
 }
 
 
