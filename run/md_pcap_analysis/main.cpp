@@ -82,7 +82,7 @@ void uplimit() {
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *g_var.d2) {
 
-		frame = get_md_frame(current_date);
+		frame = get_pcap_stream(current_date);
 		if (check_md_frame(frame)) {
 			if (IS_STOCK(frame)) {
 				if (IS_TRADE_UPLIMIT(frame)) {
