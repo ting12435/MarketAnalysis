@@ -10,7 +10,10 @@ EXT_LDLIBS=
 
 BIN=main
 
-all: clean $(BIN)
+all: clean make_lib $(BIN)
+
+make_lib:
+	make -C $(LIBS_PATH)/md_pcap $(LIBS_PATH)/util
 
 clean:
 	rm -f $(BIN)
