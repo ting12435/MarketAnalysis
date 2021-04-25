@@ -15,8 +15,8 @@
 
 #define IS_STOCK(md) (md->hdr.fmt_code == 0x06)
 #define IS_TRADE_UPLIMIT(md) ((md->body.fmt_6_17.limit_mark & 0xc0 )== 0x80)
-#define GET_FEEDCODE(md) ((char*)md->body.fmt_6_17.feedcode)
-#define GET_TRADE_PXLT(md) ((char*)md->body.fmt_6_17.px_lt[0])
+#define GET_FEEDCODE(md) ((char*)(md->body.fmt_6_17.feedcode))
+#define GET_TRADE_PXLT(md) ((struct md_px_lt*)(md->body.fmt_6_17.px_lt[0]))
 
 struct md_header {
 	uint16_t 	msg_len;
