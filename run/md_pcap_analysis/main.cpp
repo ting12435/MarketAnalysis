@@ -87,7 +87,7 @@ void uplimit() {
 			if (is_stock(frame)) {
 				if (is_trade_uplimit(frame)) {
 
-					std::string feedcode = std::string(get_feedcode(md));
+					std::string feedcode = get_feedcode(md);
 
 					if (m[current_date].find(feedcode) == m[current_date].end()) {
 						struct md_px_lt trade_pxlt = get_trade_pxlt(md);
