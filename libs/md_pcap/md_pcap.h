@@ -62,6 +62,26 @@ struct md {
 	uint16_t *terminal_code;
 };
 
+#define bcd_to_int(buf, len) ({ \
+	int i, dec_pow = 1 + 2 * (len - 1); \
+	int sum = 0; \
+	for (i = 0; i < len; i++) { \
+		sum += (buf[i] >> 4 & 0x0f) * pow(10,dec_pow--); \
+		sum += (buf[i] & 0x0f) * pow(10,dec_pow--); \
+	} \
+	sum; \
+})
+
+#define bcd_to_long(buf, len) ({ \
+	int i, dec_pow = 1 + 2 * (len - 1); \
+	long sum = 0; \
+	for (i = 0; i < len; i++) { \
+		sum += (buf[i] >> 4 & 0x0f) * pow(10,dec_pow--); \
+		sum += (buf[i] & 0x0f) * pow(10,dec_pow--); \
+	} \
+	sum; \
+})
+
 struct md* get_pcap_stream(Date);
 
 bool check_md_frame(struct md*);
@@ -72,6 +92,8 @@ bool is_stock(struct md*);
 bool is_trade_uplimit(struct md*);
 std::string get_feedcode(struct md*);
 struct md_px_lt* get_trade_pxlt(struct md*);
+int get_px(struct md_px_lt*);
+int get_lt(struct md_px_lt*);
 
 #endif // MD_PCAP_H
 
