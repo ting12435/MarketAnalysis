@@ -71,7 +71,7 @@ bool check_md_frame(struct md*);
 bool is_stock(struct md *md) { return md->hdr.fmt_code == 0x06; }
 bool is_trade_uplimit(struct md *md) { return (md->body.fmt_6_17.limit_mark & 0xc0) == 0x80; }
 char* get_feedcode(struct md *md) { return (char*)(md->body.fmt_6_17.feedcode); }
-char* get_trade_pxlt(struct md *md) { return (struct md_px_lt*)(md->body.fmt_6_17.px_lt[0]); }
+struct md_px_lt* get_trade_pxlt(struct md *md) { return (struct md_px_lt*)(md->body.fmt_6_17.px_lt[0]); }
 
 #endif // MD_PCAP_H
 
