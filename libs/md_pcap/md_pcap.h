@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <cmath>
 
 #include "util/util.h"
 #include "util/market_util.h"
