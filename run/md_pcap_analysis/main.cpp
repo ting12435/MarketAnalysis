@@ -80,7 +80,9 @@ void uplimit() {
 	struct md *frame;
 
 	Date current_date(g_var.d1->date_str);
-	while (current_date <= *(g_var.d2)) {
+	Date end_date(g_var.d2->date_str);
+	// while (current_date <= *(g_var.d2)) {
+	while (current_date <= end_date) {
 
 		frame = get_pcap_stream(current_date);
 		if (check_md_frame(frame)) {
