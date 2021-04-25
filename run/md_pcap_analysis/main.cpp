@@ -87,12 +87,12 @@ void uplimit() {
 			if (is_stock(frame)) {
 				if (is_trade_uplimit(frame)) {
 
-					std::string feedcode = get_feedcode(md);
+					std::string feedcode = get_feedcode(frame);
 
-					// if (m[current_date].find(feedcode) == m[current_date].end()) {
-					// 	struct md_px_lt trade_pxlt = get_trade_pxlt(md);
-					// 	m[current_date][feedcode] = trade_pxlt.px;
-					// }
+					if (m[current_date].find(feedcode) == m[current_date].end()) {
+						struct md_px_lt trade_pxlt = get_trade_pxlt(md);
+						m[current_date][feedcode] = trade_pxlt.px;
+					}
 				}
 			}
 		}
