@@ -32,6 +32,6 @@ int get_px(struct md_px_lt *px_lt) {
 	return bcd_to_int(px_lt->px, MD_PX_SIZE) / 10000.0;
 }
 
-int get_lt(struct md_px_lt*) {
-	return return bcd_to_int(px_lt->lt, MD_LT_SIZE);
+int get_lt(struct md_px_lt *px_lt) {
+	return bcd_to_int(px_lt->lt, MD_LT_SIZE);
 }
