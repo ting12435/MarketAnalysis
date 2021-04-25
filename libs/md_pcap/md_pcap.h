@@ -33,7 +33,11 @@ struct md_px_lt {
 
 struct md_body_fmt_1 {
 	uint8_t 		feedcode[FEEDCODE_SIZE];
-	uint32_t : 160;
+	uint32_t : 32;
+	uint32_t : 32;
+	uint32_t : 32;
+	uint32_t : 32;
+	uint32_t : 32;
 	uint16_t 		stocks_count_mark[2];
 };
 
