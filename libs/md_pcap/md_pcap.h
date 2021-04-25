@@ -70,7 +70,7 @@ bool check_md_frame(struct md*);
 
 bool is_stock(struct md *md);
 bool is_trade_uplimit(struct md *md);
-// std::string get_feedcode(struct md *md);
+std::string get_feedcode(struct md*);
 struct md_px_lt* get_trade_pxlt(struct md *md);
 
 #endif // MD_PCAP_H
