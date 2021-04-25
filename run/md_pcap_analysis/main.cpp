@@ -92,8 +92,8 @@ void uplimit() {
 					if (m[current_date].find(feedcode) == m[current_date].end()) {
 
 						struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
-						m[current_date][feedcode] = trade_pxlt->px;
-						
+						m[current_date][feedcode] = get_px(trade_pxlt);
+
 					}
 				}
 			}
