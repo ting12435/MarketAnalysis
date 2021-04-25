@@ -83,19 +83,19 @@ void uplimit() {
 	while (current_date <= *g_var.d2) {
 
 		frame = get_pcap_stream(current_date);
-		if (check_md_frame(frame)) {
-			if (is_stock(frame)) {
-				if (is_trade_uplimit(frame)) {
+		// if (check_md_frame(frame)) {
+		// 	if (is_stock(frame)) {
+		// 		if (is_trade_uplimit(frame)) {
 
-					std::string feedcode = get_feedcode(md);
+		// 			std::string feedcode = get_feedcode(md);
 
-					if (m[current_date].find(feedcode) == m[current_date].end()) {
-						struct md_px_lt trade_pxlt = get_trade_pxlt(md);
-						m[current_date][feedcode] = trade_pxlt.px;
-					}
-				}
-			}
-		}
+		// 			if (m[current_date].find(feedcode) == m[current_date].end()) {
+		// 				struct md_px_lt trade_pxlt = get_trade_pxlt(md);
+		// 				m[current_date][feedcode] = trade_pxlt.px;
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 		current_date.add(1);
 	}
