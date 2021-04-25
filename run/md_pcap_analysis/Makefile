@@ -13,7 +13,8 @@ BIN=main
 all: clean make_lib $(BIN)
 
 make_lib:
-	make -C $(LIBS_PATH)/md_pcap $(LIBS_PATH)/util
+	make -C $(LIBS_PATH)/md_pcap
+	make -C $(LIBS_PATH)/util
 
 clean:
 	rm -f $(BIN)
