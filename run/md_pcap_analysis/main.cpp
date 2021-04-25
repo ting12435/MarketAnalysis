@@ -92,12 +92,12 @@ void uplimit() {
 
 					std::string feedcode = get_feedcode(frame);
 
-					// if (m[current_date].find(feedcode) == m[current_date].end()) {
+					if (m[current_date].find(feedcode) == m[current_date].end()) {
 
 						// struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
 						// m[current_date][feedcode] = get_px(trade_pxlt);
 
-					// }
+					}
 				}
 			}
 		}
