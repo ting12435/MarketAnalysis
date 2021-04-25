@@ -13,11 +13,6 @@
 #define MD_PX_SIZE 5
 #define MD_LT_SIZE 4
 
-#define IS_STOCK(md) (md->hdr.fmt_code == 0x06)
-#define IS_TRADE_UPLIMIT(md) ((md->body.fmt_6_17.limit_mark & 0xc0 )== 0x80)
-#define GET_FEEDCODE(md) ((char*)(md->body.fmt_6_17.feedcode))
-#define GET_TRADE_PXLT(md) ((struct md_px_lt*)(md->body.fmt_6_17.px_lt[0]))
-
 struct md_header {
 	uint16_t 	msg_len;
 	uint8_t 	market;
@@ -72,6 +67,11 @@ struct md* get_pcap_stream(Date);
 bool check_md_frame(struct md*);
 
 // int parse_md_pcap_frame(char*, int);
+
+bool is_stock(struct md *md) { return md->hdr.fmt_code == 0x06; }
+bool is_trade_uplimit(struct md *md) { return (md->body.fmt_6_17.limit_mark & 0xc0) == 0x80; }
+char* get_feedcode(struct md *md) { return (char*)(md->body.fmt_6_17.feedcode); }
+char* get_trade_pxlt(struct md *md) { return (struct md_px_lt*)(md->body.fmt_6_17.px_lt[0]); }
 
 #endif // MD_PCAP_H
 

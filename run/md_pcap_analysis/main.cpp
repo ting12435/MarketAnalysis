@@ -84,11 +84,11 @@ void uplimit() {
 
 		frame = get_pcap_stream(current_date);
 		if (check_md_frame(frame)) {
-			if (IS_STOCK(frame)) {
-				if (IS_TRADE_UPLIMIT(frame)) {
-					if (m.find(GET_FEEDCODE(md)) == m.end()) {
-						struct md_px_lt trade_pxlt = GET_TRADE_PXLT(md);
-						m.emblace(current_date, {GET_FEEDCODE(md), trade_pxlt.px});
+			if (is_stock(frame)) {
+				if (is_trade_uplimit(frame)) {
+					if (m.find(get_feedcode(md)) == m.end()) {
+						struct md_px_lt trade_pxlt = get_trade_pxlt(md);
+						m.emblace(current_date, {get_feedcode(md), trade_pxlt.px});
 					}
 				}
 			}
