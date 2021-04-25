@@ -20,11 +20,11 @@ public:
 	void add(int add_days);
 
 	friend std::ostream& operator<<(std::ostream&, const Date&);
-	friend bool operator == (Date const &, Date const &) { return d1.date_t == d2.date_t; } 
-	friend bool operator <= (Date const &, Date const &) { return d1.date_t <= d2.date_t; }
-	friend bool operator >= (Date const &, Date const &) { return d1.date_t >= d2.date_t; }
-	friend bool operator < (Date const &, Date const &) { return d1.date_t < d2.date_t; }
-	friend bool operator > (Date const &, Date const &) { return d1.date_t > d2.date_t; }
+	friend bool operator == (Date const &d1, Date const &d2) { return d1.date_t == d2.date_t; } 
+	friend bool operator <= (Date const &d1, Date const &d2) { return d1.date_t <= d2.date_t; }
+	friend bool operator >= (Date const &d1, Date const &d2) { return d1.date_t >= d2.date_t; }
+	friend bool operator < (Date const &d1, Date const &d2) { return d1.date_t < d2.date_t; }
+	friend bool operator > (Date const &d1, Date const &d2) { return d1.date_t > d2.date_t; }
 
 	std::string date_str;
 	time_t date_t;
