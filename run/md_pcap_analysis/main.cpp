@@ -80,8 +80,6 @@ void uplimit() {
 	struct md *frame;
 
 	Date current_date(g_var.d1->date_str);
-	// Date end_date(g_var.d2->date_str);
-	// while (current_date <= end_date) {
 	while (current_date <= *(g_var.d2)) {
 	
 
@@ -94,8 +92,8 @@ void uplimit() {
 
 					if (m[current_date].find(feedcode) == m[current_date].end()) {
 
-						// struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
-						// m[current_date][feedcode] = get_px(trade_pxlt);
+						struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
+						m[current_date][feedcode] = get_px(trade_pxlt);
 
 					}
 				}
