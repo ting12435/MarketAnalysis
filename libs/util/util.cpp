@@ -39,10 +39,9 @@ std::ostream& operator<<(std::ostream& os, const Date& d) {
 	return os;
 }
 
-bool operator <= (Date const &d1, Date const &d2) 
-{ 
-     return d1.date_t <= d2.date_t;
-} 
+// bool operator <= (Date const &d1, Date const &d2)  { 
+//      return d1.date_t <= d2.date_t;
+// } 
 
 void Date::add(int add_days) {
 	struct tm *timeinfo;
