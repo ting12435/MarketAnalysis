@@ -19,6 +19,10 @@ OneDayPcap::OneDayPcap(Date d) {
 	this->date_folder = pcap_folder + this->date_str;
 }
 
+operator OneDayPcap::bool() const {
+	return File::dir_exists(pcap_folder);
+}
+
 struct md* OneDayPcap::get_pcap_record_data() {
 	// check file
 	if (this->cur_pcap_idx == -1)
