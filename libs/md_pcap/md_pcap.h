@@ -55,7 +55,7 @@ struct md_body_fmt_6_17 {
 	uint8_t 		*check_code;
 };
 
-struct md {
+struct __attribute__((__packed__)) md {
 	uint8_t esc_code;
 
 	struct md_header hdr;
