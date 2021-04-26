@@ -106,6 +106,7 @@ void uplimit() {
 				if (is_stock(frame)) {
 
 					// std::cout << "feedcode: " << frame->body.fmt_6_17.feedcode[0] << frame->body.fmt_6_17.feedcode[1] << frame->body.fmt_6_17.feedcode[2] << frame->body.fmt_6_17.feedcode[3] << frame->body.fmt_6_17.feedcode[4] << frame->body.fmt_6_17.feedcode[5] << std::endl;
+					printf("%p %p\n", &frame->esc_code, &frame->hdr.msg_len);
 					printf("msg_len: %x\n", frame->hdr.msg_len);
 					printf("market: %x\n", frame->hdr.market);
 					printf("fmt_code: %x\n", frame->hdr.fmt_code);
