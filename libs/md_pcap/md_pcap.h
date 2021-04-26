@@ -117,14 +117,7 @@ private:
 	bool pcap_folder_exist;
 };
 
-
-
-
-// struct md* get_pcap_stream(Date);
-
 bool check_md_frame(struct md*);
-
-// int parse_md_pcap_frame(char*, int);
 
 bool is_stock(struct md*);
 bool is_trade_uplimit(struct md*);

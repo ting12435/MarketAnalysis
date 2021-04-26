@@ -40,10 +40,10 @@ struct md* OneDayPcap::get_pcap_record_data() {
 		return nullptr;
 	}
 
-print_hexdump(this->record_data, sizeof(this->record_data));
-exit(-1);
+// print_hexdump(this->record_data, sizeof(this->record_data));
+// exit(-1);
 
-	return (struct md*)&this->record_data;
+	return (struct md*)((char*)&this->record_data + 42);
 }
 
 bool OneDayPcap::open_pcap_file(int idx) {
