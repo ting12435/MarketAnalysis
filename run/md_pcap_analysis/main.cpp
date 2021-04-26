@@ -95,12 +95,12 @@ void uplimit() {
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
 			// std::cout << "esc_code: " << frame->esc_code << std::endl;
-			// printf("0x%02x\n", frame->esc_code);
+			printf("0x%02x\n", frame->esc_code);
 			
 			if (check_md_frame(frame)) {
 
 				// std::cout << "esc_code: " << frame->esc_code << std::endl;
-				printf("esc_code: 0x%02x\n", frame->esc_code);
+				// printf("esc_code: 0x%02x\n", frame->esc_code);
 				// exit(-1);
 
 				if (is_stock(frame)) {
