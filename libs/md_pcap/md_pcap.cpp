@@ -40,7 +40,8 @@ struct md* OneDayPcap::get_pcap_record_data() {
 		return nullptr;
 	}
 
-	std::cout << "bbb\n";
+print_hexdump(this->record_data, sizeof(this->record_data));
+exit(-1);
 
 	return (struct md*)&this->record_data;
 }

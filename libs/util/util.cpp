@@ -60,6 +60,25 @@ void output_delimiter_str(std::ostream& os, std::string delimiter, std::initiali
 	os << std::endl;
 }
 
+void print_hexdump(char *data, int len) {
+	char ascii[16];
+	int i, rem;
+
+	for (i = 0; i < len; ) {
+		if ((i % 16) == 0) printf("%04x: ", i);
+
+		printf("%02x", (unsigned char)data[i]);
+		if (isprint(data[i])) ascii[i%16] = data[i];
+		else ascii[i%16] = '.';
+		i++;
+
+		if ((i % 2) == 0) printf(" ");
+		if ((i % 16) == 0) printf(" %.16s\n", ascii);
+	}
+	rem = i % 16;
+	if (rem) printf("%*.*s\n", 2*(16-rem)+((16-rem+1)/2)+rem+1, rem, ascii);
+}
+
 /********** Date **********/
 Date::Date(std::string date_str) {
 	struct tm timeinfo;

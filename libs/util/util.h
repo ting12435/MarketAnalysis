@@ -100,7 +100,7 @@ std::string only_number_and_str(const std::string& s);
 void output_csv(std::ostream& os, std::initializer_list<std::string> args);
 void output_delimiter_str(std::ostream& os, std::string delimiter, std::initializer_list<std::string> args);
 
-
+void print_hexdump(char *, int);
 
 #endif /* UTIL_H */
 
