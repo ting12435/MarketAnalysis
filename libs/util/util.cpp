@@ -191,7 +191,7 @@ pcap_file::~pcap_file() {
 int pcap_file::read(char *buf, int buf_len) {
 	int read_len = -1;
 
-std::cout << "read in\n";
+// std::cout << "read in\n";
 
 	// read header
 	if (!this->read_record_header()) {
@@ -200,9 +200,9 @@ std::cout << "read in\n";
 		goto read_finished;
 	}
 
-std::cout << "read aa\n";
+// std::cout << "read aa\n";
 	read_len = MIN((int)this->current_record_hdr.incl_len, buf_len);
-std::cout << "read bb\n";
+// std::cout << "read bb\n";
 
 	// read data
 	if (!this->read_record_data(buf, read_len)) {
@@ -212,28 +212,28 @@ std::cout << "read bb\n";
 		goto read_finished;
 	}
 
-std::cout << "read out\n";
+// std::cout << "read out\n";
 
 	read_finished:
-std::cout << "read finished\n";
+// std::cout << "read finished\n";
 	return read_len;
 }
 
 bool pcap_file::read_global_header() {
-std::cout << "read_global_header\n";
+// std::cout << "read_global_header\n";
 
 	const int LEN = 48;  // 24 bytes
 	unsigned char buf[LEN+1];
 	int i, c;
 
-std::cout << "c: ";
+// std::cout << "c: ";
 	for (i = 0; i < LEN; i=i+2) {
 		c = this->ifs.get();
-std::cout << c;
+// std::cout << c;
 		if (c == EOF) return false;
 		snprintf((char*)&buf[i], 2+1, "%02x", c);
 	}
-std::cout << std::endl;
+// std::cout << std::endl;
 
 	// memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
 
@@ -249,16 +249,16 @@ bool pcap_file::read_record_header() {
 	char ts_sec_reverse[8], ts_usec_reverse[8], incl_len_reverse[8], orig_len_reverse[8];
 	struct tm *timeinfo;
 
-std::cout << "read_record_header 0\n";
-std::cout << "this->ifs.good()=" << this->ifs.good() << std::endl;
+// std::cout << "read_record_header 0\n";
+// std::cout << "this->ifs.good()=" << this->ifs.good() << std::endl;
 
 	for (i = 0; i < LEN; i=i+2) {
 		c = this->ifs.get();
-std::cout << c << std::endl;
+// std::cout << c << std::endl;
 		if (c == EOF) return false;
 		snprintf((char*)&buf[i], 2+1, "%02x", c);
 	}
-std::cout << "read_record_header 1\n";
+// std::cout << "read_record_header 1\n";
 
 	memcpy(ts_sec_reverse, &buf[0], 8);
 	memcpy(ts_usec_reverse, &buf[8], 8);
@@ -273,7 +273,7 @@ std::cout << "read_record_header 1\n";
 	ts_sec[8] = '\0';
 	this->current_record_hdr.ts_sec = strtol(ts_sec, NULL, 16) % 86400;
 
-std::cout << "read_record_header 2\n";
+// std::cout << "read_record_header 2\n";
 
 	//  timeinfo
 	// timeinfo = localtime((time_t*)&this->ts_sec);
@@ -287,7 +287,7 @@ std::cout << "read_record_header 2\n";
 	ts_usec[8] = '\0';
 	this->current_record_hdr.ts_usec = strtol(ts_usec, NULL, 16);
 
-std::cout << "read_record_header 3\n";
+// std::cout << "read_record_header 3\n";
 
 	// incl_len
 	memcpy(&incl_len[0], &incl_len_reverse[6], 2);
@@ -297,7 +297,7 @@ std::cout << "read_record_header 3\n";
 	incl_len[8] = '\0';
 	this->current_record_hdr.incl_len = strtol(incl_len, NULL, 16);
 
-std::cout << "read_record_header 4\n";
+// std::cout << "read_record_header 4\n";
 
 	// orig_len
 	memcpy(&orig_len[0], &orig_len_reverse[6], 2);
@@ -307,7 +307,7 @@ std::cout << "read_record_header 4\n";
 	orig_len[8] = '\0';
 	this->current_record_hdr.orig_len = strtol(orig_len, NULL, 16);
 
-std::cout << "read_record_header 5\n";
+// std::cout << "read_record_header 5\n";
 
 	if (this->current_record_hdr.incl_len > 1518 || this->current_record_hdr.orig_len  > 1518) return false;
 
