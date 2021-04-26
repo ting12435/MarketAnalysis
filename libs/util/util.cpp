@@ -220,6 +220,7 @@ std::cout << "read finished\n";
 }
 
 bool pcap_file::read_global_header() {
+std::cout << "read_global_header\n";
 
 	const int LEN = 48;  // 24 bytes
 	unsigned char buf[LEN+1];
