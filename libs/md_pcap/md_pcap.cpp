@@ -17,6 +17,11 @@ OneDayPcap::OneDayPcap(Date d) {
 	this->cur_pcap_file = nullptr;
 	this->date_str = this->date.date_str.substr(0, 4) + this->date.date_str.substr(5, 2) + this->date.date_str.substr(8, 2);
 	this->date_folder = pcap_folder + this->date_str;
+
+	this->pcap_folder_exist = File::dir_exists(pcap_folder);
+	if (!this->pcap_folder_exist)
+		this->error_ss << "pcap folder not exist [" << pcap_folder << "]";
+
 }
 
 struct md* OneDayPcap::get_pcap_record_data() {

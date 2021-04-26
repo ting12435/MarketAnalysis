@@ -97,7 +97,7 @@ public:
 
 	std::string get_error() { return this->error_ss.str(); }
 
-	operator bool() const { return File::dir_exists(pcap_folder); }
+	operator bool() const { return !this->pcap_folder_exist; }
 
 	Date date;
 	std::string date_folder;
@@ -113,6 +113,8 @@ private:
 	std::string date_str;
 
 	std::stringstream error_ss;
+
+	bool pcap_folder_exist;
 };
 
 
