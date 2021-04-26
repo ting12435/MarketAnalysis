@@ -252,7 +252,7 @@ bool pcap_file::read_record_header() {
 	memcpy(&ts_sec[4], &ts_sec_reverse[2], 2);
 	memcpy(&ts_sec[6], &ts_sec_reverse[0], 2);
 	ts_sec[8] = '\0';
-	this->ts_sec = strtol(ts_sec, NULL, 16) % 86400;
+	this->current_record_hdr.ts_sec = strtol(ts_sec, NULL, 16) % 86400;
 
 	//  timeinfo
 	// timeinfo = localtime((time_t*)&this->ts_sec);
@@ -264,7 +264,7 @@ bool pcap_file::read_record_header() {
 	memcpy(&ts_usec[4], &ts_usec_reverse[2], 2);
 	memcpy(&ts_usec[6], &ts_usec_reverse[0], 2);
 	ts_usec[8] = '\0';
-	this->ts_usec = strtol(ts_usec, NULL, 16);
+	this->current_record_hdr.ts_usec = strtol(ts_usec, NULL, 16);
 
 	// incl_len
 	memcpy(&incl_len[0], &incl_len_reverse[6], 2);
@@ -272,7 +272,7 @@ bool pcap_file::read_record_header() {
 	memcpy(&incl_len[4], &incl_len_reverse[2], 2);
 	memcpy(&incl_len[6], &incl_len_reverse[0], 2);
 	incl_len[8] = '\0';
-	this->incl_len = strtol(incl_len, NULL, 16);
+	this->current_record_hdr.incl_len = strtol(incl_len, NULL, 16);
 
 	// orig_len
 	memcpy(&orig_len[0], &orig_len_reverse[6], 2);
@@ -280,9 +280,9 @@ bool pcap_file::read_record_header() {
 	memcpy(&orig_len[4], &orig_len_reverse[2], 2);
 	memcpy(&orig_len[6], &orig_len_reverse[0], 2);
 	orig_len[8] = '\0';
-	this->orig_len = strtol(orig_len, NULL, 16);
+	this->current_record_hdr.orig_len = strtol(orig_len, NULL, 16);
 
-	if (this->incl_len > 1518 || this->orig_len  > 1518) return false;
+	if (this->current_record_hdr.incl_len > 1518 || this->current_record_hdr.orig_len  > 1518) return false;
 
 	return true;
 }
