@@ -92,7 +92,7 @@ public:
 
 	struct md* get_pcap_record_data();
 
-	std::stringstream get_error() { return this->error_ss; }
+	std::stringstream& get_error() { return this->error_ss; }
 
 	Date date;
 	std::string date_folder;
