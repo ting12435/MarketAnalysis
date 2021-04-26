@@ -221,7 +221,7 @@ int pcap_file::read(char *buf, int buf_len) {
 
 // std::cout << "read aa\n";
 	read_len = MIN((int)this->current_record_hdr.incl_len, buf_len);
-// std::cout << "read bb\n";
+std::cout << "read_len=" << read_len << std::endl;
 
 	// read data
 	if (!this->read_record_data(buf, read_len)) {
@@ -316,7 +316,7 @@ bool pcap_file::read_record_header() {
 	incl_len[8] = '\0';
 	this->current_record_hdr.incl_len = strtol(incl_len, NULL, 16);
 
-// std::cout << "read_record_header 4\n";
+std::cout << "this->current_record_hdr.incl_len=" << this->current_record_hdr.incl_len << std::endl;
 
 	// orig_len
 	memcpy(&orig_len[0], &orig_len_reverse[6], 2);
