@@ -94,25 +94,30 @@ void uplimit() {
 	
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
-			std::cout << "esc_code: " << frame->esc_code << std::endl;
-			printf("0x%02x\n", frame->esc_code);
-			exit(-1);
+			// std::cout << "esc_code: " << frame->esc_code << std::endl;
+			// printf("0x%02x\n", frame->esc_code);
 			
-			// if (check_md_frame(frame)) {
-			// 	if (is_stock(frame)) {
-			// 		if (is_trade_uplimit(frame)) {
+			if (check_md_frame(frame)) {
 
-			// 			std::string feedcode = get_feedcode(frame);
+				std::cout << "esc_code: " << frame->esc_code << std::endl;
 
-			// 			if (m[current_date].find(feedcode) == m[current_date].end()) {
+				if (is_stock(frame)) {
 
-			// 				struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
-			// 				m[current_date][feedcode] = get_px(trade_pxlt);
+					std::cout << "feedcode: " << frame->body.fmt_6_17.feedcode[0] << frame->body.fmt_6_17.feedcode[1] << frame->body.fmt_6_17.feedcode[2] << frame->body.fmt_6_17.feedcode[3] << frame->body.fmt_6_17.feedcode[4] << frame->body.fmt_6_17.feedcode[5] << std::endl;
 
-			// 			}
-			// 		}
-			// 	}
-			// }
+					if (is_trade_uplimit(frame)) {
+
+						std::string feedcode = get_feedcode(frame);
+
+						if (m[current_date].find(feedcode) == m[current_date].end()) {
+
+							struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
+							m[current_date][feedcode] = get_px(trade_pxlt);
+
+						}
+					}
+				}
+			}
 
 		}
 

@@ -63,12 +63,9 @@ void OneDayPcap::close_pcap_file(int idx) {
 	delete this->cur_pcap_file;
 }
 
-// struct md* get_pcap_stream(Date d) {
-// 	return nullptr;
-// }
-
 bool check_md_frame(struct md *md) {
-	return false;
+	if (md->esc_code != 27) return false;
+	return true;
 }
 
 
