@@ -16,6 +16,9 @@
 #define MD_PX_SIZE 5
 #define MD_LT_SIZE 4
 
+extern std::string pcap_folder;
+extern std::string pcap_market;
+
 struct md_header {
 	uint16_t 	msg_len;
 	uint8_t 	market;
@@ -94,7 +97,7 @@ public:
 
 	std::string get_error() { return this->error_ss.str(); }
 
-	operator bool() const;
+	operator bool() const { return File::dir_exists(pcap_folder); }
 
 	Date date;
 	std::string date_folder;
@@ -113,8 +116,7 @@ private:
 };
 
 
-extern std::string pcap_folder;
-extern std::string pcap_market;
+
 
 // struct md* get_pcap_stream(Date);
 
