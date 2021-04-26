@@ -1,9 +1,62 @@
 #include "md_pcap.h"
 #include <cstring>
 
-struct md* get_pcap_stream(Date) {
-	return nullptr;
+std::string pcap_folder;
+std::string pcap_market;
+
+__attribute__((constructor)) void __md_pcap_init() {
+	pcap_folder = "";
+	pcap_market = "";
 }
+
+md_pcap_record::md_pcap_record() {
+	this->md_ptr = (struct md*)this->data;
+}
+
+md_pcap_record::~md_pcap_record() {
+
+}
+
+OneDayPcap::OneDayPcap(Date d) {
+	this->date = d;
+	this->cur_pcap_idx = -1;
+	this->cur_pcap_file = nullptr;
+	this->date_str = this->date.date_str.substr(0, 4) + this->date.date_str.substr(5, 2) + this->date.date_str.substr(8, 2);
+	this->date_folder = pcap_folder + this->date_str;
+}
+
+struct md* OneDayPcap::get_pcap_record_data() {
+	// check file
+	if (this->cur_pcap_idx == -1)
+		this->open_pcap_file(++this->cur_pcap_idx);
+
+	if (this->cur_pcap_file->eof())
+		this->open_pcap_file(++this->cur_pcap_idx);
+
+	if (this->cur_pcap_file->read(this->record_data, sizeof(this->record_data)) < 0)
+		return nullptr;
+	return (struct md*)&this->record_data;
+}
+
+bool OneDayPcap::open_pcap_file(int idx) {
+	// TSE_20210423.pcap22
+	std::stringstream fn_ss;
+	fn_ss << this->date_folder << "/" << pcap_market << "_" << this->date_str << ".pcap" << idx == 0 ? "" : idx;
+	this->cur_pcap_file = new pcap_file(fn_ss.str());
+	if (!this->cur_pcap_file->vaild) {
+		this->error_ss << this->cur_pcap_file->error_ss;
+		return false;
+	}
+	return true;
+}
+
+void OneDayPcap::close_pcap_file(int idx) {
+	delete this->cur_pcap_file;
+}
+
+// struct md* get_pcap_stream(Date d) {
+// 	return nullptr;
+// }
 
 bool check_md_frame(struct md *md) {
 	return false;

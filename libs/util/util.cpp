@@ -4,55 +4,10 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <cstdio> 
 #include <cstring>
 #include <dirent.h>
 #include <sys/stat.h>
-
-Date::Date(std::string date_str) {
-	struct tm timeinfo;
-	char buffer[80];
-	memset(&timeinfo, 0, sizeof(struct tm));
-	strptime(date_str.c_str(), "%Y-%m-%d",  &timeinfo);
-
-	this->date_t = mktime(&timeinfo);
-	this->date_str = date_str;
-}
-
-Date::Date(time_t date_t) {
-	struct tm *timeinfo;
-	char buffer[80];
-
-	timeinfo = localtime(&date_t);
-	strftime(buffer , 80, "%Y-%m-%d", timeinfo);
-
-	this->date_t = date_t;
-	this->date_str = buffer;
-}
-
-Date::Date() {
-	this->date_t = 0;
-	this->date_str = "";
-}
-
-std::ostream& operator<<(std::ostream& os, const Date& d) {
-	os << d.date_str;
-	return os;
-}
-
-// bool operator <= (Date const &d1, Date const &d2)  { 
-//      return d1.date_t <= d2.date_t;
-// } 
-
-void Date::add(int add_days) {
-	struct tm *timeinfo;
-	char buffer[80];
-
-	date_t += 86400 * add_days;
-
-	timeinfo = localtime(&date_t);
-	strftime(buffer , 80, "%Y-%m-%d", timeinfo);
-	date_str = buffer;
-}
 
 std::vector<std::string> split(const std::string& s, std::string delim, int split_cnt) {
 	std::vector<std::string> sv;
@@ -105,6 +60,54 @@ void output_delimiter_str(std::ostream& os, std::string delimiter, std::initiali
 	os << std::endl;
 }
 
+/********** Date **********/
+Date::Date(std::string date_str) {
+	struct tm timeinfo;
+	char buffer[80];
+	memset(&timeinfo, 0, sizeof(struct tm));
+	strptime(date_str.c_str(), "%Y-%m-%d",  &timeinfo);
+
+	this->date_t = mktime(&timeinfo);
+	this->date_str = date_str;
+}
+
+Date::Date(time_t date_t) {
+	struct tm *timeinfo;
+	char buffer[80];
+
+	timeinfo = localtime(&date_t);
+	strftime(buffer , 80, "%Y-%m-%d", timeinfo);
+
+	this->date_t = date_t;
+	this->date_str = buffer;
+}
+
+Date::Date() {
+	this->date_t = 0;
+	this->date_str = "";
+}
+
+std::ostream& operator<<(std::ostream& os, const Date& d) {
+	os << d.date_str;
+	return os;
+}
+
+// bool operator <= (Date const &d1, Date const &d2)  { 
+//      return d1.date_t <= d2.date_t;
+// } 
+
+void Date::add(int add_days) {
+	struct tm *timeinfo;
+	char buffer[80];
+
+	date_t += 86400 * add_days;
+
+	timeinfo = localtime(&date_t);
+	strftime(buffer , 80, "%Y-%m-%d", timeinfo);
+	date_str = buffer;
+}
+
+/********** File **********/
 File::File(std::string s) {
 	std::vector<std::string> folder_sv = split(s, "/");
 	std::vector<std::string> fn_sv = split(folder_sv[folder_sv.size()-1], ".");
@@ -158,7 +161,146 @@ bool File::dir_exists(const std::string& dir_name) {
 	return false;
 }
 
+/********** pcap_file **********/
+pcap_file::pcap_file(std::string filename) {
+	this->filename = filename;
+	this->vaild = true;
+	memset(&this->record, 0, sizeof(pcap_record));
+	
+	// open file
+	this->ifs.open(this->filename, std::ios::in);
+	if (!this->ifs.good()) {
+		this->vaild = false;
+		this->error_ss << "open file error\n";
+	}
+	
+	// read global
+	memset(this->global_hdr, 0, sizeof(struct pcap_global_hdr));
+	if (!this->read_global_header()) {
+		this->vaild = false;
+		this->error_ss << "read_global_header error\n";
+	}
+}
 
+pcap_file::~pcap_file() {
+	// close file
+	this->ifs.close();
+}
 
+int pcap_file::read(char *buf, int buf_len) {
+	int read_len = -1;
+
+	// read header
+	if (!this->read_record_header()) {
+		this->vaild = false;
+		this->error_ss << "read_record_header error\n";
+		goto read_finished;
+	}
+
+	read_len = MIN((int)this->current_record_hdr.incl_len, buf_len);
+
+	// read data
+	if (!this->read_record_data(buf, read_len)) {
+		this->vaild = false;
+		this->error_ss << "read_record_data error\n";
+		read_len = -1;
+		goto read_finished;
+	}
+
+	read_finished:
+	return read_len;
+}
+
+bool pcap_file::read_global_header() {
+	const int LEN = 48;  // 24 bytes
+	unsigned char buf[LEN+1];
+	int i, c;
+
+	for (i = 0; i < LEN; i=i+2) {
+		c = this->ifs.get();
+		if (c == EOF) return false;
+		snprintf((char*)&buf[i], 2+1, "%02x", c);
+	}
+
+	memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
+
+	return true;
+}
+
+bool pcap_file::read_record_header() {
+	const int LEN = 32;  // 16 bytes
+	unsigned char buf[LEN+1];
+	unsigned char c;
+	int i;
+	char ts_sec[9], ts_usec[9], incl_len[9], orig_len[9];
+	char ts_sec_reverse[8], ts_usec_reverse[8], incl_len_reverse[8], orig_len_reverse[8];
+	struct tm *timeinfo;
+
+	for (i = 0; i < LEN; i=i+2) {
+		c = this->ifs.get();
+		if (c == EOF) return false;
+		snprintf((char*)&buf[i], 2+1, "%02x", c);
+	}
+
+	memcpy(ts_sec_reverse, &buf[0], 8);
+	memcpy(ts_usec_reverse, &buf[8], 8);
+	memcpy(incl_len_reverse, &buf[16], 8);
+	memcpy(orig_len_reverse, &buf[24], 8);
+
+	// ts_sec
+	memcpy(&ts_sec[0], &ts_sec_reverse[6], 2);
+	memcpy(&ts_sec[2], &ts_sec_reverse[4], 2);
+	memcpy(&ts_sec[4], &ts_sec_reverse[2], 2);
+	memcpy(&ts_sec[6], &ts_sec_reverse[0], 2);
+	ts_sec[8] = '\0';
+	this->ts_sec = strtol(ts_sec, NULL, 16) % 86400;
+
+	//  timeinfo
+	// timeinfo = localtime((time_t*)&this->ts_sec);
+	// strftime(this->ts_sec_str, sizeof(this->ts_sec_str), "%H:%M:%S", timeinfo);
+
+	// ts_usec
+	memcpy(&ts_usec[0], &ts_usec_reverse[6], 2);
+	memcpy(&ts_usec[2], &ts_usec_reverse[4], 2);
+	memcpy(&ts_usec[4], &ts_usec_reverse[2], 2);
+	memcpy(&ts_usec[6], &ts_usec_reverse[0], 2);
+	ts_usec[8] = '\0';
+	this->ts_usec = strtol(ts_usec, NULL, 16);
+
+	// incl_len
+	memcpy(&incl_len[0], &incl_len_reverse[6], 2);
+	memcpy(&incl_len[2], &incl_len_reverse[4], 2);
+	memcpy(&incl_len[4], &incl_len_reverse[2], 2);
+	memcpy(&incl_len[6], &incl_len_reverse[0], 2);
+	incl_len[8] = '\0';
+	this->incl_len = strtol(incl_len, NULL, 16);
+
+	// orig_len
+	memcpy(&orig_len[0], &orig_len_reverse[6], 2);
+	memcpy(&orig_len[2], &orig_len_reverse[4], 2);
+	memcpy(&orig_len[4], &orig_len_reverse[2], 2);
+	memcpy(&orig_len[6], &orig_len_reverse[0], 2);
+	orig_len[8] = '\0';
+	this->orig_len = strtol(orig_len, NULL, 16);
+
+	if (this->incl_len > 1518 || this->orig_len  > 1518) return false;
+
+	return true;
+}
+
+bool pcap_file::read_record_data(char *buf, int len) {
+	unsigned char c;
+	long int i;
+
+	for (i = 0; i < len; i++) {
+		c = this->ifs.get();
+		if (c == EOF) return false;
+		buf[i] = c;
+	}
+
+	if (errno != 0) return false;
+
+	return true;
+}
 
 

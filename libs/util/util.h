@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 #include <initializer_list>
+#include <fstream>
+#include <sstream>
 
 #define OUTPUT(msg) std::cout << msg << std::endl;
 
@@ -28,7 +30,6 @@ public:
 
 	std::string date_str;
 	time_t date_t;
-
 };
 
 class File {
@@ -46,6 +47,48 @@ public:
 	std::string full_name;
 	std::string path;
 	std::string extension;
+};
+
+class pcap_file {
+public:
+	pcap_file(std::string filename);
+	~pcap_file();
+
+	int read(char *buf, int buf_len);
+
+	bool eof() { return this->ifs.eof(); }
+
+	std::stringstream get_error() { return this->error_ss; }
+
+	operator bool() const { return this->vaild; }
+
+	struct pcap_global_hdr {
+		uint32_t magic_number;   /* magic number (0xa1b2c3d4 or 0xd4c3b2a1) */
+		uint16_t version_major;  /* major version number */
+		uint16_t version_minor;  /* minor version number */
+		int32_t  thiszone;       /* GMT to local correction */
+		uint32_t sigfigs;        /* accuracy of timestamps */
+		uint32_t snaplen;        /* max length of captured packets, in octets */
+		uint32_t network;        /* data link type */
+	} global_hdr;
+
+	struct pcap_record_hdr {
+		uint32_t ts_sec;         /* timestamp seconds */
+		uint32_t ts_usec;        /* timestamp microseconds */
+		uint32_t incl_len;       /* number of octets of packet saved in file */
+		uint32_t orig_len;       /* actual length of packet */
+	} current_record_hdr;
+
+	std::ifstream ifs;
+	std::string filename;
+
+private:
+	bool read_global_header();
+	bool read_record_header();
+	bool read_record_data(char *buf, int len);
+
+	bool vaild;
+	std::stringstream error_ss;
 };
 
 std::vector<std::string> split(const std::string& s, std::string delim = ",", int split_cnt = -1);

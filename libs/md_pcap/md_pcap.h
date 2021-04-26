@@ -2,6 +2,8 @@
 #define MD_PCAP_H
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <map>
 #include <vector>
@@ -83,7 +85,36 @@ struct md {
 	sum; \
 })
 
-struct md* get_pcap_stream(Date);
+class OneDayPcap {
+public:
+	OneDayPcap(Date);
+	~OneDayPcap();
+
+	struct md* get_pcap_record_data();
+
+	std::stringstream get_error() { return this->error_ss; }
+
+	Date date;
+	std::string date_folder;
+
+	char record_data[1518];
+
+private:
+	bool open_pcap_file(int idx);
+	void close_pcap_file(int idx);
+
+	int cur_pcap_idx;
+	pcap_file cur_pcap_file;
+	std::string date_str;
+
+	std::stringstream error_ss;
+};
+
+
+extern std::string pcap_folder;
+extern std::string pcap_market;
+
+// struct md* get_pcap_stream(Date);
 
 bool check_md_frame(struct md*);
 

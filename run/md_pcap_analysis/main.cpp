@@ -5,6 +5,8 @@
 #include "md_pcap/md_pcap.h"
 #include "util/util.h"
 
+#define PCAP_FOLDER "/data/database/2in1/tcpdump/"
+
 void uplimit();
 
 struct var {
@@ -61,6 +63,9 @@ int main(int argc, char *argv[]) {
 
 	assert(check_g_var());
 
+	pcap_folder = PCAP_FOLDER;
+	pcap_market = "TSE";
+
 	if (g_var.type == "uplimit")
 		uplimit();
 
@@ -81,23 +86,30 @@ void uplimit() {
 
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
+
+		OneDayPcap one_day_pcap(current_date);
+		std::cout << "date_folder: " << one_day_pcap.date_folder << std::endl;
 	
+		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
-		frame = get_pcap_stream(current_date);
-		if (check_md_frame(frame)) {
-			if (is_stock(frame)) {
-				if (is_trade_uplimit(frame)) {
+			std::cout << "esc_code: " << frame->esc_code << std::endl;
+			
+			// if (check_md_frame(frame)) {
+			// 	if (is_stock(frame)) {
+			// 		if (is_trade_uplimit(frame)) {
 
-					std::string feedcode = get_feedcode(frame);
+			// 			std::string feedcode = get_feedcode(frame);
 
-					if (m[current_date].find(feedcode) == m[current_date].end()) {
+			// 			if (m[current_date].find(feedcode) == m[current_date].end()) {
 
-						struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
-						m[current_date][feedcode] = get_px(trade_pxlt);
+			// 				struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
+			// 				m[current_date][feedcode] = get_px(trade_pxlt);
 
-					}
-				}
-			}
+			// 			}
+			// 		}
+			// 	}
+			// }
+
 		}
 
 		current_date.add(1);
