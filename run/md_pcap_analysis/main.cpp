@@ -88,7 +88,7 @@ void uplimit() {
 	while (current_date <= *(g_var.d2)) {
 
 		OneDayPcap one_day_pcap(current_date);
-		if (one_day_pcap)
+		if (!one_day_pcap)
 			std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 	
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
