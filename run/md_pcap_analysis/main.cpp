@@ -101,7 +101,7 @@ void uplimit() {
 
 				// std::cout << "esc_code: " << frame->esc_code << std::endl;
 				printf("esc_code: 0x%02x\n", frame->esc_code);
-				exit(-1);
+				// exit(-1);
 
 				if (is_stock(frame)) {
 
