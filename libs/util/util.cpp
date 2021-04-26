@@ -200,7 +200,9 @@ std::cout << "read in\n";
 		goto read_finished;
 	}
 
+std::cout << "read aa\n";
 	read_len = MIN((int)this->current_record_hdr.incl_len, buf_len);
+std::cout << "read bb\n";
 
 	// read data
 	if (!this->read_record_data(buf, read_len)) {
@@ -213,6 +215,7 @@ std::cout << "read in\n";
 std::cout << "read out\n";
 
 	read_finished:
+std::cout << "read finished\n";
 	return read_len;
 }
 
