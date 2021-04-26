@@ -249,6 +249,7 @@ std::cout << "read_record_header 0\n";
 
 	for (i = 0; i < LEN; i=i+2) {
 		c = this->ifs.get();
+std::cout << c << std::endl;
 		if (c == EOF) return false;
 		snprintf((char*)&buf[i], 2+1, "%02x", c);
 	}
