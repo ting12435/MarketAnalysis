@@ -250,6 +250,7 @@ bool pcap_file::read_record_header() {
 		if (c == EOF) return false;
 		snprintf((char*)&buf[i], 2+1, "%02x", c);
 	}
+std::cout << "read_record_header 1\n";
 
 	memcpy(ts_sec_reverse, &buf[0], 8);
 	memcpy(ts_usec_reverse, &buf[8], 8);
@@ -264,6 +265,8 @@ bool pcap_file::read_record_header() {
 	ts_sec[8] = '\0';
 	this->current_record_hdr.ts_sec = strtol(ts_sec, NULL, 16) % 86400;
 
+std::cout << "read_record_header 2\n";
+
 	//  timeinfo
 	// timeinfo = localtime((time_t*)&this->ts_sec);
 	// strftime(this->ts_sec_str, sizeof(this->ts_sec_str), "%H:%M:%S", timeinfo);
@@ -276,6 +279,8 @@ bool pcap_file::read_record_header() {
 	ts_usec[8] = '\0';
 	this->current_record_hdr.ts_usec = strtol(ts_usec, NULL, 16);
 
+std::cout << "read_record_header 3\n";
+
 	// incl_len
 	memcpy(&incl_len[0], &incl_len_reverse[6], 2);
 	memcpy(&incl_len[2], &incl_len_reverse[4], 2);
@@ -284,6 +289,8 @@ bool pcap_file::read_record_header() {
 	incl_len[8] = '\0';
 	this->current_record_hdr.incl_len = strtol(incl_len, NULL, 16);
 
+std::cout << "read_record_header 4\n";
+
 	// orig_len
 	memcpy(&orig_len[0], &orig_len_reverse[6], 2);
 	memcpy(&orig_len[2], &orig_len_reverse[4], 2);
@@ -291,6 +298,8 @@ bool pcap_file::read_record_header() {
 	memcpy(&orig_len[6], &orig_len_reverse[0], 2);
 	orig_len[8] = '\0';
 	this->current_record_hdr.orig_len = strtol(orig_len, NULL, 16);
+
+std::cout << "read_record_header 5\n";
 
 	if (this->current_record_hdr.incl_len > 1518 || this->current_record_hdr.orig_len  > 1518) return false;
 
