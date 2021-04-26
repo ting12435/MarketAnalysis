@@ -100,13 +100,14 @@ void uplimit() {
 			if (check_md_frame(frame)) {
 
 				// std::cout << "esc_code: " << frame->esc_code << std::endl;
-				printf("esc_code: 0x%02x\n", frame->esc_code);
+				// printf("esc_code: 0x%02x\n", frame->esc_code);
 				// exit(-1);
 
 				if (is_stock(frame)) {
 
 					// std::cout << "feedcode: " << frame->body.fmt_6_17.feedcode[0] << frame->body.fmt_6_17.feedcode[1] << frame->body.fmt_6_17.feedcode[2] << frame->body.fmt_6_17.feedcode[3] << frame->body.fmt_6_17.feedcode[4] << frame->body.fmt_6_17.feedcode[5] << std::endl;
 					printf("feedcode: %u%u%u%u%u%u\n", frame->body.fmt_6_17.feedcode[0], frame->body.fmt_6_17.feedcode[1], frame->body.fmt_6_17.feedcode[2], frame->body.fmt_6_17.feedcode[3], frame->body.fmt_6_17.feedcode[4], frame->body.fmt_6_17.feedcode[5]);
+					print_hexdump(frame, 500);
 					exit(-1);
 
 					if (is_trade_uplimit(frame)) {
