@@ -226,13 +226,16 @@ std::cout << "read_global_header\n";
 	unsigned char buf[LEN+1];
 	int i, c;
 
+std::cout << "c: ";
 	for (i = 0; i < LEN; i=i+2) {
 		c = this->ifs.get();
+std::cout << c;
 		if (c == EOF) return false;
 		snprintf((char*)&buf[i], 2+1, "%02x", c);
 	}
+std::cout << std::endl;
 
-	memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
+	// memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
 
 	return true;
 }
