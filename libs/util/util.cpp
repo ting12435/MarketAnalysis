@@ -165,7 +165,6 @@ bool File::dir_exists(const std::string& dir_name) {
 pcap_file::pcap_file(std::string filename) {
 	this->filename = filename;
 	this->vaild = true;
-	memset(&this->record, 0, sizeof(pcap_record));
 	
 	// open file
 	this->ifs.open(this->filename, std::ios::in);
@@ -175,7 +174,7 @@ pcap_file::pcap_file(std::string filename) {
 	}
 	
 	// read global
-	memset(this->global_hdr, 0, sizeof(struct pcap_global_hdr));
+	memset(&this->global_hdr, 0, sizeof(struct pcap_global_hdr));
 	if (!this->read_global_header()) {
 		this->vaild = false;
 		this->error_ss << "read_global_header error\n";
