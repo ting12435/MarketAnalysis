@@ -214,8 +214,6 @@ int pcap_file::read(char *buf, int buf_len) {
 
 bool pcap_file::read_global_header() {
 
-std::cout << "read_global_header in\n";
-
 	const int LEN = 48;  // 24 bytes
 	unsigned char buf[LEN+1];
 	int i, c;
@@ -227,8 +225,6 @@ std::cout << "read_global_header in\n";
 	}
 
 	memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
-
-std::cout << "read_global_header out\n";
 
 	return true;
 }
