@@ -168,9 +168,7 @@ pcap_file::pcap_file(std::string filename) {
 	
 	// open file
 	this->ifs.open(this->filename, std::ios::in);
-std::cout << "opened " << this->filename << std::endl;
 	if (!this->ifs.good()) {
-std::cout << "!this->ifs.good() " << std::endl;
 		this->vaild = false;
 		this->error_ss << "open file error " << this->filename << std::endl;;
 	}
