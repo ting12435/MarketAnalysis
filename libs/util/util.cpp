@@ -177,9 +177,11 @@ std::cout << "!this->ifs.good() " << std::endl;
 	
 	// read global
 	memset(&this->global_hdr, 0, sizeof(struct pcap_global_hdr));
-	if (!this->read_global_header()) {
-		this->vaild = false;
-		this->error_ss << "read_global_header error\n";
+	if (this) {
+		if (!this->read_global_header()) {
+			this->vaild = false;
+			this->error_ss << "read_global_header error\n";
+		}
 	}
 }
 
