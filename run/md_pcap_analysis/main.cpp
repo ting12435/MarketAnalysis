@@ -106,6 +106,7 @@ void uplimit() {
 				if (is_stock(frame)) {
 
 					std::cout << "feedcode: " << frame->body.fmt_6_17.feedcode[0] << frame->body.fmt_6_17.feedcode[1] << frame->body.fmt_6_17.feedcode[2] << frame->body.fmt_6_17.feedcode[3] << frame->body.fmt_6_17.feedcode[4] << frame->body.fmt_6_17.feedcode[5] << std::endl;
+					exit(-1);
 
 					if (is_trade_uplimit(frame)) {
 
@@ -123,6 +124,7 @@ void uplimit() {
 
 		}
 
+		exit(-1);
 		// std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 
 		current_date.add(1);
