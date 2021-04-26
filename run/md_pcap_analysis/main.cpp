@@ -100,6 +100,7 @@ void uplimit() {
 			if (check_md_frame(frame)) {
 
 				std::cout << "esc_code: " << frame->esc_code << std::endl;
+				exit(-1);
 
 				if (is_stock(frame)) {
 
