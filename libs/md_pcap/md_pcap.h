@@ -104,7 +104,7 @@ private:
 	void close_pcap_file(int idx);
 
 	int cur_pcap_idx;
-	pcap_file cur_pcap_file;
+	pcap_file *cur_pcap_file;
 	std::string date_str;
 
 	std::stringstream error_ss;
