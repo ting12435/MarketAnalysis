@@ -85,6 +85,10 @@ void uplimit() {
 	std::map<Date, std::map<std::string, int>> m;  // K:data V:{K:stock V:uplimit_price}
 	struct md *frame;
 
+	std::cout << "aaaa\n";
+	std::cout << "";
+	std::cout << "aaaa\n";
+
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
 
