@@ -246,6 +246,7 @@ bool pcap_file::read_record_header() {
 	struct tm *timeinfo;
 
 std::cout << "read_record_header 0\n";
+std::cout << "this->ifs.good()=" << this->ifs.good() << std::endl;
 
 	for (i = 0; i < LEN; i=i+2) {
 		c = this->ifs.get();
