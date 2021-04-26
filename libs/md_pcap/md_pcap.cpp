@@ -9,14 +9,6 @@ __attribute__((constructor)) void __md_pcap_init() {
 	pcap_market = "";
 }
 
-md_pcap_record::md_pcap_record() {
-	this->md_ptr = (struct md*)this->data;
-}
-
-md_pcap_record::~md_pcap_record() {
-
-}
-
 OneDayPcap::OneDayPcap(Date d) {
 	this->date = d;
 	this->cur_pcap_idx = -1;
