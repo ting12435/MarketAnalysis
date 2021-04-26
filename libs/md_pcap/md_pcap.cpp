@@ -36,7 +36,7 @@ bool OneDayPcap::open_pcap_file(int idx) {
 	fn_ss << this->date_folder << "/" << pcap_market << "_" << this->date_str << ".pcap" << idx == 0 ? "" : std::to_string(idx);
 	this->cur_pcap_file = new pcap_file(fn_ss.str());
 	if (!this->cur_pcap_file) {
-		this->error_ss << this->cur_pcap_file->error_ss;
+		this->error_ss << this->cur_pcap_file->get_error();
 		return false;
 	}
 	return true;
