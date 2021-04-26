@@ -88,7 +88,7 @@ struct md {
 class OneDayPcap {
 public:
 	OneDayPcap(Date);
-	~OneDayPcap();
+	// ~OneDayPcap() = defalut;
 
 	struct md* get_pcap_record_data();
 
