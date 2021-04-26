@@ -60,7 +60,7 @@ public:
 
 	bool eof() { return this->ifs.eof(); }
 
-	std::stringstream& get_error() { return *(this->error_ss); }
+	std::string get_error() { return this->error_ss.str(); }
 
 	operator bool() const { return this->vaild; }
 
