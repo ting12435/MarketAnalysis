@@ -114,6 +114,8 @@ void uplimit() {
 
 		}
 
+		std::cout << "error: " << one_day_pcap.get_error() << std::endl;
+
 		current_date.add(1);
 	}
 
