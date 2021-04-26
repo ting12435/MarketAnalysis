@@ -245,6 +245,8 @@ bool pcap_file::read_record_header() {
 	char ts_sec_reverse[8], ts_usec_reverse[8], incl_len_reverse[8], orig_len_reverse[8];
 	struct tm *timeinfo;
 
+std::cout << "read_record_header 0\n";
+
 	for (i = 0; i < LEN; i=i+2) {
 		c = this->ifs.get();
 		if (c == EOF) return false;
