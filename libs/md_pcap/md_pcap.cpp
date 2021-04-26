@@ -5,8 +5,10 @@ std::string pcap_folder;
 std::string pcap_market;
 
 __attribute__((constructor)) void __md_pcap_init() {
+	std::cout << "a\n";
 	pcap_folder = "";
 	pcap_market = "";
+	std::cout << "a\n";
 }
 
 OneDayPcap::OneDayPcap(Date d) {
