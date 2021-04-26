@@ -36,6 +36,9 @@ struct md* OneDayPcap::get_pcap_record_data() {
 		this->error_ss << this->cur_pcap_file->get_error();
 		return nullptr;
 	}
+
+	std::cout << "bbb\n";
+
 	return (struct md*)&this->record_data;
 }
 

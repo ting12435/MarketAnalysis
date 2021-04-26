@@ -191,6 +191,8 @@ pcap_file::~pcap_file() {
 int pcap_file::read(char *buf, int buf_len) {
 	int read_len = -1;
 
+std::cout << "read in\n";
+
 	// read header
 	if (!this->read_record_header()) {
 		this->vaild = false;
@@ -207,6 +209,8 @@ int pcap_file::read(char *buf, int buf_len) {
 		read_len = -1;
 		goto read_finished;
 	}
+
+std::cout << "read out\n";
 
 	read_finished:
 	return read_len;
