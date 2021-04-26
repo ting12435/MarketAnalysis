@@ -28,14 +28,16 @@ struct md* OneDayPcap::get_pcap_record_data() {
 
 // std::cout << "get_pcap_record_data\n";
 
-	this->cur_pcap_idx = 29;  //
-
 	// check file
-	if (this->cur_pcap_idx == -1)
+	if (this->cur_pcap_idx == -1) {
+		this->cur_pcap_idx = 29;  //
 		this->open_pcap_file(++this->cur_pcap_idx);
+	}
 
-	if (this->cur_pcap_file->eof())
+	if (this->cur_pcap_file->eof()) {
+		this->close_pcap_file(this->cur_pcap_idx);
 		this->open_pcap_file(++this->cur_pcap_idx);
+	}
 
 	if (this->cur_pcap_file->read(this->record_data, sizeof(this->record_data)) < 0) {
 		this->error_ss << this->cur_pcap_file->get_error();
