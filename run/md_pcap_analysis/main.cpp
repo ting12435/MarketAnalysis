@@ -5,7 +5,8 @@
 #include "md_pcap/md_pcap.h"
 #include "util/util.h"
 
-#define PCAP_FOLDER "/data/database/2in1/tcpdump/"
+// #define PCAP_FOLDER "/data/database/2in1/tcpdump/"
+#define PCAP_FOLDER "/data/tim/"
 
 void uplimit();
 
@@ -76,7 +77,7 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "%9s [--type] [--d1] [--d2]\n", " ");
 	fprintf(stderr, "  --type: [uplimit]\n");
 	fprintf(stderr, "\ne.g.\n");
-	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-20 --d2 2021-04-21\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2020-11-25 --d2 2020-11-26\n", argv[0]);
 	return EXIT_FAILURE;
 }
 
