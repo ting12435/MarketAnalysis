@@ -1,4 +1,5 @@
 #include <map>
+#include <iterator>
 #include <cassert>
 #include <getopt.h>
 
@@ -83,6 +84,7 @@ int main(int argc, char *argv[]) {
 
 void uplimit() {
 	std::map<Date, std::map<std::string, int>> m;  // K:data V:{K:stock V:uplimit_price}
+	std::map<Date, std::map<std::string, int>>::iterator iter;
 	struct md *frame;
 	MD md;
 
@@ -116,6 +118,11 @@ void uplimit() {
 
 							// m[current_date][md.feedcode] = md.trade_px;
 							m[current_date][md.feedcode] = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+
+							std::cout << md.feedcode << std::endl;
+							iter = m.find(current_date);
+							auto pv = std::prev(iter);
+							std::cout << "pv" << pv.size() << std::endl;
 
 						}
 					}
