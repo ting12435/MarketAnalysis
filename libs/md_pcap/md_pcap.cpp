@@ -70,7 +70,7 @@ void OneDayPcap::close_pcap_file(int idx) {
 }
 
 /********** MD **********/
-static void MD::print_md(struct md *md_ptr) {
+void MD::print_md(struct md *md_ptr) {
 	std::stringstream ss;
 	char buf[100];
 	std::string field;
