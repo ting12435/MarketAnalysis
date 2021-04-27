@@ -120,17 +120,17 @@ void uplimit() {
 					print_hexdump((char*)frame, 500);
 					exit(-1);
 
-					if (is_trade_uplimit(frame)) {
+					// if (is_trade_uplimit(frame)) {
 
-						std::string feedcode = get_feedcode(frame);
+					// 	std::string feedcode = get_feedcode(frame);
 
-						if (m[current_date].find(feedcode) == m[current_date].end()) {
+					// 	if (m[current_date].find(feedcode) == m[current_date].end()) {
 
-							struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
-							m[current_date][feedcode] = get_px(trade_pxlt);
+					// 		struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
+					// 		m[current_date][feedcode] = get_px(trade_pxlt);
 
-						}
-					}
+					// 	}
+					// }
 				}
 			}
 
