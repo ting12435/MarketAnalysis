@@ -286,7 +286,8 @@ std::string get_feedcode(struct md *md) {
 }
 
 struct md_px_lt* get_trade_pxlt(struct md *md) {
-	return (struct md_px_lt*)(md->body.fmt_6_17.px_lt[0]);
+	// return (struct md_px_lt*)(md->body.fmt_6_17.px_lt[0]);
+	return nullptr;
 }
 
 int get_px(struct md_px_lt *px_lt) {
