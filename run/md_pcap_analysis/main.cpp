@@ -121,9 +121,9 @@ void uplimit() {
 
 							std::cout << md.feedcode << std::endl;
 							iter = m.find(current_date);
-							std::cout << iter->first << std::endl;
-							// auto pv = std::prev(iter);
-							// std::cout << "pv " << *pv << std::endl;
+							// std::cout << iter->first << std::endl;
+							auto pv = std::prev(iter);
+							std::cout << "pv " << pv->first << std::endl;
 
 						}
 					}
