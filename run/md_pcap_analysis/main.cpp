@@ -105,6 +105,7 @@ void uplimit() {
 		}
 
 		// m.emplace(std::make_pair(current_date, { "",  {}}));
+		m.emplace(current_date, std::map<std::string, struct info>());
 	
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
