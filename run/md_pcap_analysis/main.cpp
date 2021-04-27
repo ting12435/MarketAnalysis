@@ -152,11 +152,11 @@ void uplimit() {
 	}
 
 	// output
-	for (const auto &date_d: m) {
-		for (const auto &stock_d: date_d.second) {
-			std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.uplimit_px << std::endl;
-		}
-	}
+	// for (const auto &date_d: m) {
+	// 	for (const auto &stock_d: date_d.second) {
+	// 		std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.uplimit_px << std::endl;
+	// 	}
+	// }
 
 }
 
