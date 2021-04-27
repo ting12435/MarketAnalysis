@@ -139,7 +139,7 @@ void uplimit() {
 						if (pv != m.begin()) {
 							// std::cout << "pv " << pv->first << std::endl;
 							if (pv->second.find(md.feedcode) != pv->second.end()) {
-								if (md.trade_px >= pv->second.uplimit_px) {
+								if (md.trade_px >= pv->second[md.feedcode].uplimit_px) {
 									m[current_date][md.feedcode].open_higher_last_limit = true;
 									m[current_date][md.feedcode].open_px = md.trade_px;
 								}
