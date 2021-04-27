@@ -39,28 +39,28 @@
 #define GET_FEEDOCDE(ptr) (std::string((char*)ptr, 6))
 #define GET_PX(ptr) bcd_to_long(ptr, MD_PX_SIZE)
 #define GET_LT(ptr) bcd_to_long(ptr, MD_LT_SIZE)
-// #define GET_PX(ptr) ( \
-// 	(*(((uint8_t*)ptr) + 0) >> 4 ) * (long)1000000000 + \
-// 	(*(((uint8_t*)ptr) + 0) & 0xf) * (long)100000000 + \
-// 	(*(((uint8_t*)ptr) + 1) >> 4 ) * (long)10000000 + \
-// 	(*(((uint8_t*)ptr) + 1) & 0xf) * (long)1000000 + \
-// 	(*(((uint8_t*)ptr) + 2) >> 4 ) * (long)100000 + \
-// 	(*(((uint8_t*)ptr) + 2) & 0xf) * (long)10000 + \
-// 	(*(((uint8_t*)ptr) + 3) >> 4 ) * (long)1000 + \
-// 	(*(((uint8_t*)ptr) + 3) & 0xf) * (long)100 + \
-// 	(*(((uint8_t*)ptr) + 4) >> 4 ) * (long)10 + \
-// 	(*(((uint8_t*)ptr) + 4) & 0xf) * (long)1 \
-// )
-// #define GET_LT(ptr) ( \
-// 	(*(((uint8_t*)ptr) + 0) >> 4 ) * 10000000 + \
-// 	(*(((uint8_t*)ptr) + 0) & 0xf) * 1000000 + \
-// 	(*(((uint8_t*)ptr) + 1) >> 4 ) * 100000 + \
-// 	(*(((uint8_t*)ptr) + 1) & 0xf) * 10000 + \
-// 	(*(((uint8_t*)ptr) + 2) >> 4 ) * 1000 + \
-// 	(*(((uint8_t*)ptr) + 2) & 0xf) * 100 + \
-// 	(*(((uint8_t*)ptr) + 3) >> 4 ) * 10 + \
-// 	(*(((uint8_t*)ptr) + 4) & 0xf) * 1 \
-// )
+/*#define GET_PX(ptr) ( \
+	(*(((uint8_t*)ptr) + 0) >> 4 ) * (long)1000000000 + \
+	(*(((uint8_t*)ptr) + 0) & 0xf) * (long)100000000 + \
+	(*(((uint8_t*)ptr) + 1) >> 4 ) * (long)10000000 + \
+	(*(((uint8_t*)ptr) + 1) & 0xf) * (long)1000000 + \
+	(*(((uint8_t*)ptr) + 2) >> 4 ) * (long)100000 + \
+	(*(((uint8_t*)ptr) + 2) & 0xf) * (long)10000 + \
+	(*(((uint8_t*)ptr) + 3) >> 4 ) * (long)1000 + \
+	(*(((uint8_t*)ptr) + 3) & 0xf) * (long)100 + \
+	(*(((uint8_t*)ptr) + 4) >> 4 ) * (long)10 + \
+	(*(((uint8_t*)ptr) + 4) & 0xf) * (long)1 \
+)
+#define GET_LT(ptr) ( \
+	(*(((uint8_t*)ptr) + 0) >> 4 ) * 10000000 + \
+	(*(((uint8_t*)ptr) + 0) & 0xf) * 1000000 + \
+	(*(((uint8_t*)ptr) + 1) >> 4 ) * 100000 + \
+	(*(((uint8_t*)ptr) + 1) & 0xf) * 10000 + \
+	(*(((uint8_t*)ptr) + 2) >> 4 ) * 1000 + \
+	(*(((uint8_t*)ptr) + 2) & 0xf) * 100 + \
+	(*(((uint8_t*)ptr) + 3) >> 4 ) * 10 + \
+	(*(((uint8_t*)ptr) + 4) & 0xf) * 1 \
+)*/
 
 extern std::string pcap_folder;
 extern std::string pcap_market;
