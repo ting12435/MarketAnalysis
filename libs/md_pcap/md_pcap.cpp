@@ -176,6 +176,8 @@ void MD::print_detail() {
 	}
 
 	ss << "vaild: " << this->vaild << std::endl;
+
+	std::cout << ss.str();
 }
 
 void MD::print_md(struct md *md_ptr) {
