@@ -111,7 +111,7 @@ void uplimit() {
 
 						if (m[current_date].find(md.feedcode) == m[current_date].end()) {
 
-							print_hexdump((char*)frame, md.msg_len);
+							print_hexdump((char*)frame, md.md_len);
 
 							m[current_date][md.feedcode] = md.trade_px;
 
