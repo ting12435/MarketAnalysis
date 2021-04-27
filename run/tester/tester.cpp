@@ -28,7 +28,7 @@ void test2() {
 	px[4] = 0x90;
 
 	printf("0x%02x%02x%02x%02x%02x\n", px[0], px[1], px[2], px[3], px[4]);
-	printf("0x%02x\n", *(((uint8_t*)px) + 0));
+	printf("0x%02x (%d)\n", *(((uint8_t*)px) + 0), *(((uint8_t*)px) + 0));
 	std::cout << *(((uint8_t*)px) + 0) * 10000000 << std::endl;
 	std::cout << GET_PX(px) << std::endl;
 }
