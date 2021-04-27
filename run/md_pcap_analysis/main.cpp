@@ -92,6 +92,7 @@ void uplimit() {
 		int uplimit_px;
 		bool open_higher_last_limit;
 		int open_px;
+		bool last_match_mode;
 	};
 
 	std::map<Date, std::map<std::string, struct info>> m;  // K:data V:{K:stock V:uplimit_price}
@@ -139,20 +140,23 @@ void uplimit() {
 							}
 						}
 
-						if (md.is_open) {  // 開盤註記
-							if (md.feedcode == "1474  ") {
-								print_hexdump((char*)frame, md.md_len);
-							}
+						// if (md.is_open) {  // 開盤註記
+							// if (md.feedcode == "1474  ") {
+							// 	print_hexdump((char*)frame, md.md_len);
+							// }
 							if (prv_iter != cur_iter) {
 								std::cout << "prv_iter " << prv_iter->first << std::endl;
 								if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
-									if (md.trade_px >= prv_iter->second[md.feedcode].uplimit_px) {
-										m[current_date][md.feedcode].open_higher_last_limit = true;
-										m[current_date][md.feedcode].open_px = md.trade_px;
+									if (!m[current_date][md.feedcode].last_match_mode) {
+										if (md.trade_px >= prv_iter->second[md.feedcode].uplimit_px) {
+											m[current_date][md.feedcode].open_higher_last_limit = true;
+											m[current_date][md.feedcode].open_px = md.trade_px;
+										}
+										m[current_date][md.feedcode].last_match_mode = true;
 									}
 								}
 							}
-						}
+						// }
 					}
 				}
 
