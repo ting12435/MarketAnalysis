@@ -103,7 +103,7 @@ void uplimit() {
 			std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 			continue;
 		}
-
+current_date.add(1);
 continue;
 		// m.emplace(std::make_pair(current_date, { "",  {}}));
 		m.emplace(current_date, std::map<std::string, struct info>());
