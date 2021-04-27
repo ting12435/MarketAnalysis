@@ -10,6 +10,7 @@
 #define PCAP_FOLDER "/data/tim/"
 
 void uplimit();
+void debug();
 
 struct var {
 	std::string type;
@@ -70,14 +71,17 @@ int main(int argc, char *argv[]) {
 
 	if (g_var.type == "uplimit")
 		uplimit();
+	else if (g_var.type == "debug")
+		debug();
 
 	return 0;
 
 	usage_error:
 	fprintf(stderr, "Usage: %s\n", argv[0]);
 	fprintf(stderr, "%9s [--type] [--d1] [--d2]\n", " ");
-	fprintf(stderr, "  --type: [uplimit]\n");
+	fprintf(stderr, "  --type: [uplimit] [debug]\n");
 	fprintf(stderr, "\ne.g.\n");
+	fprintf(stderr, "taskset -c 5 %s --type debug\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-23 --d2 2021-04-26\n", argv[0]);
 	return EXIT_FAILURE;
 }
@@ -168,5 +172,24 @@ void uplimit() {
 
 }
 
+void debug() {
+	struct md *frame;
+	MD md;
 
+	Date current_date("2021-04-26");
+	OneDayPcap one_day_pcap(current_date);
+	if (!one_day_pcap) {
+		std::cout << "error: " << one_day_pcap.get_error() << std::endl;
+	} else {
+		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+			md.set_data(frame);
+			if (md.is_md) {
+				if (md.feedcode == "1474  ") {
+
+					print_hexdump((char*)frame, md.md_len);
+				}
+			}
+		}
+	}
+}
 
