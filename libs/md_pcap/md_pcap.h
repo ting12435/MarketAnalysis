@@ -18,11 +18,11 @@
 
 #define GET_FEEDOCDE(ptr) (std::string((char*)ptr, 6))
 #define GET_PX(ptr) ( \
-	(((char*)ptr) + 0) * 100000000 + \
-	(((char*)ptr) + 1) * 1000000 + \
-	(((char*)ptr) + 2) * 10000 + \
-	(((char*)ptr) + 3) * 100 + \
-	(((char*)ptr) + 4) * 1 \
+	*(((uint8_t*)ptr) + 0) * 100000000 + \
+	*(((uint8_t*)ptr) + 1) * 1000000 + \
+	*(((uint8_t*)ptr) + 2) * 10000 + \
+	*(((uint8_t*)ptr) + 3) * 100 + \
+	*(((uint8_t*)ptr) + 4) * 1 \
 )
 
 extern std::string pcap_folder;
