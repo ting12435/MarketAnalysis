@@ -22,7 +22,7 @@
 	(((char*)ptr) + 1) * 1000000 + \
 	(((char*)ptr) + 2) * 10000 + \
 	(((char*)ptr) + 3) * 100 + \
-	(((char*)ptr) + 4) * 1
+	(((char*)ptr) + 4) * 1 |
 )
 
 extern std::string pcap_folder;
