@@ -76,10 +76,14 @@ void MD::print_md(struct md *md_ptr) {
 	std::string field;
 	uint8_t c;
 
+std::cout << "a\n";
+
 	if (md_ptr->esc_code != 27) {
 		ss << "not md" << std::endl;
 		goto print;
 	}
+
+std::cout << "b\n";
 
 	field = "esc_code";
 	snprintf(buf, sizeof(buf), "%s: 0x%02x (%u)", field.c_str(), md_ptr->esc_code, md_ptr->esc_code);
