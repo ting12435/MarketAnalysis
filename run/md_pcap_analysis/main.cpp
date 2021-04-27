@@ -87,6 +87,7 @@ void uplimit() {
 	struct info {
 		int uplimit_px;
 		bool open_higher_last_limit;
+		int open_px;
 	};
 
 	std::map<Date, std::map<std::string, struct info>> m;  // K:data V:{K:stock V:uplimit_price}
@@ -103,7 +104,7 @@ void uplimit() {
 			continue;
 		}
 
-		m.emplace(std::make_pair(current_date, { "",  {}}));
+		// m.emplace(std::make_pair(current_date, { "",  {}}));
 	
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
@@ -127,20 +128,23 @@ void uplimit() {
 							// m[current_date][md.feedcode] = md.trade_px;
 							m[current_date][md.feedcode].uplimit_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
 
-							std::cout << md.feedcode << std::endl;
-							iter = m.find(current_date);
-							// std::cout << iter->first << std::endl;
-							auto pv = std::prev(iter);
-							if (pv != m.begin()) {
-								std::cout << "pv " << pv->first << std::endl;
-							}
-							
-
 						}
 					}
 
 					if (md.is_open) {  // 開盤註記
-
+						std::cout << md.feedcode << std::endl;
+						iter = m.find(current_date);
+						// std::cout << iter->first << std::endl;
+						auto pv = std::prev(iter);
+						if (pv != m.begin()) {
+							// std::cout << "pv " << pv->first << std::endl;
+							if (pv.second.find(md.feedcode) != pv.second.end()) {
+								if (md.trade_px >= pv.second.uplimit_px) {
+									m[current_date][md.feedcode].open_higher_last_limit = true;
+									m[current_date][md.feedcode].open_px = md.trade_px;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -154,7 +158,7 @@ void uplimit() {
 	// output
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
-			std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.uplimit_px << std::endl;
+			std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.uplimit_px << " " << stock_d.second.open_higher_last_limit << " " << stock_d.second.open_px << std::endl;
 		}
 	}
 
