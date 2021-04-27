@@ -164,7 +164,7 @@ std::cout << "w\n";
 std::cout << "z\n";
 
 	print:
-	std::cout << ss;
+	std::cout << ss.str();
 }
 
 bool check_md_frame(struct md *md) {
