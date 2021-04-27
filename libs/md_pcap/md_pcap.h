@@ -17,7 +17,7 @@
 #define MD_LT_SIZE 4
 
 #define GET_FEEDOCDE(ptr) (std::string((char*)ptr, 6))
-#define GET_PX(ptr) ((*(((uint8_t*)ptr) + 0) & 0xf) * (long)100000000)
+#define GET_PX(ptr) ((*(((uint8_t*)ptr) + 4) & 0xf) * (long)100000000)
 // #define GET_PX(ptr) ( \
 // 	(*(((uint8_t*)ptr) + 0) >> 4 ) * (long)1000000000 + \
 // 	(*(((uint8_t*)ptr) + 0) & 0xf) * (long)100000000 + \
