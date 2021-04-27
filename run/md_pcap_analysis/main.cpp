@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "%9s [--type] [--d1] [--d2]\n", " ");
 	fprintf(stderr, "  --type: [uplimit]\n");
 	fprintf(stderr, "\ne.g.\n");
-	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2020-11-25 --d2 2020-11-26\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-26 --d2 2021-04-26\n", argv[0]);
 	return EXIT_FAILURE;
 }
 
@@ -90,8 +90,10 @@ void uplimit() {
 	while (current_date <= *(g_var.d2)) {
 
 		OneDayPcap one_day_pcap(current_date);
-		if (!one_day_pcap)
+		if (!one_day_pcap) {
 			std::cout << "error: " << one_day_pcap.get_error() << std::endl;
+			continue;
+		}
 	
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
