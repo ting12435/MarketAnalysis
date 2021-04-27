@@ -78,7 +78,7 @@ static void MD::print_md(struct md *md_ptr) {
 
 	if (md_ptr->esc_code != 27) {
 		ss << "not md" << std::endl;
-		return ss.str();
+		goto print;
 	}
 
 	field = "esc_code";
@@ -153,6 +153,7 @@ static void MD::print_md(struct md *md_ptr) {
 			break;
 	}
 
+	print:
 	std::cout << ss;
 }
 
