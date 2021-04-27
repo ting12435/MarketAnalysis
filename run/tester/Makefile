@@ -1,20 +1,20 @@
-# BSDR_PATH=../BuySellDailyReport/
 LIBS_PATH=../../libs
 
 CC=g++
 CFLAGS=-O3 -Wall -g -std=c++11  -I$(LIBS_PATH)
 DFLAGS=
-# LDLIBS=-L$(LIBS_PATH)/BSDR -lbsdr -L$(LIBS_PATH)/util -lutil
 LDLIBS=-L/home/tim/MarketAnalysis/libs/BSDR -lbsdr -L/home/tim/MarketAnalysis/libs/util -lutil
 
 EXT_CFLAGS=
 EXT_LDLIBS=
 
-# LIB=bsdr.a
-
 BIN=tester
 
-all: clean $(BIN)
+all: clean make_lib $(BIN)
+
+make_lib:
+	make -C $(LIBS_PATH)/md_pcap
+	make -C $(LIBS_PATH)/util
 
 clean:
 	rm -f $(BIN)

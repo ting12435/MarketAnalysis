@@ -17,6 +17,13 @@
 #define MD_LT_SIZE 4
 
 #define GET_FEEDOCDE(ptr) (std::string((char*)ptr, 6))
+#define GET_PX(ptr) ( \
+	(((char*)ptr) + 0) * 100000000 + \
+	(((char*)ptr) + 1) * 1000000 + \
+	(((char*)ptr) + 2) * 10000 + \
+	(((char*)ptr) + 3) * 100 + \
+	(((char*)ptr) + 4) * 1
+)
 
 extern std::string pcap_folder;
 extern std::string pcap_market;
@@ -48,13 +55,13 @@ struct __attribute__((__packed__)) md_body_fmt_6_17 {
 	
 	uint8_t 		feedcode[FEEDCODE_SIZE];
 	uint8_t 		match_time[6];
-	uint8_t 		show_mark;
+	uint8_t 		display_mark;
 	uint8_t 		limit_mark;
 	uint8_t 		status_mark;
 	uint32_t 		accm_trade_lot;
 
-	struct md_px_lt **px_lt;;
-	uint8_t 		*check_code;
+	// struct md_px_lt **px_lt;;
+	// uint8_t 		*check_code;
 };
 
 struct __attribute__((__packed__)) md {
@@ -120,14 +127,61 @@ private:
 };
 
 class MD {
+
 public:
+	bool set_data(struct md*);
+
 	static void print_md(struct md*);
+
+	bool is_md;
+
+	// header
+	int md_len;
+	int market;
+	int fmt_code;
+	int fmt_ver;
+	int seq;
+
+	// body 6
+	std::string feedcode;
+	// display mark
+	bool with_trade;
+	int b_cnt;
+	int s_cnt;
+	bool only_display_trade;  // false: 揭示成交價量與最佳五檔買賣價量, true: 僅揭示成交價量、不揭示最佳五檔買賣價量
+	// limit mark
+	int trade_limit;
+	int b_limit;
+	int s_limit;
+	int fast_price;
+	// status mark
+	bool is_est;  // false: 一般揭示, true: 試算揭示
+	bool is_est_delay_open;
+	bool is_est_delay_close;
+	bool match_mode;  // false: 集合競價, true: 逐筆撮合
+	bool is_open;
+	bool is_close;
+
+	int accm_trade_lot;
+	int trade_px;
+	int trade_lt;
+	int bid_px[5];
+	int bid_lt[5];
+	int ask_px[5];
+	int ask_lt[5];
+
+	bool vaild;
+
+private:
+	void clear();
 };
 
+
+//
 bool check_md_frame(struct md*);
 
 bool is_stock(struct md*);
-bool is_trade_uplimit(struct md*);
+bool with_trade_uplimit(struct md*);
 std::string get_feedcode(struct md*);
 struct md_px_lt* get_trade_pxlt(struct md*);
 int get_px(struct md_px_lt*);
