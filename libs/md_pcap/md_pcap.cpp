@@ -110,7 +110,7 @@ bool MD::set_data(struct md *md_ptr) {
 
 			this->accm_trade_lot = bcd_to_int(md_ptr->body.fmt_6_17.accm_trade_lot, 4);
 
-			px_lt_ptr = (struct md_px_lt*)((char*)&md_ptr->body.fmt_6_17.accm_trade_lot + 1);
+			px_lt_ptr = (struct md_px_lt*)((char*)&md_ptr->body.fmt_6_17.accm_trade_lot + 4);
 
 			if (this->with_trade) {
 				this->trade_px = GET_PX(px_lt_ptr->px);
