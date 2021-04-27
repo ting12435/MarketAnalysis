@@ -165,10 +165,10 @@ void MD::print_detail() {
 				ss << "trade_px: " << this->trade_px << std::endl;
 				ss << "trade_lt: " << this->trade_lt << std::endl;
 				for (auto i = 0; i < 5; i++) {
-					ss << "bid_px: " << this->bid_px << std::endl;
-					ss << "bid_lt: " << this->bid_lt << std::endl;
-					ss << "ask_px: " << this->ask_px << std::endl;
-					ss << "ask_lt: " << this->ask_lt << std::endl;
+					ss << "bid_px_" << i + 1 << ": " << this->bid_px[i] << std::endl;
+					ss << "bid_lt_" << i + 1 << ": " << this->bid_lt[i] << std::endl;
+					ss << "ask_px_" << i + 1 << ": " << this->ask_px[i] << std::endl;
+					ss << "ask_lt_" << i + 1 << ": " << this->ask_lt[i] << std::endl;
 				}
 				
 				break;
