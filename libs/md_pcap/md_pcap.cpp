@@ -82,6 +82,8 @@ void MD::print_md(struct md *md_ptr) {
 	}
 
 	field = "esc_code";
+snprintf(buf, sizeof(buf), "%s: %p", field.c_str(), &md_ptr->esc_code);
+ss << buf << std::endl;
 	snprintf(buf, sizeof(buf), "%s: 0x%02x (%u)", field.c_str(), md_ptr->esc_code, md_ptr->esc_code);
 	ss << buf << std::endl;
 
@@ -103,6 +105,8 @@ void MD::print_md(struct md *md_ptr) {
 	ss << buf << std::endl;
 
 	field = "seq";
+snprintf(buf, sizeof(buf), "%s: %p", field.c_str(), &md_ptr->hdr.seq);
+ss << buf << std::endl;
 	snprintf(buf, sizeof(buf), "%s: %x (%x)", field.c_str(), htonl(md_ptr->hdr.seq), md_ptr->hdr.seq);
 	ss << buf << std::endl;
 
@@ -114,8 +118,8 @@ void MD::print_md(struct md *md_ptr) {
 			break;
 		case 0x06:
 			field = "feedcode";
-std::string fc = GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode);
-std::cout << "fc=" << fc << std::endl;
+snprintf(buf, sizeof(buf), "%s: %p", field.c_str(), md_ptr->body.fmt_6_17.feedcode);
+ss << buf << std::endl;
 			snprintf(buf, sizeof(buf), "%s: %s", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode).c_str());
 			ss << buf << std::endl;
 
