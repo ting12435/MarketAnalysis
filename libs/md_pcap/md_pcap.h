@@ -162,6 +162,8 @@ public:
 
 	// body 6
 	std::string feedcode;
+	int match_time_sec;
+	int match_time_usec;
 	// display mark
 	bool with_trade;
 	int b_cnt;

@@ -82,6 +82,7 @@ void OneDayPcap::close_pcap_file(int idx) {
 bool MD::set_data(struct md *md_ptr) {
 	uint8_t c;
 	struct md_px_lt *px_lt_ptr;
+	char buf[100];
 
 	this->clear();
 
@@ -99,6 +100,8 @@ bool MD::set_data(struct md *md_ptr) {
 			break;
 		case 0x06:
 			this->feedcode = GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode);
+			this->match_time_sec = bcd_to_int(md_ptr->body.fmt_6_17.match_time, 6);
+			this->match_time_usec = bcd_to_int(md_ptr->body.fmt_6_17.match_time + 3, 6);
 			c = md_ptr->body.fmt_6_17.display_mark;
 			this->with_trade 			= (c >> 7) & 0x1;
 			this->b_cnt 				= (c >> 4) & 0x7;
@@ -162,6 +165,8 @@ void MD::print_detail() {
 				break;
 			case 6:
 				ss << "feedcode: " << this->feedcode << std::endl;
+				snprintf(buf, sizeof(buf), "%06d.%06d", this->match_time_sec, this->match_time_usec);
+				ss << "match_time: " << buf << std::endl;
 				ss << "with_trade: " << this->with_trade << std::endl;
 				ss << "b_cnt: " << this->b_cnt << std::endl;
 				ss << "s_cnt: " << this->s_cnt << std::endl;
@@ -297,6 +302,8 @@ void MD::clear() {
 	this->seq = -1;
 
 	this->feedcode = "";
+	this->match_time_sec = -1;
+	this->match_time_usec = -1;
 	this->with_trade = false;
 	this->b_cnt = -1;
 	this->s_cnt = -1;
