@@ -184,12 +184,13 @@ void debug() {
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 			md.set_data(frame);
 			if (md.is_md && md.fmt_code == 0x6) {
-				if (md.feedcode == "2330  " && md.match_time_sec > 90000) {
+				if (md.feedcode == "2330  ") {
 					md.print_detail();
 					// if (md.is_open) {
 						// print_hexdump((char*)frame, md.md_len);
 					// }
-					exit(-1);
+					if (md.match_time_sec > 90000)
+						exit(-1);
 				}
 			}
 		}
