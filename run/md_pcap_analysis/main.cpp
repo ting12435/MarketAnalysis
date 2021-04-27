@@ -109,7 +109,7 @@ void uplimit() {
 
 			// std::cout << "cur_iter " << cur_iter->first << std::endl;
 			// std::cout << "prv_iter " << prv_iter->first << std::endl;
-		
+
 			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
 				md.set_data(frame);
@@ -136,10 +136,9 @@ void uplimit() {
 						}
 
 						if (md.is_open) {  // 開盤註記
-							// std::cout << md.feedcode << std::endl;
-							// iter = m.find(current_date);
-							// std::cout << iter->first << std::endl;
-							// auto pv = std::prev(iter);
+							if (md.feedcode == "1474  ") {
+								print_hexdump((char*)frame, md.md_len);
+							}
 							if (prv_iter != cur_iter) {
 								std::cout << "prv_iter " << prv_iter->first << std::endl;
 								if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
