@@ -107,8 +107,8 @@ void uplimit() {
 			cur_iter = m.find(current_date);
 			prv_iter = std::prev(cur_iter);
 
-			std::cout << "cur_iter " << cur_iter->first << std::endl;
-			std::cout << "prv_iter " << prv_iter->first << std::endl;
+			// std::cout << "cur_iter " << cur_iter->first << std::endl;
+			// std::cout << "prv_iter " << prv_iter->first << std::endl;
 		
 			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
