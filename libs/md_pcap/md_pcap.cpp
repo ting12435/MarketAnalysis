@@ -11,6 +11,7 @@ __attribute__((constructor)) void __md_pcap_init() {
 	// std::cout << "a\n";
 }
 
+/********** OneDayPcap **********/
 OneDayPcap::OneDayPcap(Date d) {
 	this->date = d;
 	this->cur_pcap_idx = -1;
@@ -65,6 +66,91 @@ bool OneDayPcap::open_pcap_file(int idx) {
 
 void OneDayPcap::close_pcap_file(int idx) {
 	delete this->cur_pcap_file;
+}
+
+/********** MD **********/
+static std::string print_md(struct md *md_ptr) {
+	std::stringstream ss;
+	char buf[100];
+	std::string field;
+	uint8_t c;
+
+	if (md_ptr->esc_code != 27) {
+		ss << "not md" << std::endl;
+		return ss.str();
+	}
+
+	field = "esc_code";
+	snprintf(buf, sizeof(buf), "%s: 0x%02x (%u)", field.c_str(), md_ptr->esc_code, md_ptr->esc_code);
+	ss << buf << std::endl;
+
+	// header
+	field = "msg_len";
+	snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htons(md_ptr->hdr.msg_len));
+	ss << buf << std::endl;
+
+	field = "market";
+	snprintf(buf, sizeof(buf), "%s: %02x", field.c_str(), md_ptr->hdr.market);
+	ss << buf << std::endl;
+
+	field = "fmt_code";
+	snprintf(buf, sizeof(buf), "%s: %02x", field.c_str(), md_ptr->hdr.fmt_code);
+	ss << buf << std::endl;
+
+	field = "fmt_ver";
+	snprintf(buf, sizeof(buf), "%s: %02x", field.c_str(), md_ptr->hdr.fmt_ver);
+	ss << buf << std::endl;
+
+	field = "seq";
+	snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htonl(md_ptr->hdr.seq));
+	ss << buf << std::endl;
+
+	switch (md_ptr->hdr.fmt_code) {
+		case 0x01:
+			field = "feedcode";
+			snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_1.feedcode));
+			ss << buf << std::endl;
+			break;
+		case 0x06:
+			field = "feedcode";
+			snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode));
+			ss << buf << std::endl;
+
+			field = "show_mark";
+			c = md_ptr->body.fmt_6_17.show_mark;
+			snprintf(buf, sizeof(buf), "%s: %02x (%1x %03x %03x %1x)", field.c_str(), c,
+				(c >> 7) & 0x1,
+				(c >> 4) & 0x7,
+				(c >> 1) & 0x7,
+				(c >> 0) & 0x1);
+			ss << buf << std::endl;
+
+			field = "limit_mark";
+			c = md_ptr->body.fmt_6_17.limit_mark;
+			snprintf(buf, sizeof(buf), "%s: %02x (%02x %02x %02x %02x)", field.c_str(), c,
+				(c >> 6) & 0x3,
+				(c >> 4) & 0x3,
+				(c >> 2) & 0x3,
+				(c >> 0) & 0x3);
+			ss << buf << std::endl;
+
+			field = "status_mark";
+			c = md_ptr->body.fmt_6_17.status_mark;
+			snprintf(buf, sizeof(buf), "%s: %02x (%1x %1x %1x %1x %1x %1x %02x)", field.c_str(), c,
+				(c >> 7) & 0x1,
+				(c >> 6) & 0x1,
+				(c >> 5) & 0x1,
+				(c >> 4) & 0x1,
+				(c >> 3) & 0x1,
+				(c >> 2) & 0x1,
+				(c >> 0) & 0x3);
+			ss << buf << std::endl;
+
+			field = "accm_trade_lot";
+			snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htonl(md_ptr->body.fmt_6_17.accm_trade_lot));
+			ss << buf << std::endl;
+			break;
+	}
 }
 
 bool check_md_frame(struct md *md) {

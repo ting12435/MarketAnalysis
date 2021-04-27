@@ -16,6 +16,8 @@
 #define MD_PX_SIZE 5
 #define MD_LT_SIZE 4
 
+#define GET_FEEDOCDE(ptr) (std::string(ptr, 6))
+
 extern std::string pcap_folder;
 extern std::string pcap_market;
 
@@ -115,6 +117,11 @@ private:
 	std::stringstream error_ss;
 
 	bool pcap_folder_exist;
+};
+
+class MD {
+public:
+	static std::string print_md(struct md*);
 };
 
 bool check_md_frame(struct md*);

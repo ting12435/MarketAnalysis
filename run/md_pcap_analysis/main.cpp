@@ -107,12 +107,13 @@ void uplimit() {
 
 					// std::cout << "feedcode: " << frame->body.fmt_6_17.feedcode[0] << frame->body.fmt_6_17.feedcode[1] << frame->body.fmt_6_17.feedcode[2] << frame->body.fmt_6_17.feedcode[3] << frame->body.fmt_6_17.feedcode[4] << frame->body.fmt_6_17.feedcode[5] << std::endl;
 					printf("%p %p\n", &frame->esc_code, &frame->hdr.msg_len);
-					printf("msg_len: %x\n", frame->hdr.msg_len);
-					printf("market: %x\n", frame->hdr.market);
-					printf("fmt_code: %x\n", frame->hdr.fmt_code);
-					printf("fmt_ver: %x\n", frame->hdr.fmt_ver);
-					printf("seq: %x\n", frame->hdr.seq);
-					printf("feedcode: %u%u%u%u%u%u\n", frame->body.fmt_6_17.feedcode[0], frame->body.fmt_6_17.feedcode[1], frame->body.fmt_6_17.feedcode[2], frame->body.fmt_6_17.feedcode[3], frame->body.fmt_6_17.feedcode[4], frame->body.fmt_6_17.feedcode[5]);
+					// printf("msg_len: %x\n", frame->hdr.msg_len);
+					// printf("market: %x\n", frame->hdr.market);
+					// printf("fmt_code: %x\n", frame->hdr.fmt_code);
+					// printf("fmt_ver: %x\n", frame->hdr.fmt_ver);
+					// printf("seq: %x\n", frame->hdr.seq);
+					// printf("feedcode: %u%u%u%u%u%u\n", frame->body.fmt_6_17.feedcode[0], frame->body.fmt_6_17.feedcode[1], frame->body.fmt_6_17.feedcode[2], frame->body.fmt_6_17.feedcode[3], frame->body.fmt_6_17.feedcode[4], frame->body.fmt_6_17.feedcode[5]);
+					MD::print_md(frame);
 					print_hexdump((char*)frame, 500);
 					exit(-1);
 
