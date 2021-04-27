@@ -308,36 +308,3 @@ void MD::clear() {
 
 	this->vaild = false;
 }
-
-bool check_md_frame(struct md *md) {
-	if (md->esc_code != 27) return false;
-	return true;
-}
-
-
-bool is_stock(struct md *md) { 
-	return md->hdr.fmt_code == 0x06;
-}
-
-bool with_trade_uplimit(struct md *md) {
-	return (md->body.fmt_6_17.limit_mark & 0xc0) == 0x80;
-}
-
-std::string get_feedcode(struct md *md) {
-	char fc[FEEDCODE_SIZE];
-	memcpy(fc, md->body.fmt_6_17.feedcode, FEEDCODE_SIZE);
-	return std::string(fc);
-}
-
-struct md_px_lt* get_trade_pxlt(struct md *md) {
-	// return (struct md_px_lt*)(md->body.fmt_6_17.px_lt[0]);
-	return nullptr;
-}
-
-int get_px(struct md_px_lt *px_lt) {
-	return bcd_to_int(px_lt->px, MD_PX_SIZE) / 10000.0;
-}
-
-int get_lt(struct md_px_lt *px_lt) {
-	return bcd_to_int(px_lt->lt, MD_LT_SIZE);
-}

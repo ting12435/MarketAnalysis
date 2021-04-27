@@ -195,16 +195,6 @@ private:
 };
 
 
-//
-bool check_md_frame(struct md*);
-
-bool is_stock(struct md*);
-bool with_trade_uplimit(struct md*);
-std::string get_feedcode(struct md*);
-struct md_px_lt* get_trade_pxlt(struct md*);
-int get_px(struct md_px_lt*);
-int get_lt(struct md_px_lt*);
-
 #endif // MD_PCAP_H
 
 

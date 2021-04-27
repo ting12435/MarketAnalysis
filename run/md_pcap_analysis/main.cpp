@@ -95,51 +95,38 @@ void uplimit() {
 	
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
-			// std::cout << "esc_code: " << frame->esc_code << std::endl;
-			// printf("0x%02x\n", frame->esc_code);
+			md.set_data(frame);
 			
-			if (check_md_frame(frame)) {
+			if (md.is_md) {
 
-				// std::cout << "esc_code: " << frame->esc_code << std::endl;
-				// printf("esc_code: 0x%02x\n", frame->esc_code);
-				// exit(-1);
+				if (md.fmt_code == 0x6) {
+				
+					// md.print_detail();
+					// print_hexdump((char*)frame, 500);
+					// exit(-1);
 
-				if (is_stock(frame)) {
+					if (md.trade_limit == 0x2) {  // 漲停成交
 
-					// std::cout << "feedcode: " << frame->body.fmt_6_17.feedcode[0] << frame->body.fmt_6_17.feedcode[1] << frame->body.fmt_6_17.feedcode[2] << frame->body.fmt_6_17.feedcode[3] << frame->body.fmt_6_17.feedcode[4] << frame->body.fmt_6_17.feedcode[5] << std::endl;
-					// printf("%p %p\n", &frame->esc_code, &frame->hdr.msg_len);
-					// printf("msg_len: %x\n", frame->hdr.msg_len);
-					// printf("market: %x\n", frame->hdr.market);
-					// printf("fmt_code: %x\n", frame->hdr.fmt_code);
-					// printf("fmt_ver: %x\n", frame->hdr.fmt_ver);
-					// printf("seq: %x\n", frame->hdr.seq);
-					// printf("feedcode: %u%u%u%u%u%u\n", frame->body.fmt_6_17.feedcode[0], frame->body.fmt_6_17.feedcode[1], frame->body.fmt_6_17.feedcode[2], frame->body.fmt_6_17.feedcode[3], frame->body.fmt_6_17.feedcode[4], frame->body.fmt_6_17.feedcode[5]);
-					// MD::print_md(frame);
-					md.set_data(frame);
-					md.print_detail();
-					print_hexdump((char*)frame, 500);
-					exit(-1);
+						if (m[current_date].find(md.feedcode) == m[current_date].end()) {
 
-					// if (is_trade_uplimit(frame)) {
+							m[current_date][md.feedcode] = md.trade_px;
 
-					// 	std::string feedcode = get_feedcode(frame);
-
-					// 	if (m[current_date].find(feedcode) == m[current_date].end()) {
-
-					// 		struct md_px_lt *trade_pxlt = get_trade_pxlt(frame);
-					// 		m[current_date][feedcode] = get_px(trade_pxlt);
-
-					// 	}
-					// }
+						}
+					}
 				}
 			}
 
 		}
-
-		exit(-1);
 		// std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 
 		current_date.add(1);
+	}
+
+	// output
+	for (const auto &date_d: m) {
+		for (const auto &stock_d: date_d.second) {
+			std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second << std::endl;
+		}
 	}
 
 }
