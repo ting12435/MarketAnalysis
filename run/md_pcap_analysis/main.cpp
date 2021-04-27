@@ -101,60 +101,58 @@ void uplimit() {
 		OneDayPcap one_day_pcap(current_date);
 		if (!one_day_pcap) {
 			std::cout << "error: " << one_day_pcap.get_error() << std::endl;
-			continue;
-		}
-current_date.add(1);
-continue;
-		// m.emplace(std::make_pair(current_date, { "",  {}}));
-		m.emplace(current_date, std::map<std::string, struct info>());
-		cur_iter = m.find(current_date);
-		prv_iter = std::prev(cur_iter);
-	
-		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+		} else {
+			// m.emplace(std::make_pair(current_date, { "",  {}}));
+			m.emplace(current_date, std::map<std::string, struct info>());
+			cur_iter = m.find(current_date);
+			prv_iter = std::prev(cur_iter);
+		
+			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
-			md.set_data(frame);
-			
-			if (md.is_md) {
-
-				if (md.fmt_code == 0x6) {
+				md.set_data(frame);
 				
-					// md.print_detail();
-					// print_hexdump((char*)frame, 500);
-					// exit(-1);
+				if (md.is_md) {
 
-					if (md.trade_limit == 0x2) {  // 漲停成交
+					if (md.fmt_code == 0x6) {
+					
+						// md.print_detail();
+						// print_hexdump((char*)frame, 500);
+						// exit(-1);
 
-						if (m[current_date].find(md.feedcode) == m[current_date].end()) {
+						if (md.trade_limit == 0x2) {  // 漲停成交
 
-							// md.print_detail();
-							// print_hexdump((char*)frame, md.md_len);
+							if (m[current_date].find(md.feedcode) == m[current_date].end()) {
 
-							// m[current_date][md.feedcode] = md.trade_px;
-							m[current_date][md.feedcode].uplimit_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+								// md.print_detail();
+								// print_hexdump((char*)frame, md.md_len);
 
+								// m[current_date][md.feedcode] = md.trade_px;
+								m[current_date][md.feedcode].uplimit_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+
+							}
 						}
-					}
 
-					if (md.is_open) {  // 開盤註記
-						std::cout << md.feedcode << std::endl;
-						// iter = m.find(current_date);
-						// std::cout << iter->first << std::endl;
-						// auto pv = std::prev(iter);
-						if (prv_iter != m.begin()) {
-							std::cout << "prv_iter " << prv_iter->first << std::endl;
-							if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
-								if (md.trade_px >= prv_iter->second[md.feedcode].uplimit_px) {
-									m[current_date][md.feedcode].open_higher_last_limit = true;
-									m[current_date][md.feedcode].open_px = md.trade_px;
+						if (md.is_open) {  // 開盤註記
+							std::cout << md.feedcode << std::endl;
+							// iter = m.find(current_date);
+							// std::cout << iter->first << std::endl;
+							// auto pv = std::prev(iter);
+							if (prv_iter != m.begin()) {
+								std::cout << "prv_iter " << prv_iter->first << std::endl;
+								if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
+									if (md.trade_px >= prv_iter->second[md.feedcode].uplimit_px) {
+										m[current_date][md.feedcode].open_higher_last_limit = true;
+										m[current_date][md.feedcode].open_px = md.trade_px;
+									}
 								}
 							}
 						}
 					}
 				}
-			}
 
+			}
+			// std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 		}
-		// std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 
 		current_date.add(1);
 	}
