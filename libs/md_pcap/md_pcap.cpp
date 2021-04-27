@@ -89,6 +89,8 @@ std::cout << "b\n";
 	snprintf(buf, sizeof(buf), "%s: 0x%02x (%u)", field.c_str(), md_ptr->esc_code, md_ptr->esc_code);
 	ss << buf << std::endl;
 
+std::cout << "c\n";
+
 	// header
 	field = "msg_len";
 	snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htons(md_ptr->hdr.msg_len));
@@ -109,6 +111,8 @@ std::cout << "b\n";
 	field = "seq";
 	snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htonl(md_ptr->hdr.seq));
 	ss << buf << std::endl;
+
+std::cout << "w\n";
 
 	switch (md_ptr->hdr.fmt_code) {
 		case 0x01:
@@ -156,6 +160,8 @@ std::cout << "b\n";
 			ss << buf << std::endl;
 			break;
 	}
+
+std::cout << "z\n";
 
 	print:
 	std::cout << ss;
