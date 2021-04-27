@@ -21,7 +21,7 @@
 extern std::string pcap_folder;
 extern std::string pcap_market;
 
-struct md_header {
+struct __attribute__((__packed__)) md_header {
 	uint16_t 	msg_len;
 	uint8_t 	market;
 	uint8_t 	fmt_code;
@@ -29,12 +29,12 @@ struct md_header {
 	uint32_t 	seq;
 };
 
-struct md_px_lt {
+struct __attribute__((__packed__)) md_px_lt {
 	uint8_t px[MD_PX_SIZE];
 	uint8_t lt[MD_LT_SIZE];
 };
 
-struct md_body_fmt_1 {
+struct __attribute__((__packed__)) md_body_fmt_1 {
 	uint8_t 		feedcode[FEEDCODE_SIZE];
 	uint32_t : 32;
 	uint32_t : 32;
@@ -44,7 +44,7 @@ struct md_body_fmt_1 {
 	uint16_t 		stocks_count_mark[2];
 };
 
-struct md_body_fmt_6_17 {
+struct __attribute__((__packed__)) md_body_fmt_6_17 {
 	
 	uint8_t 		feedcode[FEEDCODE_SIZE];
 	uint8_t 		match_time[6];
