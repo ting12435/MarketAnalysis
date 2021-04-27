@@ -36,18 +36,23 @@ struct md* OneDayPcap::get_pcap_record_data() {
 		this->open_pcap_file(++this->cur_pcap_idx);
 	}
 
-	if (this->cur_pcap_file->eof()) {
+	while (this->cur_pcap_file->read(this->record_data, sizeof(this->record_data)) < 0) {
 		this->close_pcap_file(this->cur_pcap_idx);
-		this->open_pcap_file(++this->cur_pcap_idx);
+		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
+			this->error_ss << this->cur_pcap_file->get_error();
+			return nullptr;
+		}
 	}
 
-	if (this->cur_pcap_file->read(this->record_data, sizeof(this->record_data)) < 0) {
-		this->error_ss << this->cur_pcap_file->get_error();
-		return nullptr;
-	}
+	// if (this->cur_pcap_file->eof()) {
+	// 	this->close_pcap_file(this->cur_pcap_idx);
+	// 	this->open_pcap_file(++this->cur_pcap_idx);
+	// }
 
-// print_hexdump(this->record_data, sizeof(this->record_data));
-// exit(-1);
+	// if (this->cur_pcap_file->read(this->record_data, sizeof(this->record_data)) < 0) {
+	// 	this->error_ss << this->cur_pcap_file->get_error();
+	// 	return nullptr;
+	// }
 
 	return (struct md*)((char*)&this->record_data + 42);
 }
