@@ -83,8 +83,14 @@ int main(int argc, char *argv[]) {
 }
 
 void uplimit() {
-	std::map<Date, std::map<std::string, int>> m;  // K:data V:{K:stock V:uplimit_price}
-	std::map<Date, std::map<std::string, int>>::iterator iter;
+
+	struct info {
+		int uplimit_px;
+		bool open_higher_last_limit;
+	};
+
+	std::map<Date, std::map<std::string, struct info>> m;  // K:data V:{K:stock V:uplimit_price}
+	std::map<Date, std::map<std::string, struct info>>::iterator iter;
 	struct md *frame;
 	MD md;
 
@@ -96,6 +102,8 @@ void uplimit() {
 			std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 			continue;
 		}
+
+		m = {current_date, {}};
 	
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
@@ -117,15 +125,22 @@ void uplimit() {
 							// print_hexdump((char*)frame, md.md_len);
 
 							// m[current_date][md.feedcode] = md.trade_px;
-							m[current_date][md.feedcode] = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+							m[current_date][md.feedcode].uplimit_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
 
 							std::cout << md.feedcode << std::endl;
 							iter = m.find(current_date);
 							// std::cout << iter->first << std::endl;
 							auto pv = std::prev(iter);
-							std::cout << "pv " << pv->first << std::endl;
+							if (pv != m.begin()) {
+								std::cout << "pv " << pv->first << std::endl;
+							}
+							
 
 						}
+					}
+
+					if (md.is_open) {  // 開盤註記
+
 					}
 				}
 			}
