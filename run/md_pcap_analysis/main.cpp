@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "%9s [--type] [--d1] [--d2]\n", " ");
 	fprintf(stderr, "  --type: [uplimit]\n");
 	fprintf(stderr, "\ne.g.\n");
-	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-26 --d2 2021-04-26\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-23 --d2 2021-04-26\n", argv[0]);
 	return EXIT_FAILURE;
 }
 
@@ -111,7 +111,7 @@ void uplimit() {
 
 						if (m[current_date].find(md.feedcode) == m[current_date].end()) {
 
-							md.print_detail();
+							// md.print_detail();
 							// print_hexdump((char*)frame, md.md_len);
 
 							// m[current_date][md.feedcode] = md.trade_px;
