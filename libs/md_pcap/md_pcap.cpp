@@ -1,5 +1,6 @@
 #include "md_pcap.h"
 #include <cstring>
+#include <arpa/inet.h>
 
 std::string pcap_folder;
 std::string pcap_market;
