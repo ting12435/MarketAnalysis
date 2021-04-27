@@ -185,8 +185,9 @@ void debug() {
 			md.set_data(frame);
 			if (md.is_md) {
 				if (md.feedcode == "1474  ") {
-
-					print_hexdump((char*)frame, md.md_len);
+					if (md.is_open) {
+						print_hexdump((char*)frame, md.md_len);
+					}
 				}
 			}
 		}
