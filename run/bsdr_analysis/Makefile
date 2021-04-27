@@ -14,7 +14,11 @@ EXT_LDLIBS=
 
 BIN=parse
 
-all: clean $(BIN)
+all: clean make_lib $(BIN)
+
+make_lib:
+	make -C $(LIBS_PATH)/BSDR
+	make -C $(LIBS_PATH)/util
 
 clean:
 	rm -f $(BIN)
