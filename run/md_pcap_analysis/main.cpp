@@ -110,9 +110,6 @@ void uplimit() {
 			std::cout << "cur_iter " << cur_iter->first << std::endl;
 			std::cout << "prv_iter " << prv_iter->first << std::endl;
 		
-current_date.add(1);
-continue;
-
 			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
 				md.set_data(frame);
@@ -143,8 +140,8 @@ continue;
 							// iter = m.find(current_date);
 							// std::cout << iter->first << std::endl;
 							// auto pv = std::prev(iter);
-							if (prv_iter != m.begin()) {
-								// std::cout << "prv_iter " << prv_iter->first << std::endl;
+							if (prv_iter != cur_iter) {
+								std::cout << "prv_iter " << prv_iter->first << std::endl;
 								if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
 									if (md.trade_px >= prv_iter->second[md.feedcode].uplimit_px) {
 										m[current_date][md.feedcode].open_higher_last_limit = true;
