@@ -101,9 +101,9 @@ bool MD::set_data(struct md *md_ptr) {
 		case 0x06:
 			this->feedcode = GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode);
 			p = md_ptr->body.fmt_6_17.match_time;
-			this->match_time_sec = bcd_to_int(p, 6);
+			this->match_time_sec = bcd_to_int(p, 3);
 			p = &(md_ptr->body.fmt_6_17.match_time[3]);
-			this->match_time_usec = bcd_to_int(p, 6);
+			this->match_time_usec = bcd_to_int(p, 3);
 			c = md_ptr->body.fmt_6_17.display_mark;
 			this->with_trade 			= (c >> 7) & 0x1;
 			this->b_cnt 				= (c >> 4) & 0x7;
