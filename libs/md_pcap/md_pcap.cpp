@@ -32,7 +32,6 @@ struct md* OneDayPcap::get_pcap_record_data() {
 
 	// check file
 	if (this->cur_pcap_idx == -1) {
-		this->cur_pcap_idx = 0;
 		this->open_pcap_file(++this->cur_pcap_idx);
 	}
 
@@ -58,7 +57,7 @@ struct md* OneDayPcap::get_pcap_record_data() {
 }
 
 bool OneDayPcap::open_pcap_file(int idx) {
-std::cout << "open_pcap_file " << idx << std::endl;
+std::cout << this->date << " open_pcap_file " << idx << std::endl;
 	// TSE_20210423.pcap22
 	std::stringstream fn_ss;
 	fn_ss << this->date_folder << "/" << pcap_market << "_" << this->date_str << ".pcap" << (idx == 0 ? "" : std::to_string(idx));
