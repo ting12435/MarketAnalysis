@@ -124,6 +124,12 @@ bool MD::set_data(struct md *md_ptr) {
 				px_lt_ptr++;
 			}
 
+			for (auto i = 0; i < this->s_cnt; i++) {
+				this->ask_px[i] = GET_PX(px_lt_ptr->px);
+				this->ask_lt[i] = GET_LT(px_lt_ptr->lt);
+				px_lt_ptr++;
+			}
+
 			break;
 	}
 
@@ -167,6 +173,8 @@ void MD::print_detail() {
 				for (auto i = 0; i < 5; i++) {
 					ss << "bid_px_" << i + 1 << ": " << this->bid_px[i] << std::endl;
 					ss << "bid_lt_" << i + 1 << ": " << this->bid_lt[i] << std::endl;
+				}
+				for (auto i = 0; i < 5; i++) {
 					ss << "ask_px_" << i + 1 << ": " << this->ask_px[i] << std::endl;
 					ss << "ask_lt_" << i + 1 << ": " << this->ask_lt[i] << std::endl;
 				}

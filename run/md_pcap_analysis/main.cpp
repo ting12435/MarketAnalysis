@@ -114,7 +114,8 @@ void uplimit() {
 							md.print_detail();
 							// print_hexdump((char*)frame, md.md_len);
 
-							m[current_date][md.feedcode] = md.trade_px;
+							// m[current_date][md.feedcode] = md.trade_px;
+							m[current_date][md.feedcode] = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
 
 						}
 					}
