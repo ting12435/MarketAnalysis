@@ -109,12 +109,12 @@ static std::string print_md(struct md *md_ptr) {
 	switch (md_ptr->hdr.fmt_code) {
 		case 0x01:
 			field = "feedcode";
-			snprintf(buf, sizeof(buf), "%s: %s", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_1.feedcode));
+			snprintf(buf, sizeof(buf), "%s: %s", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_1.feedcode).c_str());
 			ss << buf << std::endl;
 			break;
 		case 0x06:
 			field = "feedcode";
-			snprintf(buf, sizeof(buf), "%s: %s", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode));
+			snprintf(buf, sizeof(buf), "%s: %s", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode).c_str());
 			ss << buf << std::endl;
 
 			field = "show_mark";
