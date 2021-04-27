@@ -16,39 +16,61 @@
 #define MD_PX_SIZE 5
 #define MD_LT_SIZE 4
 
+#define bcd_to_int(buf, len) ({ \
+	int i, dec_pow = 1 + 2 * (len - 1); \
+	int sum = 0; \
+	for (i = 0; i < len; i++) { \
+		sum += (buf[i] >> 4 & 0x0f) * pow(10,dec_pow--); \
+		sum += (buf[i] & 0x0f) * pow(10,dec_pow--); \
+	} \
+	sum; \
+})
+
+#define bcd_to_long(buf, len) ({ \
+	int i, dec_pow = 1 + 2 * (len - 1); \
+	long sum = 0; \
+	for (i = 0; i < len; i++) { \
+		sum += (buf[i] >> 4 & 0x0f) * pow(10,dec_pow--); \
+		sum += (buf[i] & 0x0f) * pow(10,dec_pow--); \
+	} \
+	sum; \
+})
+
 #define GET_FEEDOCDE(ptr) (std::string((char*)ptr, 6))
-#define GET_PX(ptr) ( \
-	(*(((uint8_t*)ptr) + 0) >> 4 ) * (long)1000000000 + \
-	(*(((uint8_t*)ptr) + 0) & 0xf) * (long)100000000 + \
-	(*(((uint8_t*)ptr) + 1) >> 4 ) * (long)10000000 + \
-	(*(((uint8_t*)ptr) + 1) & 0xf) * (long)1000000 + \
-	(*(((uint8_t*)ptr) + 2) >> 4 ) * (long)100000 + \
-	(*(((uint8_t*)ptr) + 2) & 0xf) * (long)10000 + \
-	(*(((uint8_t*)ptr) + 3) >> 4 ) * (long)1000 + \
-	(*(((uint8_t*)ptr) + 3) & 0xf) * (long)100 + \
-	(*(((uint8_t*)ptr) + 4) >> 4 ) * (long)10 + \
-	(*(((uint8_t*)ptr) + 4) & 0xf) * (long)1 \
-)
-#define GET_LT(ptr) ( \
-	(*(((uint8_t*)ptr) + 0) >> 4 ) * 10000000 + \
-	(*(((uint8_t*)ptr) + 0) & 0xf) * 1000000 + \
-	(*(((uint8_t*)ptr) + 1) >> 4 ) * 100000 + \
-	(*(((uint8_t*)ptr) + 1) & 0xf) * 10000 + \
-	(*(((uint8_t*)ptr) + 2) >> 4 ) * 1000 + \
-	(*(((uint8_t*)ptr) + 2) & 0xf) * 100 + \
-	(*(((uint8_t*)ptr) + 3) >> 4 ) * 10 + \
-	(*(((uint8_t*)ptr) + 4) & 0xf) * 1 \
-)
+#define GET_PX(ptr) bcd_to_long(ptr, MD_PX_SIZE)
+#define GET_LT(ptr) bcd_to_long(ptr, MD_LT_SIZE)
+// #define GET_PX(ptr) ( \
+// 	(*(((uint8_t*)ptr) + 0) >> 4 ) * (long)1000000000 + \
+// 	(*(((uint8_t*)ptr) + 0) & 0xf) * (long)100000000 + \
+// 	(*(((uint8_t*)ptr) + 1) >> 4 ) * (long)10000000 + \
+// 	(*(((uint8_t*)ptr) + 1) & 0xf) * (long)1000000 + \
+// 	(*(((uint8_t*)ptr) + 2) >> 4 ) * (long)100000 + \
+// 	(*(((uint8_t*)ptr) + 2) & 0xf) * (long)10000 + \
+// 	(*(((uint8_t*)ptr) + 3) >> 4 ) * (long)1000 + \
+// 	(*(((uint8_t*)ptr) + 3) & 0xf) * (long)100 + \
+// 	(*(((uint8_t*)ptr) + 4) >> 4 ) * (long)10 + \
+// 	(*(((uint8_t*)ptr) + 4) & 0xf) * (long)1 \
+// )
+// #define GET_LT(ptr) ( \
+// 	(*(((uint8_t*)ptr) + 0) >> 4 ) * 10000000 + \
+// 	(*(((uint8_t*)ptr) + 0) & 0xf) * 1000000 + \
+// 	(*(((uint8_t*)ptr) + 1) >> 4 ) * 100000 + \
+// 	(*(((uint8_t*)ptr) + 1) & 0xf) * 10000 + \
+// 	(*(((uint8_t*)ptr) + 2) >> 4 ) * 1000 + \
+// 	(*(((uint8_t*)ptr) + 2) & 0xf) * 100 + \
+// 	(*(((uint8_t*)ptr) + 3) >> 4 ) * 10 + \
+// 	(*(((uint8_t*)ptr) + 4) & 0xf) * 1 \
+// )
 
 extern std::string pcap_folder;
 extern std::string pcap_market;
 
 struct __attribute__((__packed__)) md_header {
-	uint16_t 	msg_len;
+	uint8_t 	msg_len[2];
 	uint8_t 	market;
 	uint8_t 	fmt_code;
 	uint8_t 	fmt_ver;
-	uint32_t 	seq;
+	uint8_t 	seq[4];
 };
 
 struct __attribute__((__packed__)) md_px_lt {
@@ -73,7 +95,7 @@ struct __attribute__((__packed__)) md_body_fmt_6_17 {
 	uint8_t 		display_mark;
 	uint8_t 		limit_mark;
 	uint8_t 		status_mark;
-	uint32_t 		accm_trade_lot;
+	uint8_t 		accm_trade_lot[4];
 
 	// struct md_px_lt **px_lt;;
 	// uint8_t 		*check_code;
@@ -92,25 +114,6 @@ struct __attribute__((__packed__)) md {
 	uint16_t *terminal_code;
 };
 
-#define bcd_to_int(buf, len) ({ \
-	int i, dec_pow = 1 + 2 * (len - 1); \
-	int sum = 0; \
-	for (i = 0; i < len; i++) { \
-		sum += (buf[i] >> 4 & 0x0f) * pow(10,dec_pow--); \
-		sum += (buf[i] & 0x0f) * pow(10,dec_pow--); \
-	} \
-	sum; \
-})
-
-#define bcd_to_long(buf, len) ({ \
-	int i, dec_pow = 1 + 2 * (len - 1); \
-	long sum = 0; \
-	for (i = 0; i < len; i++) { \
-		sum += (buf[i] >> 4 & 0x0f) * pow(10,dec_pow--); \
-		sum += (buf[i] & 0x0f) * pow(10,dec_pow--); \
-	} \
-	sum; \
-})
 
 class OneDayPcap {
 public:

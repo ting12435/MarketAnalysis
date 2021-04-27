@@ -78,11 +78,11 @@ bool MD::set_data(struct md *md_ptr) {
 
 	this->is_md = md_ptr->esc_code == 27;
 
-	this->md_len = htons(md_ptr->hdr.msg_len);
+	this->md_len = bcd_to_int(md_ptr->hdr.msg_len, 2);
 	this->market = md_ptr->hdr.market;
 	this->fmt_code = md_ptr->hdr.fmt_code;
 	this->fmt_ver = md_ptr->hdr.fmt_ver;
-	this->seq = htonl(md_ptr->hdr.seq);
+	this->seq = bcd_to_int(md_ptr->hdr.seq, 4);
 
 	switch (md_ptr->hdr.fmt_code) {
 		case 0x01:
@@ -108,7 +108,7 @@ bool MD::set_data(struct md *md_ptr) {
 			this->is_open 				= (c >> 3) & 0x1;
 			this->is_close 				= (c >> 2) & 0x1;
 
-			this->accm_trade_lot = htonl(md_ptr->body.fmt_6_17.accm_trade_lot);
+			this->accm_trade_lot = bcd_to_int(md_ptr->body.fmt_6_17.accm_trade_lot, 4);
 
 			px_lt_ptr = (struct md_px_lt*)((char*)&md_ptr->body.fmt_6_17.accm_trade_lot + 1);
 
@@ -181,93 +181,93 @@ void MD::print_detail() {
 }
 
 void MD::print_md(struct md *md_ptr) {
-	std::stringstream ss;
-	char buf[100];
-	std::string field;
-	uint8_t c;
+	// std::stringstream ss;
+	// char buf[100];
+	// std::string field;
+	// uint8_t c;
 
-	if (md_ptr->esc_code != 27) {
-		ss << "not md" << std::endl;
-		goto print;
-	}
+	// if (md_ptr->esc_code != 27) {
+	// 	ss << "not md" << std::endl;
+	// 	goto print;
+	// }
 
-	field = "esc_code";
-	snprintf(buf, sizeof(buf), "%s: 0x%02x (%u)", field.c_str(), md_ptr->esc_code, md_ptr->esc_code);
-	ss << buf << std::endl;
+	// field = "esc_code";
+	// snprintf(buf, sizeof(buf), "%s: 0x%02x (%u)", field.c_str(), md_ptr->esc_code, md_ptr->esc_code);
+	// ss << buf << std::endl;
 
-	// header
-	field = "msg_len";
-	snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htons(md_ptr->hdr.msg_len));
-	ss << buf << std::endl;
+	// // header
+	// field = "msg_len";
+	// snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htons(md_ptr->hdr.msg_len));
+	// ss << buf << std::endl;
 
-	field = "market";
-	snprintf(buf, sizeof(buf), "%s: %02x", field.c_str(), md_ptr->hdr.market);
-	ss << buf << std::endl;
+	// field = "market";
+	// snprintf(buf, sizeof(buf), "%s: %02x", field.c_str(), md_ptr->hdr.market);
+	// ss << buf << std::endl;
 
-	field = "fmt_code";
-	snprintf(buf, sizeof(buf), "%s: %02x", field.c_str(), md_ptr->hdr.fmt_code);
-	ss << buf << std::endl;
+	// field = "fmt_code";
+	// snprintf(buf, sizeof(buf), "%s: %02x", field.c_str(), md_ptr->hdr.fmt_code);
+	// ss << buf << std::endl;
 
-	field = "fmt_ver";
-	snprintf(buf, sizeof(buf), "%s: %02x", field.c_str(), md_ptr->hdr.fmt_ver);
-	ss << buf << std::endl;
+	// field = "fmt_ver";
+	// snprintf(buf, sizeof(buf), "%s: %02x", field.c_str(), md_ptr->hdr.fmt_ver);
+	// ss << buf << std::endl;
 
-	field = "seq";
-	snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htonl(md_ptr->hdr.seq));
-	ss << buf << std::endl;
+	// field = "seq";
+	// snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htonl(md_ptr->hdr.seq));
+	// ss << buf << std::endl;
 
-	switch (md_ptr->hdr.fmt_code) {
-		case 0x01:
-			field = "feedcode";
-			snprintf(buf, sizeof(buf), "%s: %s", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_1.feedcode).c_str());
-			ss << buf << std::endl;
-			break;
-		case 0x06:
-			field = "feedcode";
-			snprintf(buf, sizeof(buf), "%s: %s", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode).c_str());
-			ss << buf << std::endl;
+	// switch (md_ptr->hdr.fmt_code) {
+	// 	case 0x01:
+	// 		field = "feedcode";
+	// 		snprintf(buf, sizeof(buf), "%s: %s", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_1.feedcode).c_str());
+	// 		ss << buf << std::endl;
+	// 		break;
+	// 	case 0x06:
+	// 		field = "feedcode";
+	// 		snprintf(buf, sizeof(buf), "%s: %s", field.c_str(), GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode).c_str());
+	// 		ss << buf << std::endl;
 
-			field = "display_mark";
-			c = md_ptr->body.fmt_6_17.display_mark;
-			snprintf(buf, sizeof(buf), "%s: %02x (%1x %3x %3x %1x)", field.c_str(), c,
-				(c >> 7) & 0x1,
-				(c >> 4) & 0x7,
-				(c >> 1) & 0x7,
-				(c >> 0) & 0x1);
-			ss << buf << std::endl;
+	// 		field = "display_mark";
+	// 		c = md_ptr->body.fmt_6_17.display_mark;
+	// 		snprintf(buf, sizeof(buf), "%s: %02x (%1x %3x %3x %1x)", field.c_str(), c,
+	// 			(c >> 7) & 0x1,
+	// 			(c >> 4) & 0x7,
+	// 			(c >> 1) & 0x7,
+	// 			(c >> 0) & 0x1);
+	// 		ss << buf << std::endl;
 
-			field = "limit_mark";
-			c = md_ptr->body.fmt_6_17.limit_mark;
-			snprintf(buf, sizeof(buf), "%s: %02x (%02x %02x %02x %02x)", field.c_str(), c,
-				(c >> 6) & 0x3,
-				(c >> 4) & 0x3,
-				(c >> 2) & 0x3,
-				(c >> 0) & 0x3);
-			ss << buf << std::endl;
+	// 		field = "limit_mark";
+	// 		c = md_ptr->body.fmt_6_17.limit_mark;
+	// 		snprintf(buf, sizeof(buf), "%s: %02x (%02x %02x %02x %02x)", field.c_str(), c,
+	// 			(c >> 6) & 0x3,
+	// 			(c >> 4) & 0x3,
+	// 			(c >> 2) & 0x3,
+	// 			(c >> 0) & 0x3);
+	// 		ss << buf << std::endl;
 
-			field = "status_mark";
-			c = md_ptr->body.fmt_6_17.status_mark;
-			snprintf(buf, sizeof(buf), "%s: %02x (%1x %1x %1x %1x %1x %1x %02x)", field.c_str(), c,
-				(c >> 7) & 0x1,
-				(c >> 6) & 0x1,
-				(c >> 5) & 0x1,
-				(c >> 4) & 0x1,
-				(c >> 3) & 0x1,
-				(c >> 2) & 0x1,
-				(c >> 0) & 0x3);
-			ss << buf << std::endl;
+	// 		field = "status_mark";
+	// 		c = md_ptr->body.fmt_6_17.status_mark;
+	// 		snprintf(buf, sizeof(buf), "%s: %02x (%1x %1x %1x %1x %1x %1x %02x)", field.c_str(), c,
+	// 			(c >> 7) & 0x1,
+	// 			(c >> 6) & 0x1,
+	// 			(c >> 5) & 0x1,
+	// 			(c >> 4) & 0x1,
+	// 			(c >> 3) & 0x1,
+	// 			(c >> 2) & 0x1,
+	// 			(c >> 0) & 0x3);
+	// 		ss << buf << std::endl;
 
-			field = "accm_trade_lot";
-			snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htonl(md_ptr->body.fmt_6_17.accm_trade_lot));
-			ss << buf << std::endl;
+	// 		field = "accm_trade_lot";
+	// 		snprintf(buf, sizeof(buf), "%s: %x", field.c_str(), htonl(md_ptr->body.fmt_6_17.accm_trade_lot));
+	// 		ss << buf << std::endl;
 
-			// px_lt
-			// md_ptr->body.fmt_6_17.px_lt = (struct md_px_lt**)((char*)&md_ptr->body.fmt_6_17.accm_trade_lot + 1);
-			break;
-	}
+	// 		// px_lt
+	// 		// md_ptr->body.fmt_6_17.px_lt = (struct md_px_lt**)((char*)&md_ptr->body.fmt_6_17.accm_trade_lot + 1);
+	// 		break;
+	// }
 
-	print:
-	std::cout << ss.str();
+	// print:
+	// std::cout << ss.str();
 }
 
 void MD::clear() {
