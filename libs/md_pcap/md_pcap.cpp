@@ -82,7 +82,7 @@ void OneDayPcap::close_pcap_file(int idx) {
 bool MD::set_data(struct md *md_ptr) {
 	uint8_t c;
 	struct md_px_lt *px_lt_ptr;
-	char buf[100];
+	uint8_t *p;
 
 	this->clear();
 
@@ -100,8 +100,10 @@ bool MD::set_data(struct md *md_ptr) {
 			break;
 		case 0x06:
 			this->feedcode = GET_FEEDOCDE(md_ptr->body.fmt_6_17.feedcode);
-			this->match_time_sec = bcd_to_int(md_ptr->body.fmt_6_17.match_time, 6);
-			this->match_time_usec = bcd_to_int((uint8_t*)&(md_ptr->body.fmt_6_17.match_time[3]), 6);
+			p = md_ptr->body.fmt_6_17.match_time;
+			this->match_time_sec = bcd_to_int(p, 6);
+			p = &(md_ptr->body.fmt_6_17.match_time[3]);
+			this->match_time_usec = bcd_to_int(p, 6);
 			c = md_ptr->body.fmt_6_17.display_mark;
 			this->with_trade 			= (c >> 7) & 0x1;
 			this->b_cnt 				= (c >> 4) & 0x7;
@@ -150,6 +152,7 @@ bool MD::set_data(struct md *md_ptr) {
 
 void MD::print_detail() {
 	std::stringstream ss;
+	char buf[100];
 
 	ss << "is_md: " << this->is_md << std::endl;
 
