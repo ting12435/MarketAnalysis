@@ -32,7 +32,7 @@ struct md* OneDayPcap::get_pcap_record_data() {
 
 	// check file
 	if (this->cur_pcap_idx == -1) {
-		this->cur_pcap_idx = 29;  //
+		this->cur_pcap_idx = 0;
 		this->open_pcap_file(++this->cur_pcap_idx);
 	}
 
