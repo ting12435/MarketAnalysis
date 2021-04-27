@@ -29,6 +29,16 @@
 	(*(((uint8_t*)ptr) + 4) >> 4 ) * (long)10 + \
 	(*(((uint8_t*)ptr) + 4) & 0xf) * (long)1 \
 )
+#define GET_LT(ptr) ( \
+	(*(((uint8_t*)ptr) + 0) >> 4 ) * 10000000 + \
+	(*(((uint8_t*)ptr) + 0) & 0xf) * 1000000 + \
+	(*(((uint8_t*)ptr) + 1) >> 4 ) * 100000 + \
+	(*(((uint8_t*)ptr) + 1) & 0xf) * 10000 + \
+	(*(((uint8_t*)ptr) + 2) >> 4 ) * 1000 + \
+	(*(((uint8_t*)ptr) + 2) & 0xf) * 100 + \
+	(*(((uint8_t*)ptr) + 3) >> 4 ) * 10 + \
+	(*(((uint8_t*)ptr) + 4) & 0xf) * 1 \
+)
 
 extern std::string pcap_folder;
 extern std::string pcap_market;
@@ -132,9 +142,9 @@ private:
 };
 
 class MD {
-
 public:
 	bool set_data(struct md*);
+	void print_detail();
 
 	static void print_md(struct md*);
 

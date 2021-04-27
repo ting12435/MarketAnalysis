@@ -114,24 +114,68 @@ bool MD::set_data(struct md *md_ptr) {
 
 			if (this->with_trade) {
 				this->trade_px = GET_PX(px_lt_ptr->px);
-				this->trade_lt = -1;
+				this->trade_lt = GET_LT(px_lt_ptr->lt);
+				px_lt_ptr++;
 			}
 			
-			for (auto i = 0; i < 5; i++) {
-				this->bid_px[i] = -1;
-				this->bid_lt[i] = -1;
-				this->ask_px[i] = -1;
-				this->ask_lt[i] = -1;
+			for (auto i = 0; i < this->b_cnt; i++) {
+				this->bid_px[i] = GET_PX(px_lt_ptr->px);
+				this->bid_lt[i] = GET_LT(px_lt_ptr->lt);
+				px_lt_ptr++;
 			}
 
 			break;
 	}
 
-	
-	
-	
+	this->vaild = true;
+}
 
-	this->vaild = false;
+void MD::print_detail() {
+	std::stringstream ss;
+
+	ss << "is_md: " << this->is_md << std::endl;
+
+	if (this->is_md) {
+		ss << "md_len: " << this->md_len << std::endl;
+		ss << "market: " << this->market << std::endl;
+		ss << "fmt_code: " << this->fmt_code << std::endl;
+		ss << "fmt_ver: " << this->fmt_ver << std::endl;
+		ss << "seq: " << this->seq << std::endl;
+		switch (this->fmt_code) {
+			case 1:
+				ss << "feedcode: " << this->feedcode << std::endl;
+				break;
+			case 6:
+				ss << "feedcode: " << this->feedcode << std::endl;
+				ss << "with_trade: " << this->with_trade << std::endl;
+				ss << "b_cnt: " << this->b_cnt << std::endl;
+				ss << "s_cnt: " << this->s_cnt << std::endl;
+				ss << "only_display_trade: " << this->only_display_trade << std::endl;
+				ss << "trade_limit: " << this->trade_limit << std::endl;
+				ss << "b_limit: " << this->b_limit << std::endl;
+				ss << "s_limit: " << this->s_limit << std::endl;
+				ss << "fast_price: " << this->fast_price << std::endl;
+				ss << "is_est: " << this->is_est << std::endl;
+				ss << "is_est_delay_open: " << this->is_est_delay_open << std::endl;
+				ss << "is_est_delay_close: " << this->is_est_delay_close << std::endl;
+				ss << "match_mode: " << this->match_mode << std::endl;
+				ss << "is_open: " << this->is_open << std::endl;
+				ss << "is_close: " << this->is_close << std::endl;
+				ss << "accm_trade_lot: " << this->accm_trade_lot << std::endl;
+				ss << "trade_px: " << this->trade_px << std::endl;
+				ss << "trade_lt: " << this->trade_lt << std::endl;
+				for (auto i = 0; i < 5; i++) {
+					ss << "bid_px: " << this->bid_px << std::endl;
+					ss << "bid_lt: " << this->bid_lt << std::endl;
+					ss << "ask_px: " << this->ask_px << std::endl;
+					ss << "ask_lt: " << this->ask_lt << std::endl;
+				}
+				
+				break;
+		}
+	}
+
+	ss << "vaild: " << this->vaild << std::endl;
 }
 
 void MD::print_md(struct md *md_ptr) {
@@ -217,8 +261,6 @@ void MD::print_md(struct md *md_ptr) {
 
 			// px_lt
 			// md_ptr->body.fmt_6_17.px_lt = (struct md_px_lt**)((char*)&md_ptr->body.fmt_6_17.accm_trade_lot + 1);
-
-
 			break;
 	}
 
