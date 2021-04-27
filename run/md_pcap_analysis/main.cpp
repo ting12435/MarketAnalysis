@@ -103,7 +103,7 @@ void uplimit() {
 			continue;
 		}
 
-		m.emblace(current_date, { "",  });
+		m.emplace(current_date, { "",  });
 	
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
