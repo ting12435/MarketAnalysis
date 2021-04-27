@@ -121,7 +121,7 @@ private:
 
 class MD {
 public:
-	static std::string print_md(struct md*);
+	static void print_md(struct md*);
 };
 
 bool check_md_frame(struct md*);
