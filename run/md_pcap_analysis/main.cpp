@@ -122,6 +122,11 @@ void uplimit() {
 
 					if (md.fmt_code == 0x6) {
 
+//
+if (current_date == Date("2021-04-27"))	{
+	std::cout << "add " << md.feedcode << std::endl;
+}
+
 						if (m[current_date].find(md.feedcode) == m[current_date].end())
 							m[current_date].emplace(md.feedcode, info{});
 					
@@ -197,7 +202,7 @@ void uplimit() {
 	for (const auto &date_d: m) {
 		cur_iter = m.find(date_d.first);
 		prv_iter = std::prev(cur_iter);
-		std::cout << (prv_iter == cur_iter) << " " << (prv_iter == m.end()) << std::endl;
+		std::cout << date_d.first << (prv_iter == cur_iter) << " " << (prv_iter == m.end()) << std::endl;
 	}
 
 	// analysis
