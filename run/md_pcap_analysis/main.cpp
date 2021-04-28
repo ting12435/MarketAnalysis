@@ -190,16 +190,17 @@ void uplimit() {
 					auto px2 = cur_iter->second[stock_d.first].first_px;
 					if (px1 > 0) {
 						denominator++;
-						std::cout << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
+						std::cout << prv_iter.first << "-" << cur_iter.first << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
 						if (px2 >= px1) {
 							fraction++;
 						}
 					}
 				}
 			}
+			std::cout << fraction << " " << denominator << " " << (double)fraction/denominator << std::endl;
 		}
 	}
-	std::cout << fraction << " " << denominator << " " << (double)fraction/denominator << std::endl;
+	
 
 	// output
 	/*
