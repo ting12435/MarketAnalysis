@@ -187,19 +187,19 @@ void uplimit() {
 	std::cout << "--------------------" << std::endl;
 
 	//
-	std::cout << "m.size()=" << m.size() << std::endl;
-	for (const auto &date_d: m) {
-		std::cout << date_d.first << " date_d.second.size()=" << date_d.second.size() << std::endl;
-	}
+	// std::cout << "m.size()=" << m.size() << std::endl;
+	// for (const auto &date_d: m) {
+	// 	std::cout << date_d.first << " date_d.second.size()=" << date_d.second.size() << std::endl;
+	// }
 
-	std::cout << "--------------------" << std::endl;
+	// std::cout << "--------------------" << std::endl;
 
 	//
 	std::cout << "m.size()=" << m.size() << std::endl;
 	for (const auto &date_d: m) {
 		cur_iter = m.find(date_d.first);
 		prv_iter = std::prev(cur_iter);
-		std::cout << date_d.first << " " << (prv_iter == cur_iter) << " " << (prv_iter == m.end()) << std::endl;
+		std::cout << date_d.first << " " << (prv_iter == cur_iter) << " " << (prv_iter == m.begin()) << " " << (prv_iter == m.end()) << std::endl;
 	}
 
 	// analysis
@@ -211,7 +211,8 @@ void uplimit() {
 
 		// std::cout << date_d.first << " cur_iter->second.size()=" << cur_iter->second.size() << std::endl;
 
-		if (prv_iter != m.end()) {
+		// if (prv_iter != m.end()) {
+		if (prv_iter != cur_iter) {
 
 			fraction = denominator = 0;
 
