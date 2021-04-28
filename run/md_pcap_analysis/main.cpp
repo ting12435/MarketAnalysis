@@ -234,7 +234,7 @@ void debug() {
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 			md.set_data(frame);
 			if (md.is_md && md.fmt_code == 0x6) {
-				if (md.feedcode == "2330  ") {
+				if (md.feedcode == "2009  ") {
 					md.print_detail();
 					// if (md.is_open) {
 						// print_hexdump((char*)frame, md.md_len);
