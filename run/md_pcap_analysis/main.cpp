@@ -141,17 +141,24 @@ void uplimit() {
 						}
 
 						// if (md.is_open) {  // 開盤註記
-							// if (md.feedcode == "1474  ") {
-							// 	print_hexdump((char*)frame, md.md_len);
-							// }
+							
 							if (prv_iter != cur_iter) {
 								// std::cout << "prv_iter " << prv_iter->first << std::endl;
 								if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
+
+									// if (md.feedcode == "1474  ") {
+									// 	// print_hexdump((char*)frame, md.md_len);
+									// 	md.print_detail();
+									// }
+
 									if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
-										if (md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1] >= prv_iter->second[md.feedcode].uplimit_px) {
+
+										auto px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+
+										if (px >= prv_iter->second[md.feedcode].uplimit_px) {
 											m[current_date][md.feedcode].open_higher_last_limit = true;
 										}
-										m[current_date][md.feedcode].open_px = md.trade_px;
+										m[current_date][md.feedcode].open_px = px;
 										m[current_date][md.feedcode].last_match_mode = true;
 									}
 								}
@@ -170,7 +177,10 @@ void uplimit() {
 	// output
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
-			std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.uplimit_px << " " << stock_d.second.open_higher_last_limit << " " << stock_d.second.open_px << std::endl;
+			std::cout << date_d.first << " " << stock_d.first << \
+					" uplimit_px=" << stock_d.second.uplimit_px << \
+					" open_higher_last_limit=" << stock_d.second.open_higher_last_limit << \
+					" open_px=" << stock_d.second.open_px << std::endl;
 		}
 	}
 
