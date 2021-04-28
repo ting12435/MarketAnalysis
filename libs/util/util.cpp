@@ -213,6 +213,7 @@ int pcap_file::read(char *buf, int buf_len) {
 
 // std::cout << "read in\n";
 
+
 	// read header
 	if (!this->read_record_header()) {
 		this->vaild = false;
@@ -231,6 +232,10 @@ int pcap_file::read(char *buf, int buf_len) {
 		read_len = -1;
 		goto read_finished;
 	}
+
+if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap") {
+	std::cout << "read_len=" << read_len << std::endl;
+}
 
 // std::cout << "read out\n";
 
