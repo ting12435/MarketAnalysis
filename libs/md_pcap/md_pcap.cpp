@@ -41,6 +41,9 @@ struct md* OneDayPcap::get_pcap_record_data() {
 	}
 
 	while (this->cur_pcap_file->read(this->record_data, sizeof(this->record_data)) < 0) {
+
+		this->error_ss << this->cur_pcap_file->get_error();
+		
 		this->close_pcap_file(this->cur_pcap_idx);
 		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
 			this->error_ss << this->cur_pcap_file->get_error();
