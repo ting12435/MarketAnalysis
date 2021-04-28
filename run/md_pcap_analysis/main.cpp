@@ -185,11 +185,14 @@ void uplimit() {
 	std::cout << "--------------------" << std::endl;
 
 	// analysis
-	int fraction = 0, denominator = 0;
+	int fraction, denominator;
 	for (const auto &date_d: m) {
 		cur_iter = m.find(date_d.first);
 		prv_iter = std::prev(cur_iter);
 		if (prv_iter != m.end()) {
+
+			fraction = denominator = 0;
+
 			for (const auto &stock_d: date_d.second) {
 				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
 					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
@@ -204,6 +207,7 @@ void uplimit() {
 					}
 				}
 			}
+
 			std::cout << prv_iter->first << "-" << cur_iter->first << " "  << fraction << " " << denominator << " " << (double)fraction/denominator << std::endl;
 		}
 	}
