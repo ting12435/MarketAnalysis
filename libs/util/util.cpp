@@ -204,6 +204,7 @@ pcap_file::pcap_file(std::string filename) {
 
 pcap_file::~pcap_file() {
 	// close file
+	std::cout << "close " << this->filename << std::endl;
 	this->ifs.close();
 }
 
@@ -223,7 +224,9 @@ int pcap_file::read(char *buf, int buf_len) {
 
 // std::cout << "read aa\n";
 	read_len = MIN((int)this->current_record_hdr.incl_len, buf_len);
-// std::cout << "read_len=" << read_len << std::endl;
+
+if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
+std::cout << "read_len=" << read_len << std::endl;
 
 	// read data
 	if (!this->read_record_data(buf, read_len)) {
@@ -355,7 +358,7 @@ bool pcap_file::read_record_data(char *buf, int len) {
 		buf[i] = c;
 	}
 
-	if (errno != 0) return false;
+	// if (errno != 0) return false;
 
 	return true;
 }
