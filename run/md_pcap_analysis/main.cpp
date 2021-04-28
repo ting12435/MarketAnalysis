@@ -112,14 +112,17 @@ void uplimit() {
 			
 			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
+				if (frame->esc_code != 27)
+					continue;
+
 				md.set_data(frame);
 				
-				if (md.is_md) {
-
-					if (m[current_date].find(md.feedcode) == m[current_date].end())
-						m[current_date].emplace(md.feedcode, info{});
+				if (md.is_md) {					
 
 					if (md.fmt_code == 0x6) {
+
+						if (m[current_date].find(md.feedcode) == m[current_date].end())
+							m[current_date].emplace(md.feedcode, info{});
 					
 						// 漲停成交
 						if (md.trade_limit == 0x2) {
@@ -181,15 +184,18 @@ void uplimit() {
 	// analysis
 	int fraction = 0, denominator = 0;
 	for (const auto &date_d: m) {
+std::cout << date_d.first << std::endl;
 		cur_iter = m.find(date_d.first);
 		prv_iter = std::prev(cur_iter);
 		if (prv_iter != cur_iter) {
 			for (const auto &stock_d: date_d.second) {
+std::cout << stock_d.first << std::endl;
 				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
 					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
 
 					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
 					auto px2 = cur_iter->second[stock_d.first].first_px;
+std::cout << px1 << " " << px2 << std::endl;
 					if (px1 > 0) {
 						denominator++;
 						std::cout << prv_iter->first << "-" << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
