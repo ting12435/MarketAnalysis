@@ -81,7 +81,7 @@ std::cout << fn_str << std::endl;
 	this->cur_pcap_file = new pcap_file(fn_str);
 	if (!*(this->cur_pcap_file)) {
 		this->error_ss << this->cur_pcap_file->get_error();
-std::cout << this->error_ss.str() << std::endl;
+// std::cout << this->error_ss.str() << std::endl;
 		return false;
 	}
 

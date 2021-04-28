@@ -183,7 +183,7 @@ if (current_date == Date("2021-04-27"))	{
 				}
 
 			}
-			std::cout << "error: " << one_day_pcap.get_error() << std::endl;
+			// std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 		}
 
 		current_date.add(1);
@@ -208,36 +208,36 @@ if (current_date == Date("2021-04-27"))	{
 	}
 
 	// analysis
-	// int fraction, denominator;
+	int fraction, denominator;
 	// std::cout << "m.size()=" << m.size() << std::endl;
-	// for (const auto &date_d: m) {
-	// 	cur_iter = m.find(date_d.first);
-	// 	prv_iter = std::prev(cur_iter);
+	for (const auto &date_d: m) {
+		cur_iter = m.find(date_d.first);
+		prv_iter = std::prev(cur_iter);
 
-	// 	std::cout << date_d.first << " cur_iter->second.size()=" << cur_iter->second.size() << std::endl;
+		// std::cout << date_d.first << " cur_iter->second.size()=" << cur_iter->second.size() << std::endl;
 
-	// 	if (prv_iter != m.end()) {
+		if (prv_iter != m.end()) {
 
-	// 		fraction = denominator = 0;
+			fraction = denominator = 0;
 
-	// 		for (const auto &stock_d: date_d.second) {
-	// 			if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
-	// 				cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
-	// 				auto px1 = prv_iter->second[stock_d.first].uplimit_px;
-	// 				auto px2 = cur_iter->second[stock_d.first].first_px;
-	// 				if (px1 > 0) {
-	// 					denominator++;
-	// 					std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
-	// 					if (px2 >= px1) {
-	// 						fraction++;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
+			for (const auto &stock_d: date_d.second) {
+				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
+					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
+					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
+					auto px2 = cur_iter->second[stock_d.first].first_px;
+					if (px1 > 0) {
+						denominator++;
+						std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
+						if (px2 >= px1) {
+							fraction++;
+						}
+					}
+				}
+			}
 
-	// 		std::cout << prv_iter->first << "-" << cur_iter->first << " "  << fraction << " " << denominator << " " << (double)fraction/denominator << std::endl;
-	// 	}
-	// }
+			std::cout << prv_iter->first << "-" << cur_iter->first << " "  << fraction << " " << denominator << " " << (double)fraction/denominator << std::endl;
+		}
+	}
 	
 
 	// output
