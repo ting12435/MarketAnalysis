@@ -190,10 +190,6 @@ std::cout << "m[date_d.first].size()=" << m[date_d.first].size() << std::endl;
 		cur_iter = m.find(date_d.first);
 		prv_iter = std::prev(cur_iter);
 std::cout << (prv_iter == m.begin()) << " " << (prv_iter == m.end()) << " " << (prv_iter == cur_iter) << std::endl;
-std::cout << "cur_iter->first=" << cur_iter->first << std::endl;
-std::cout << "prv_iter->first=" << prv_iter->first << std::endl;
-std::cout << "cur_iter->second.size()=" << cur_iter->second.size() << std::endl;
-std::cout << "prv_iter->second.size()=" << prv_iter->second.size() << std::endl;
 		if (prv_iter != m.end()) {
 			for (const auto &stock_d: date_d.second) {
 std::cout << stock_d.first << std::endl;
