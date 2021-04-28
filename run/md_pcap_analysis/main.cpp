@@ -198,15 +198,16 @@ void uplimit() {
 	}
 
 	// output
-	// for (const auto &date_d: m) {
-	// 	for (const auto &stock_d: date_d.second) {
-	// 		std::cout << date_d.first << " " << stock_d.first << \
-	// 				" uplimit_px=" << stock_d.second.uplimit_px << \
-	// 				" open_higher_last_limit=" << stock_d.second.open_higher_last_limit << \
-	// 				" open_px=" << stock_d.second.open_px << std::endl;
-	// 	}
-	// }
-
+	/*
+	for (const auto &date_d: m) {
+		for (const auto &stock_d: date_d.second) {
+			std::cout << date_d.first << " " << stock_d.first << \
+					" uplimit_px=" << stock_d.second.uplimit_px << \
+					" open_higher_last_limit=" << stock_d.second.open_higher_last_limit << \
+					" open_px=" << stock_d.second.open_px << std::endl;
+		}
+	}
+	*/
 }
 
 void debug() {
