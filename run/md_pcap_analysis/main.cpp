@@ -194,7 +194,7 @@ void uplimit() {
 					auto px2 = cur_iter->second[stock_d.first].first_px;
 					if (px1 > 0) {
 						denominator++;
-						std::cout << prv_iter->first << "-" << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
+						std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
 						if (px2 >= px1) {
 							fraction++;
 						}
@@ -223,7 +223,7 @@ void debug() {
 	struct md *frame;
 	MD md;
 
-	Date current_date("2021-04-26");
+	Date current_date("2021-04-28");
 	OneDayPcap one_day_pcap(current_date);
 	if (!one_day_pcap) {
 		std::cout << "error: " << one_day_pcap.get_error() << std::endl;
@@ -231,7 +231,7 @@ void debug() {
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 			md.set_data(frame);
 			if (md.is_md && md.fmt_code == 0x6) {
-				if (md.feedcode == "1474  ") {
+				if (md.feedcode == "2440  ") {
 					md.print_detail();
 					// if (md.is_open) {
 						// print_hexdump((char*)frame, md.md_len);
