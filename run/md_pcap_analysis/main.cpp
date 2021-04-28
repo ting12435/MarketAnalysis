@@ -147,11 +147,11 @@ void uplimit() {
 							if (prv_iter != cur_iter) {
 								// std::cout << "prv_iter " << prv_iter->first << std::endl;
 								if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
-									if (!m[current_date][md.feedcode].last_match_mode) {
+									if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
 										if (md.trade_px >= prv_iter->second[md.feedcode].uplimit_px) {
 											m[current_date][md.feedcode].open_higher_last_limit = true;
-											m[current_date][md.feedcode].open_px = md.trade_px;
 										}
+										m[current_date][md.feedcode].open_px = md.trade_px;
 										m[current_date][md.feedcode].last_match_mode = true;
 									}
 								}
