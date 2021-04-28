@@ -197,7 +197,7 @@ pcap_file::pcap_file(std::string filename) {
 	if (this) {
 		if (!this->read_global_header()) {
 			this->vaild = false;
-			this->error_ss << "read_global_header error\n";
+			this->error_ss << this->filename << " read_global_header error\n";
 		}
 	}
 }
@@ -216,7 +216,7 @@ int pcap_file::read(char *buf, int buf_len) {
 	// read header
 	if (!this->read_record_header()) {
 		this->vaild = false;
-		this->error_ss << "read_record_header error\n";
+		this->error_ss << this->filename << " read_record_header error\n";
 		goto read_finished;
 	}
 
@@ -227,7 +227,7 @@ int pcap_file::read(char *buf, int buf_len) {
 	// read data
 	if (!this->read_record_data(buf, read_len)) {
 		this->vaild = false;
-		this->error_ss << "read_record_data error\n";
+		this->error_ss << this->filename << " read_record_data error\n";
 		read_len = -1;
 		goto read_finished;
 	}
