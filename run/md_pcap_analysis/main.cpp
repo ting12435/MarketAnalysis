@@ -177,11 +177,10 @@ void uplimit() {
 	}
 
 	// analysis
+	int fraction = 0, denominator = 0;
 	for (const auto &date_d: m) {
-
 		cur_iter = m.find(date_d.first);
 		prv_iter = std::prev(cur_iter);
-
 		if (prv_iter != cur_iter) {
 			for (const auto &stock_d: date_d.second) {
 				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
@@ -189,13 +188,18 @@ void uplimit() {
 
 					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
 					auto px2 = cur_iter->second[stock_d.first].first_px;
-					if (px1 > 0 && px2 >= px1) {
+					if (px1 > 0) {
+						denominator++;
 						std::cout << stock_d.first << " " << px1 << " " << px2 << std::endl;
+						if (px2 >= px1) {
+							fraction++;
+						}
 					}
 				}
 			}
 		}
 	}
+	std::cout << fraction << " " << denominator << " " << fraction/denominator << std::endl;
 
 	// output
 	/*
