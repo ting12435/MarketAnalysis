@@ -6,8 +6,8 @@
 #include "md_pcap/md_pcap.h"
 #include "util/util.h"
 
-// #define PCAP_FOLDER "/data/database/2in1/tcpdump/"
-#define PCAP_FOLDER "/data/tim/"
+#define PCAP_FOLDER "/data/database/2in1/tcpdump/"
+// #define PCAP_FOLDER "/data/tim/"
 
 void uplimit();
 void debug();
