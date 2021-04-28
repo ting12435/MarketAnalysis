@@ -183,21 +183,15 @@ void uplimit() {
 
 	// analysis
 	int fraction = 0, denominator = 0;
-std::cout << "m.size()=" << m.size() << std::endl;
 	for (const auto &date_d: m) {
-std::cout << date_d.first << std::endl;
-std::cout << "m[date_d.first].size()=" << m[date_d.first].size() << std::endl;
 		cur_iter = m.find(date_d.first);
 		prv_iter = std::prev(cur_iter);
-std::cout << (prv_iter == m.begin()) << " " << (prv_iter == m.end()) << " " << (prv_iter == cur_iter) << std::endl;
 		if (prv_iter != m.end()) {
 			for (const auto &stock_d: date_d.second) {
-std::cout << stock_d.first << std::endl;
 				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
 					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
 					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
 					auto px2 = cur_iter->second[stock_d.first].first_px;
-std::cout << px1 << " " << px2 << std::endl;
 					if (px1 > 0) {
 						denominator++;
 						std::cout << prv_iter->first << "-" << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
