@@ -6,8 +6,8 @@
 #include "md_pcap/md_pcap.h"
 #include "util/util.h"
 
-// #define PCAP_FOLDER "/data/database/2in1/tcpdump/"
-#define PCAP_FOLDER "/data/tim/"
+#define PCAP_FOLDER "/data/database/2in1/tcpdump/"
+// #define PCAP_FOLDER "/data/tim/"
 
 void uplimit();
 void debug();
@@ -115,7 +115,7 @@ void uplimit() {
 
 //
 if (current_date == Date("2021-04-27"))	{
-	std::cout << "add " << frame->esc_code << std::endl;
+	printf("add %u\n", frame->esc_code);
 }
 
 				if (frame->esc_code != 27)
