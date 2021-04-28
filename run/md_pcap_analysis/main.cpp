@@ -223,7 +223,7 @@ void debug() {
 	struct md *frame;
 	MD md;
 
-	Date current_date("2021-04-28");
+	Date current_date("2021-04-26");
 	OneDayPcap one_day_pcap(current_date);
 	if (!one_day_pcap) {
 		std::cout << "error: " << one_day_pcap.get_error() << std::endl;
@@ -231,7 +231,7 @@ void debug() {
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 			md.set_data(frame);
 			if (md.is_md && md.fmt_code == 0x6) {
-				if (md.feedcode == "2440  ") {
+				if (md.feedcode == "2330  ") {
 					md.print_detail();
 					// if (md.is_open) {
 						// print_hexdump((char*)frame, md.md_len);
