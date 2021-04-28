@@ -113,11 +113,6 @@ void uplimit() {
 			
 			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
-//
-if (current_date == Date("2021-04-27"))	{
-	printf("add %u\n", frame->esc_code);
-}
-
 				if (frame->esc_code != 27)
 					continue;
 
