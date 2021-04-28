@@ -183,8 +183,10 @@ void uplimit() {
 
 	// analysis
 	int fraction = 0, denominator = 0;
+std::cout << "m.size()=" << m.size() << std::endl;
 	for (const auto &date_d: m) {
 std::cout << date_d.first << std::endl;
+std::cout << "m[date_d.first].size()=" << m[date_d.first].size() << std::endl;
 		cur_iter = m.find(date_d.first);
 		prv_iter = std::prev(cur_iter);
 		if (prv_iter != cur_iter) {
