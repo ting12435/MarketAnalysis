@@ -117,7 +117,7 @@ void uplimit() {
 				if (md.is_md) {
 
 					if (m[current_date].find(md.feedcode) == m[current_date].end())
-						m[current_date].emplace(md.feedcode, struct info{};
+						m[current_date].emplace(md.feedcode, struct info{});
 
 					if (md.fmt_code == 0x6) {
 					
