@@ -79,7 +79,7 @@ void OneDayPcap::close_pcap_file(int idx) {
 }
 
 /********** MD **********/
-bool MD::set_data(struct md *md_ptr) {
+void MD::set_data(struct md *md_ptr) {
 	uint8_t c;
 	struct md_px_lt *px_lt_ptr;
 	uint8_t *p;

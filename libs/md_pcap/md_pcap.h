@@ -146,7 +146,7 @@ private:
 
 class MD {
 public:
-	bool set_data(struct md*);
+	void set_data(struct md*);
 	void print_detail();
 
 	static void print_md(struct md*);
