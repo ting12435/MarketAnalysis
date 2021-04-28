@@ -1,5 +1,6 @@
 #include <map>
 #include <iterator>
+#include <iomanip>
 #include <cassert>
 #include <getopt.h>
 
@@ -199,7 +200,7 @@ void uplimit() {
 			}
 		}
 	}
-	std::cout << fraction << " " << denominator << " " << std::setprecision(2) << (double)fraction/denominator << std::endl;
+	std::cout << fraction << " " << denominator << " " << setprecision(2) << (double)fraction/denominator << std::endl;
 
 	// output
 	/*
