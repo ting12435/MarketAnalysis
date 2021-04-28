@@ -183,13 +183,11 @@ if (current_date == Date("2021-04-27"))	{
 				}
 
 			}
-			
+			std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 		}
 
 		current_date.add(1);
 	}
-
-	std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 
 	std::cout << "--------------------" << std::endl;
 
