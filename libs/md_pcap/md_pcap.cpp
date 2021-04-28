@@ -45,7 +45,7 @@ struct md* OneDayPcap::get_pcap_record_data() {
 		this->error_ss << this->cur_pcap_file->get_error();
 
 		this->close_pcap_file(this->cur_pcap_idx);
-		
+
 		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
 			this->error_ss << this->cur_pcap_file->get_error();
 			return nullptr;
@@ -71,13 +71,13 @@ bool OneDayPcap::open_pcap_file(int idx) {
 	std::stringstream fn_ss;
 	fn_ss << this->date_folder << "/" << pcap_market << "_" << this->date_str << ".pcap" << (idx == 0 ? "" : std::to_string(idx));
 	std::string fn_str = fn_ss.str();
-std::cout << fn_str << std::endl;
 
 	if (!File::file_exists(fn_str)) {
 		this->error_ss << fn_str << " not exists" << std::endl;
 		return false;
 	}
 
+std::cout << fn_str << std::endl;
 	this->cur_pcap_file = new pcap_file(fn_str);
 	if (!*(this->cur_pcap_file)) {
 		this->error_ss << this->cur_pcap_file->get_error();
