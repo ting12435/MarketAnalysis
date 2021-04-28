@@ -176,6 +176,8 @@ void uplimit() {
 		current_date.add(1);
 	}
 
+	std::cout << "--------------------" << std::endl;
+
 	// analysis
 	int fraction = 0, denominator = 0;
 	for (const auto &date_d: m) {
