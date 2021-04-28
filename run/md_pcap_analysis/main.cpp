@@ -192,7 +192,7 @@ std::cout << date_d.first << std::endl;
 std::cout << stock_d.first << std::endl;
 				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
 					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
-
+std::cout << "aaaaaaaaa" << std::endl;
 					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
 					auto px2 = cur_iter->second[stock_d.first].first_px;
 std::cout << px1 << " " << px2 << std::endl;
