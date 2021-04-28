@@ -130,7 +130,6 @@ void uplimit() {
 								// print_hexdump((char*)frame, md.md_len);
 
 								_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
-
 								m[current_date][md.feedcode].uplimit_px = _px;
 
 							// }
@@ -183,20 +182,30 @@ void uplimit() {
 		cur_iter = m.find(date_d.first);
 		prv_iter = std::prev(cur_iter);
 
-		for (const auto &stock_d: date_d.second) {
+		if (prv_iter != cur_iter) {
+			for (const auto &stock_d: date_d.second) {
+				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
+					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
 
+					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
+					auto px2 = cur_iter->second[stock_d.first].first_px;
+					if (px2 >= px1) {
+						std::cout << stock_d.first << " " << px1 << " " << px2 << std::endl;
+					}
+				}
+			}
 		}
 	}
 
 	// output
-	for (const auto &date_d: m) {
-		for (const auto &stock_d: date_d.second) {
-			std::cout << date_d.first << " " << stock_d.first << \
-					" uplimit_px=" << stock_d.second.uplimit_px << \
-					" open_higher_last_limit=" << stock_d.second.open_higher_last_limit << \
-					" open_px=" << stock_d.second.open_px << std::endl;
-		}
-	}
+	// for (const auto &date_d: m) {
+	// 	for (const auto &stock_d: date_d.second) {
+	// 		std::cout << date_d.first << " " << stock_d.first << \
+	// 				" uplimit_px=" << stock_d.second.uplimit_px << \
+	// 				" open_higher_last_limit=" << stock_d.second.open_higher_last_limit << \
+	// 				" open_px=" << stock_d.second.open_px << std::endl;
+	// 	}
+	// }
 
 }
 
