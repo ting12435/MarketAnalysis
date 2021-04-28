@@ -199,7 +199,7 @@ void uplimit() {
 			}
 		}
 	}
-	std::cout << fraction << " " << denominator << " " << setprecision(2) << fraction/denominator << std::endl;
+	std::cout << fraction << " " << denominator << " " << setprecision(2) << (double)fraction/denominator << std::endl;
 
 	// output
 	/*
