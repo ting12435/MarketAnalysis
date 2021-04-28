@@ -90,15 +90,15 @@ void uplimit() {
 
 	struct info {
 		int uplimit_px;
-		bool open_higher_last_limit;
-		int open_px;
+		int first_px;
 		bool last_match_mode;
 	};
 
-	std::map<Date, std::map<std::string, struct info>> m;  // K:data V:{K:stock V:uplimit_price}
+	std::map<Date, std::map<std::string, struct info>> m;
 	std::map<Date, std::map<std::string, struct info>>::iterator cur_iter, prv_iter;
 	struct md *frame;
 	MD md;
+	int _px;
 
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
@@ -107,62 +107,65 @@ void uplimit() {
 		if (!one_day_pcap) {
 			std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 		} else {
-			// m.emplace(std::make_pair(current_date, { "",  {}}));
+
 			m.emplace(current_date, std::map<std::string, struct info>());
-			cur_iter = m.find(current_date);
-			prv_iter = std::prev(cur_iter);
-
-			// std::cout << "cur_iter " << cur_iter->first << std::endl;
-			// std::cout << "prv_iter " << prv_iter->first << std::endl;
-
+			
 			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 
 				md.set_data(frame);
 				
 				if (md.is_md) {
 
+					if (m[current_date].find(md.feedcode) == m[current_date].end())
+						m[current_date].emplace(md.feedcode, {});
+
 					if (md.fmt_code == 0x6) {
 					
-						// md.print_detail();
-						// print_hexdump((char*)frame, 500);
-						// exit(-1);
+						// 漲停成交
+						if (md.trade_limit == 0x2) {
 
-						if (md.trade_limit == 0x2) {  // 漲停成交
-
-							if (m[current_date].find(md.feedcode) == m[current_date].end()) {
+							// if (m[current_date].find(md.feedcode) == m[current_date].end()) {
 
 								// md.print_detail();
 								// print_hexdump((char*)frame, md.md_len);
 
-								// m[current_date][md.feedcode] = md.trade_px;
-								m[current_date][md.feedcode].uplimit_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+								_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
 
-							}
+								m[current_date][md.feedcode].uplimit_px = _px;
+
+							// }
+						}
+
+						// first px after 09:00
+						if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
+							_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+							m[current_date][md.feedcode].first_px = _px;
+							m[current_date][md.feedcode].last_match_mode = true;
 						}
 
 						// if (md.is_open) {  // 開盤註記
 							
-							if (prv_iter != cur_iter) {
-								// std::cout << "prv_iter " << prv_iter->first << std::endl;
-								if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
+							// if (prv_iter != cur_iter) {
+							// 	// std::cout << "prv_iter " << prv_iter->first << std::endl;
+							// 	if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
 
-									// if (md.feedcode == "1474  ") {
-									// 	// print_hexdump((char*)frame, md.md_len);
-									// 	md.print_detail();
-									// }
+							// 		// if (md.feedcode == "1474  ") {
+							// 		// 	// print_hexdump((char*)frame, md.md_len);
+							// 		// 	md.print_detail();
+							// 		// }
 
-									if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
+							// 		if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
 
-										auto px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+							// 			auto px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
 
-										if (px >= prv_iter->second[md.feedcode].uplimit_px) {
-											m[current_date][md.feedcode].open_higher_last_limit = true;
-										}
-										m[current_date][md.feedcode].open_px = px;
-										m[current_date][md.feedcode].last_match_mode = true;
-									}
-								}
-							}
+							// 			if (px >= prv_iter->second[md.feedcode].uplimit_px) {
+							// 				m[current_date][md.feedcode].open_higher_last_limit = true;
+							// 			}
+							// 			m[current_date][md.feedcode].open_px = px;
+							// 			m[current_date][md.feedcode].last_match_mode = true;
+							// 		}
+							// 	}
+							// }
 						// }
 					}
 				}
@@ -172,6 +175,17 @@ void uplimit() {
 		}
 
 		current_date.add(1);
+	}
+
+	// analysis
+	for (const auto &date_d: m) {
+
+		cur_iter = m.find(date_d.first);
+		prv_iter = std::prev(cur_iter);
+
+		for (const auto &stock_d: date_d.second) {
+
+		}
 	}
 
 	// output
