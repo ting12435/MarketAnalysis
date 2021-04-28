@@ -274,7 +274,8 @@ bool pcap_file::read_record_header() {
 	char ts_sec_reverse[8], ts_usec_reverse[8], incl_len_reverse[8], orig_len_reverse[8];
 	struct tm *timeinfo;
 
-// std::cout << "read_record_header 0\n";
+if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
+std::cout << "read_record_header 0\n";
 // std::cout << "this->ifs.good()=" << this->ifs.good() << std::endl;
 
 	for (i = 0; i < LEN; i=i+2) {
@@ -283,7 +284,9 @@ bool pcap_file::read_record_header() {
 		if (c == EOF) return false;
 		snprintf((char*)&buf[i], 2+1, "%02x", c);
 	}
-// std::cout << "read_record_header 1\n";
+
+if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
+std::cout << "read_record_header 1\n";
 
 	memcpy(ts_sec_reverse, &buf[0], 8);
 	memcpy(ts_usec_reverse, &buf[8], 8);
@@ -298,7 +301,8 @@ bool pcap_file::read_record_header() {
 	ts_sec[8] = '\0';
 	this->current_record_hdr.ts_sec = strtol(ts_sec, NULL, 16) % 86400;
 
-// std::cout << "read_record_header 2\n";
+if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
+std::cout << "read_record_header 2\n";
 
 	//  timeinfo
 	// timeinfo = localtime((time_t*)&this->ts_sec);
@@ -312,7 +316,8 @@ bool pcap_file::read_record_header() {
 	ts_usec[8] = '\0';
 	this->current_record_hdr.ts_usec = strtol(ts_usec, NULL, 16);
 
-// std::cout << "read_record_header 3\n";
+if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
+std::cout << "read_record_header 3\n";
 
 	// incl_len
 	memcpy(&incl_len[0], &incl_len_reverse[6], 2);
@@ -332,7 +337,8 @@ bool pcap_file::read_record_header() {
 	orig_len[8] = '\0';
 	this->current_record_hdr.orig_len = strtol(orig_len, NULL, 16);
 
-// std::cout << "read_record_header 5\n";
+if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
+std::cout << "read_record_header 5\n";
 
 	if (this->current_record_hdr.incl_len > 1518 || this->current_record_hdr.orig_len  > 1518) return false;
 
