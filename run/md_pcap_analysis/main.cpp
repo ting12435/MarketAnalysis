@@ -189,7 +189,7 @@ void uplimit() {
 
 					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
 					auto px2 = cur_iter->second[stock_d.first].first_px;
-					if (px2 >= px1) {
+					if (px1 > 0 && px2 >= px1) {
 						std::cout << stock_d.first << " " << px1 << " " << px2 << std::endl;
 					}
 				}
