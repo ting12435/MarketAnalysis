@@ -91,7 +91,8 @@ void uplimit() {
 	struct info {
 		int uplimit_px;
 		int first_px;
-		bool last_match_mode;
+		// bool last_match_mode;
+		bool after_090000;
 	};
 
 	std::map<Date, std::map<std::string, struct info>> m;
@@ -139,10 +140,12 @@ void uplimit() {
 						}
 
 						// first px after 09:00
-						if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
+						// if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
+						if (!m[current_date][md.feedcode].after_090000 && md.match_time_sec >= 90000) {
 							_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
 							m[current_date][md.feedcode].first_px = _px;
-							m[current_date][md.feedcode].last_match_mode = true;
+							// m[current_date][md.feedcode].last_match_mode = true;
+							m[current_date][md.feedcode].after_090000 = true;
 						}
 
 						// if (md.is_open) {  // 開盤註記
