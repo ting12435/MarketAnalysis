@@ -48,7 +48,7 @@ struct md* OneDayPcap::get_md() {
 			else if (record_len < 42)
 				continue;
 			else {    // UDP
-				md_ptr = this->record_data + 42;
+				md_ptr = (struct md*)((char*)&this->record_data + 42);
 				if (md_ptr->esc_code != 27)
 					continue;
 			}
@@ -56,7 +56,6 @@ struct md* OneDayPcap::get_md() {
 		this->record_data_st_ptr = this->record_data + 42;
 		this->record_data_ed_ptr = this->record_data_st_ptr + record_len;
 	}
-	// this->record_data_ptr = (char*)&this->record_data + 42;
 print_hexdump(this->record_data, record_len);
 printf("record_len=%d\n", record_len);
 printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
