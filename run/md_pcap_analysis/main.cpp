@@ -263,13 +263,18 @@ void large_amount() {
 				}
 			}
 		}
+
+		current_date.add(1);
 	}
+
+	std::cout << "--------------------" << std::endl;
 
 	// analysis
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
 
-			std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.accm_trade_lot << std::endl;
+			if (stock_d.first == "2330  ")
+				std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.accm_trade_lot << std::endl;
 
 		}
 	}
