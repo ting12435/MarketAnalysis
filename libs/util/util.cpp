@@ -225,6 +225,9 @@ int pcap_file::read(char *buf, int buf_len) {
 // std::cout << "read aa\n";
 	read_len = MIN((int)this->current_record_hdr.incl_len, buf_len);
 
+if (read_len == 0) {
+
+}
 // if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
 // std::cout << "read_len=" << read_len << std::endl;
 
@@ -263,7 +266,10 @@ bool pcap_file::read_global_header() {
 	}
 // std::cout << std::endl;
 
-	// memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
+	memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
+	print_hexdump(buf, LEN);
+	this->print_global_header(&this->global_hdr);
+	exit(-1);
 
 	return true;
 }
@@ -362,5 +368,24 @@ bool pcap_file::read_record_data(char *buf, int len) {
 
 	return true;
 }
+
+
+void pcap_file::print_global_header(struct pcap_global_hdr *global_hdr) {
+	printf("magic_number: 0x%04d\nversion_major: %u\nversion_minor: %u\nthiszone: %d\nsigfigs: %u\nsnaplen: %u\nnetwork: %u\n",
+		global_hdr->magic_number,
+		global_hdr->version_major,
+		global_hdr->version_minor,
+		global_hdr->thiszone,
+		global_hdr->sigfigs,
+		global_hdr->snaplen,
+		global_hdr->network);
+}
+
+void pcap_file::print_record_header(struct pcap_record_hdr *record_hdr) {
+
+}
+
+
+
 
 

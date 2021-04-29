@@ -64,7 +64,7 @@ public:
 
 	operator bool() const { return this->vaild; }
 
-	struct pcap_global_hdr {
+	struct __attribute__((__packed__)) pcap_global_hdr {
 		uint32_t magic_number;   /* magic number (0xa1b2c3d4 or 0xd4c3b2a1) */
 		uint16_t version_major;  /* major version number */
 		uint16_t version_minor;  /* minor version number */
@@ -74,7 +74,7 @@ public:
 		uint32_t network;        /* data link type */
 	} global_hdr;
 
-	struct pcap_record_hdr {
+	struct __attribute__((__packed__)) pcap_record_hdr {
 		uint32_t ts_sec;         /* timestamp seconds */
 		uint32_t ts_usec;        /* timestamp microseconds */
 		uint32_t incl_len;       /* number of octets of packet saved in file */
@@ -88,6 +88,9 @@ private:
 	bool read_global_header();
 	bool read_record_header();
 	bool read_record_data(char *buf, int len);
+
+	void print_global_header(struct pcap_global_hdr*);
+	void print_record_header(struct pcap_record_hdr*);
 
 	bool vaild;
 	std::stringstream error_ss;
