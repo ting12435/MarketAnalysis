@@ -41,10 +41,11 @@ void test3() {
 
 	m["a"] = 1;
 	m["b"] = 1;
+	m["z"] = 1;
 
 	std::cout << "m.size(): " << m.size() << std::endl;
 	if (m.size() > 0) {
-		iter = std::prev(m.find("b"));
+		iter = std::prev(m.find("z"));
 		std::cout << "m.begin() == m.end(): " << (m.begin() == m.end()) << std::endl;
 		std::cout << "iter == m.begin(): " << (iter == m.begin()) << std::endl;
 		std::cout << "iter == m.end(): " << (iter == m.end()) << std::endl;
