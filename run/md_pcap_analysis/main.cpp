@@ -263,6 +263,9 @@ void large_amount() {
 
 					if (md.feedcode == "2330  ") {
 						std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
+
+						if (md.match_time_sec > 90000)
+							print_hexdump(frame, md.md_len);
 					}
 
 				}

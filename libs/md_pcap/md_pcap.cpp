@@ -144,6 +144,9 @@ void MD::set_data(struct md *md_ptr) {
 				this->trade_px = GET_PX(px_lt_ptr->px);
 				this->trade_lt = GET_LT(px_lt_ptr->lt);
 				px_lt_ptr++;
+			} else {
+				this->trade_px = 0;
+				this->trade_lt = 0;
 			}
 			
 			for (auto i = 0; i < this->b_cnt; i++) {
