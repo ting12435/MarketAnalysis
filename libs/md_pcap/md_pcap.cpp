@@ -28,6 +28,7 @@ OneDayPcap::OneDayPcap(Date d) {
 
 	this->record_data_st_ptr = nullptr;
 	this->record_data_ed_ptr = nullptr;
+printf("record_data=%p\n", this->record_data);
 }
 
 struct md* OneDayPcap::get_md() {
@@ -35,6 +36,7 @@ struct md* OneDayPcap::get_md() {
 	int record_len;
 	struct md *md_ptr;
 	char *p;
+
 
 	if ((this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) || 
 		(this->record_data_st_ptr > this->record_data_ed_ptr)) {
@@ -45,8 +47,14 @@ struct md* OneDayPcap::get_md() {
 	}
 	// this->record_data_ptr = (char*)&this->record_data + 42;
 
+printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
+printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
+
 	p = this->record_data_st_ptr;
 	this->record_data_st_ptr + bcd_to_int(md_ptr->hdr.msg_len, 2);
+printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
+printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
+printf("p=%p\n", this->p);
 	return (struct md*)p;
 }
 
