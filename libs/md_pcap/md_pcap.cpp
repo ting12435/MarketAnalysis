@@ -35,7 +35,6 @@ struct md* OneDayPcap::get_md() {
 
 	int record_data_len;
 	struct md *md_ptr;
-	char *p;
 
 	if (this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) {
 
@@ -55,12 +54,11 @@ struct md* OneDayPcap::get_md() {
 	}
 // print_hexdump(this->record_data, record_data_len);
 // printf("---------------------------------\n");
-// printf("record_data_len=%d\n", record_data_len);
+printf("record_data_len=%d\n", record_data_len);
 // printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
 // printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
 
-	p = this->record_data_st_ptr;
-	md_ptr = (struct md*)p;
+	md_ptr = this->record_data_st_ptr;
 	int msg_len = bcd_to_int(md_ptr->hdr.msg_len, 2);
 	this->record_data_st_ptr += msg_len;
 
@@ -75,7 +73,7 @@ struct md* OneDayPcap::get_md() {
 // printf("p=%p\n", p);
 // if (record_data_len == 0)
 // exit(-1);
-	return (struct md*)p;
+	return md_ptr;
 }
 
 int OneDayPcap::get_pcap_record_data() {
