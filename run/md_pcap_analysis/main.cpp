@@ -132,7 +132,7 @@ void uplimit() {
 					
 						// up limit
 						if (!info_ptr->uplimit_flag) {
-							if (md.match_time_sec >= 110000) {
+							// if (md.match_time_sec >= 110000) {
 								// if (md.trade_limit == 0x2) {  // 漲停成交
 								if (md.b_limit == 0x2) {  // 漲停買進
 
@@ -140,7 +140,7 @@ void uplimit() {
 									info_ptr->uplimit_px = _px;
 									info_ptr->uplimit_flag = true;
 								}
-							}
+							// }
 						}
 
 						// first px after 09:00
@@ -212,19 +212,6 @@ void uplimit() {
 			std::cout << prv_iter->first << "-" << cur_iter->first << " "  << buf << std::endl;
 		}
 	}
-	
-
-	// output
-	/*
-	for (const auto &date_d: m) {
-		for (const auto &stock_d: date_d.second) {
-			std::cout << date_d.first << " " << stock_d.first << \
-					" uplimit_px=" << stock_d.second.uplimit_px << \
-					" open_higher_last_limit=" << stock_d.second.open_higher_last_limit << \
-					" open_px=" << stock_d.second.open_px << std::endl;
-		}
-	}
-	*/
 }
 
 void debug() {
