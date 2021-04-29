@@ -236,6 +236,7 @@ void large_amount() {
 
 	struct md *frame;
 	MD md;
+	struct info *info_ptr;
 
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
