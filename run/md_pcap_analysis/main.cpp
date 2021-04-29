@@ -291,23 +291,35 @@ void large_amount() {
 void debug() {
 	struct md *frame;
 	MD md;
+	int last_seq = -1;
 
-	Date current_date("2021-04-27");
+	Date current_date("2021-04-28");
 	OneDayPcap one_day_pcap(current_date);
 	if (!one_day_pcap) {
 		std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 	} else {
 		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+
+			if (frame->esc_code != 27)
+					continue;
+
 			md.set_data(frame);
+
 			if (md.is_md && md.fmt_code == 0x6) {
-				if (md.feedcode == "2009  ") {
-					md.print_detail();
-					// if (md.is_open) {
-						// print_hexdump((char*)frame, md.md_len);
-					// }
-					if (md.match_time_sec > 90000)
-						exit(-1);
+
+				// if (md.feedcode == "2009  ") {
+				// 	md.print_detail();
+				// 	// if (md.is_open) {
+				// 		// print_hexdump((char*)frame, md.md_len);
+				// 	// }
+				// 	if (md.match_time_sec > 90000)
+				// 		exit(-1);
+				// }
+
+				if (md.seq != last_seq + 1) {
+					std::cerr << "miss " << last_seq << " " << md.seq << std::endl;
 				}
+				last_seq = md.seq;
 			}
 		}
 	}
