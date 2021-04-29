@@ -28,12 +28,12 @@ OneDayPcap::OneDayPcap(Date d) {
 
 	this->record_data_st_ptr = nullptr;
 	this->record_data_ed_ptr = nullptr;
-printf("record_data=%p\n", this->record_data);
+// printf("record_data=%p\n", this->record_data);
 }
 
 struct md* OneDayPcap::get_md() {
 
-	int record_len;
+	int record_data_len;
 	struct md *md_ptr;
 	char *p;
 
@@ -41,32 +41,32 @@ struct md* OneDayPcap::get_md() {
 		(this->record_data_st_ptr > this->record_data_ed_ptr)) {
 
 		while (true) {
-			record_len = this->get_pcap_record_data();
-			if (record_len < 0)
+			record_data_len = this->get_pcap_record_data();
+			if (record_data_len < 0)
 				return nullptr;
-			else if (record_len > 42) {
+			else if (record_data_len > 42) {
 				md_ptr = (struct md*)(this->record_data + 42);
 				if (md_ptr->esc_code == 27)
 					break;
 			}
 		}
 		this->record_data_st_ptr = this->record_data + 42;
-		this->record_data_ed_ptr = this->record_data_st_ptr + record_len;
+		this->record_data_ed_ptr = this->record_data_st_ptr + record_data_len;
 	}
-print_hexdump(this->record_data, record_len);
-printf("record_len=%d\n", record_len);
-printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
-printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
+// print_hexdump(this->record_data, record_data_len);
+// printf("record_data_len=%d\n", record_data_len);
+// printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
+// printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
 
 	p = this->record_data_st_ptr;
 	md_ptr = (struct md*)p;
 	int msg_len = bcd_to_int(md_ptr->hdr.msg_len, 2);
 	this->record_data_st_ptr += msg_len;
-printf("msg_len=%d\n", msg_len);
-printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
-printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
-printf("p=%p\n", p);
-exit(-1);
+// printf("msg_len=%d\n", msg_len);
+// printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
+// printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
+// printf("p=%p\n", p);
+// exit(-1);
 	return (struct md*)p;
 }
 
