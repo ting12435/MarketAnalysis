@@ -303,9 +303,6 @@ void debug() {
 		// while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 		while ((frame = one_day_pcap.get_md()) != nullptr) {
 
-			if (frame->esc_code != 27)
-					continue;
-
 			md.set_data(frame);
 
 			if (md.is_md && md.fmt_code == 0x6) {
