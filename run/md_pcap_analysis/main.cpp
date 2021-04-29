@@ -260,6 +260,10 @@ void large_amount() {
 
 					info_ptr->accm_trade_lot += md.trade_lt;
 
+					if (md.feedcode == "2330  ") {
+						std::cout << md.trade_lt << " " << md.accm_trade_lot << std::endl;
+					}
+
 				}
 			}
 		}
