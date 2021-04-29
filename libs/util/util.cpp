@@ -267,7 +267,7 @@ bool pcap_file::read_global_header() {
 // std::cout << std::endl;
 
 	memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
-	print_hexdump(buf, LEN);
+	print_hexdump((char*)buf, LEN);
 	this->print_global_header(&this->global_hdr);
 	exit(-1);
 
