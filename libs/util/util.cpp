@@ -8,6 +8,7 @@
 #include <cstring>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <arpa/inet.h>
 
 std::vector<std::string> split(const std::string& s, std::string delim, int split_cnt) {
 	std::vector<std::string> sv;
