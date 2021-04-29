@@ -316,7 +316,7 @@ void debug() {
 				// 		exit(-1);
 				// }
 
-				std::cout << md.seq << std::endl;
+				// std::cout << md.seq << std::endl;
 				if (md.seq != last_seq + 1) {
 					std::cerr << "miss " << last_seq << " " << md.seq << std::endl;
 					exit(-1);
