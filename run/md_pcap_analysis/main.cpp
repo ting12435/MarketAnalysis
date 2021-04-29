@@ -10,6 +10,7 @@
 // #define PCAP_FOLDER "/data/tim/"
 
 void uplimit();
+void large_amount();
 void debug();
 
 struct var {
@@ -71,6 +72,8 @@ int main(int argc, char *argv[]) {
 
 	if (g_var.type == "uplimit")
 		uplimit();
+	else if (g_var.type == "large_amount")
+		large_amount();
 	else if (g_var.type == "debug")
 		debug();
 
@@ -79,9 +82,10 @@ int main(int argc, char *argv[]) {
 	usage_error:
 	fprintf(stderr, "Usage: %s\n", argv[0]);
 	fprintf(stderr, "%9s [--type] [--d1] [--d2]\n", " ");
-	fprintf(stderr, "  --type: [uplimit] [debug]\n");
+	fprintf(stderr, "  --type: [uplimit] [large_amount] [debug]\n");
 	fprintf(stderr, "\ne.g.\n");
 	fprintf(stderr, "taskset -c 5 %s --type debug\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type large_amount --d1 2021-04-26 --d2 2021-04-28\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-23 --d2 2021-04-26\n", argv[0]);
 	return EXIT_FAILURE;
 }
@@ -218,6 +222,54 @@ void uplimit() {
 
 			snprintf(buf, sizeof(buf), "%4d %4d %.2f\n", fraction, denominator, (double)fraction/denominator);
 			std::cout << prv_iter->first << "-" << cur_iter->first << " "  << buf << std::endl;
+		}
+	}
+}
+
+void large_amount() {
+
+	struct info {
+		int accm_trade_lot;
+	};
+
+	std::map<Date, std::map<std::string, struct info>> m;
+
+	struct md *frame;
+	MD md;
+
+	Date current_date(g_var.d1->date_str);
+	while (current_date <= *(g_var.d2)) {
+		OneDayPcap one_day_pcap(current_date);
+		if (!one_day_pcap) {
+			std::cout << "error: " << one_day_pcap.get_error();
+		} else {
+			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+
+				if (frame->esc_code != 27)
+					continue;
+
+				md.set_data(frame);
+
+				if (md.fmt_code == 0x6) {
+
+					if (m[current_date].find(md.feedcode) == m[current_date].end())
+						m[current_date].emplace(md.feedcode, info{});
+
+					info_ptr = &m[current_date][md.feedcode];
+
+					info_ptr->accm_trade_lot += md.trade_lt;
+
+				}
+			}
+		}
+	}
+
+	// analysis
+	for (const auto &date_d: m) {
+		for (const auto &stock_d: date_d.second) {
+
+			std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.accm_trade_lot << std::endl;
+
 		}
 	}
 }
