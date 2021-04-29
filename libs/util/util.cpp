@@ -371,13 +371,20 @@ bool pcap_file::read_record_data(char *buf, int len) {
 
 
 void pcap_file::print_global_header(struct pcap_global_hdr *global_hdr) {
-	printf("magic_number: 0x%04d\nversion_major: %u\nversion_minor: %u\nthiszone: %d\nsigfigs: %u\nsnaplen: %u\nnetwork: %u\n",
+	printf("magic_number: 0x%x(%u)\nversion_major: 0x%x(%u)\nversion_minor: 0x%x(%u)\nthiszone: 0x%x(%d)\nsigfigs: 0x%x(%u)\nsnaplen: 0x%x(%u)\nnetwork: 0x%x(%u)\n",
+		global_hdr->magic_number,
 		global_hdr->magic_number,
 		global_hdr->version_major,
+		global_hdr->version_major,
+		global_hdr->version_minor,
 		global_hdr->version_minor,
 		global_hdr->thiszone,
+		global_hdr->thiszone,
+		global_hdr->sigfigs,
 		global_hdr->sigfigs,
 		global_hdr->snaplen,
+		global_hdr->snaplen,
+		global_hdr->network,
 		global_hdr->network);
 }
 
