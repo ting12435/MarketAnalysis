@@ -265,7 +265,7 @@ void large_amount() {
 						std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
 
 						if (md.match_time_sec > 90000)
-							print_hexdump(frame, md.md_len);
+							print_hexdump((char*)frame, md.md_len);
 					}
 
 				}
