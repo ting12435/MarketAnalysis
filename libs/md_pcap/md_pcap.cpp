@@ -37,11 +37,7 @@ struct md* OneDayPcap::get_md() {
 	struct md *md_ptr;
 	char *p;
 
-	if ((this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) || 
-		(this->record_data_st_ptr > this->record_data_ed_ptr)) {
-
-		this->record_data_st_ptr = nullptr;
-		this->record_data_ed_ptr = nullptr;
+	if (this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) {
 
 		while (true) {
 			record_data_len = this->get_pcap_record_data();
@@ -66,6 +62,12 @@ printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
 	md_ptr = (struct md*)p;
 	int msg_len = bcd_to_int(md_ptr->hdr.msg_len, 2);
 	this->record_data_st_ptr += msg_len;
+
+	if (this->record_data_st_ptr > this->record_data_ed_ptr) {
+		this->record_data_st_ptr = nullptr;
+		this->record_data_ed_ptr = nullptr;
+	}
+
 printf("msg_len=%d\n", msg_len);
 printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
 printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
