@@ -91,6 +91,7 @@ void uplimit() {
 	struct info {
 		int uplimit_px;
 		int first_px;
+		int highest_px;
 		// bool last_match_mode;
 		bool uplimit_flag;
 		bool after_090000;
@@ -151,6 +152,12 @@ void uplimit() {
 							// m[current_date][md.feedcode].last_match_mode = true;
 							info_ptr->after_090000 = true;
 						}
+
+						// highest_px
+						if (md.match_time_sec >= 90000) {
+							if (md.trade_px >= info_ptr->highest_px)
+								info_ptr->highest_px = md.trade_px;
+						}
 					}
 				}
 
@@ -197,7 +204,8 @@ void uplimit() {
 				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
 					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
 					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
-					auto px2 = cur_iter->second[stock_d.first].first_px;
+					// auto px2 = cur_iter->second[stock_d.first].first_px;
+					auto px2 = cur_iter->second[stock_d.first].highest_px;
 					if (px1 > 0) {
 						denominator++;
 						// std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
