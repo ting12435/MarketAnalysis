@@ -120,7 +120,8 @@ public:
 	OneDayPcap(Date);
 	// ~OneDayPcap() = defalut;
 
-	struct md* get_pcap_record_data();
+	struct md* get_md();
+	// struct md* get_pcap_record_data();
 
 	std::string get_error() { return this->error_ss.str(); }
 
@@ -134,6 +135,7 @@ public:
 private:
 	bool open_pcap_file(int idx);
 	void close_pcap_file(int idx);
+	int get_pcap_record_data();
 
 	int cur_pcap_idx;
 	pcap_file *cur_pcap_file;
@@ -142,6 +144,9 @@ private:
 	std::stringstream error_ss;
 
 	bool pcap_folder_exist;
+
+	char *record_data_st_ptr;
+	char *record_data_ed_ptr;
 };
 
 class MD {

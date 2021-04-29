@@ -119,7 +119,8 @@ void uplimit() {
 
 			m.emplace(current_date, std::map<std::string, struct info>());
 			
-			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+			// while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+			while ((frame = one_day_pcap.get_md()) != nullptr) {
 
 				if (frame->esc_code != 27)
 					continue;
@@ -244,7 +245,8 @@ void large_amount() {
 		if (!one_day_pcap) {
 			std::cout << "error: " << one_day_pcap.get_error();
 		} else {
-			while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+			// while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+			while ((frame = one_day_pcap.get_md()) != nullptr) {
 
 				if (frame->esc_code != 27)
 					continue;
@@ -298,7 +300,8 @@ void debug() {
 	if (!one_day_pcap) {
 		std::cout << "error: " << one_day_pcap.get_error() << std::endl;
 	} else {
-		while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+		// while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+		while ((frame = one_day_pcap.get_md()) != nullptr) {
 
 			if (frame->esc_code != 27)
 					continue;

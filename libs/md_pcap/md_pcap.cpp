@@ -26,21 +26,42 @@ OneDayPcap::OneDayPcap(Date d) {
 		this->error_ss << "pcap folder not exist [" << this->date_folder << "]";
 	}
 
+	this->record_data_st_ptr = nullptr;
+	this->record_data_ed_ptr = nullptr;
 }
 
-struct md* OneDayPcap::get_pcap_record_data() {
+struct md* OneDayPcap::get_md() {
 
-// std::cout << "get_pcap_record_data\n";
+	int record_len;
+	struct md *md_ptr;
+	char *p;
+
+	if ((this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) || 
+		(this->record_data_st_ptr > this->record_data_ed_ptr)) {
+
+		record_len = this->get_pcap_record_data();
+		this->record_data_st_ptr = this->record_data + 42;
+		this->record_data_ed_ptr = this->record_data_st_ptr + record_len;
+	}
+	// this->record_data_ptr = (char*)&this->record_data + 42;
+
+	p = this->record_data_st_ptr;
+	this->record_data_st_ptr + bcd_to_int(md_ptr->hdr.msg_len, 2);
+	return (struct md*)p;
+}
+
+int OneDayPcap::get_pcap_record_data() {
+	int read_len;
 
 	// check file
 	if (this->cur_pcap_idx == -1) {
 		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
 			this->error_ss << this->cur_pcap_file->get_error();
-			return nullptr;
+			return -1;
 		}
 	}
 
-	while (this->cur_pcap_file->read(this->record_data, sizeof(this->record_data)) < 0) {
+	while ((read_len = this->cur_pcap_file->read(this->record_data, sizeof(this->record_data))) < 0) {
 
 		this->error_ss << this->cur_pcap_file->get_error();
 
@@ -48,22 +69,38 @@ struct md* OneDayPcap::get_pcap_record_data() {
 
 		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
 			this->error_ss << this->cur_pcap_file->get_error();
-			return nullptr;
+			return -1;
 		}
 	}
 
-	// if (this->cur_pcap_file->eof()) {
-	// 	this->close_pcap_file(this->cur_pcap_idx);
-	// 	this->open_pcap_file(++this->cur_pcap_idx);
-	// }
-
-	// if (this->cur_pcap_file->read(this->record_data, sizeof(this->record_data)) < 0) {
-	// 	this->error_ss << this->cur_pcap_file->get_error();
-	// 	return nullptr;
-	// }
-
-	return (struct md*)((char*)&this->record_data + 42);
+	return read_len;
 }
+
+//
+// struct md* OneDayPcap::get_pcap_record_data() {
+
+// 	// check file
+// 	if (this->cur_pcap_idx == -1) {
+// 		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
+// 			this->error_ss << this->cur_pcap_file->get_error();
+// 			return nullptr;
+// 		}
+// 	}
+
+// 	while (this->cur_pcap_file->read(this->record_data, sizeof(this->record_data)) < 0) {
+
+// 		this->error_ss << this->cur_pcap_file->get_error();
+
+// 		this->close_pcap_file(this->cur_pcap_idx);
+
+// 		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
+// 			this->error_ss << this->cur_pcap_file->get_error();
+// 			return nullptr;
+// 		}
+// 	}
+
+// 	return (struct md*)((char*)&this->record_data + 42);
+// }
 
 bool OneDayPcap::open_pcap_file(int idx) {
 // std::cout << this->date << " open_pcap_file " << idx << std::endl;
