@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 
 #include "BSDR/BSDR.h"
 #include "util/util.h"
@@ -6,10 +7,11 @@
 
 void test1();
 void test2();
+void test3();
 
 int main(int argc, char *argv[]) {
 
-	test2();
+	test3();
 
 
 	return 0;
@@ -33,6 +35,17 @@ void test2() {
 	std::cout << GET_PX(px) << std::endl;
 }
 
+void test3() {
+	std::map<std::string, int> m;
+	std::map<std::string, int>::iterator iter;
 
+	// m["a"] = 1;
+
+	iter = std::prev(m.begin());
+
+	std::cout << "m.size(): " << m.size() << std::endl;
+	std::cout << "m.begin() == m.end(): " << (m.begin() == m.end()) << std::endl;
+	std::cout << "m.begin() == m.end(): " << (m.begin() == m.end()) << std::endl;
+}
 
 
