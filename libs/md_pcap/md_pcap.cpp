@@ -40,6 +40,9 @@ struct md* OneDayPcap::get_md() {
 	if ((this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) || 
 		(this->record_data_st_ptr > this->record_data_ed_ptr)) {
 
+		this->record_data_st_ptr = nullptr;
+		this->record_data_ed_ptr = nullptr;
+
 		while (true) {
 			record_data_len = this->get_pcap_record_data();
 			if (record_data_len < 0)
