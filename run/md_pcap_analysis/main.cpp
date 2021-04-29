@@ -207,7 +207,7 @@ void uplimit() {
 				}
 			}
 
-			printf("%s %s %4d %4d %.2f\n", prv_iter->first, cur_iter->first, fraction, denominator, (double)fraction/denominator);
+			printf("%s %s %4d %4d %.2f\n", prv_iter->first.date_str, cur_iter->first.date_str, fraction, denominator, (double)fraction/denominator);
 			// std::cout << prv_iter->first << "-" << cur_iter->first << " "  << fraction << " " << denominator << " " << (double)fraction/denominator << std::endl;
 		}
 	}
