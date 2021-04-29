@@ -291,7 +291,7 @@ void large_amount() {
 void debug() {
 	struct md *frame;
 	MD md;
-	int last_seq = -1;
+	int last_seq = 0;
 
 	Date current_date("2021-04-28");
 	OneDayPcap one_day_pcap(current_date);
