@@ -92,6 +92,7 @@ void uplimit() {
 		int uplimit_px;
 		int first_px;
 		// bool last_match_mode;
+		bool uplimit_flag;
 		bool after_090000;
 	};
 
@@ -100,6 +101,7 @@ void uplimit() {
 	struct md *frame;
 	MD md;
 	int _px;
+	struct info *info_ptr;
 
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
@@ -122,58 +124,32 @@ void uplimit() {
 
 					if (md.fmt_code == 0x6) {
 
-
-
 						if (m[current_date].find(md.feedcode) == m[current_date].end())
 							m[current_date].emplace(md.feedcode, info{});
+
+						info_ptr = &m[current_date][md.feedcode];
 					
-						// 漲停成交
-						if (md.trade_limit == 0x2) {
+						// up limit
+						if (!info_ptr->uplimit_flag) {
+							if (md.match_time_sec >= 110000) {
+								// if (md.trade_limit == 0x2) {  // 漲停成交
+								if (md.b_limit == 0x2) {  // 漲停買進
 
-							// if (m[current_date].find(md.feedcode) == m[current_date].end()) {
-
-								// md.print_detail();
-								// print_hexdump((char*)frame, md.md_len);
-
-								_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
-								m[current_date][md.feedcode].uplimit_px = _px;
-
-							// }
+									_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+									info_ptr->uplimit_px = _px;
+									info_ptr->uplimit_flag = true;
+								}
+							}
 						}
 
 						// first px after 09:00
 						// if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
-						if (!m[current_date][md.feedcode].after_090000 && md.match_time_sec >= 90000) {
+						if (!info_ptr->after_090000 && md.match_time_sec >= 90000) {
 							_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
-							m[current_date][md.feedcode].first_px = _px;
+							info_ptr->first_px = _px;
 							// m[current_date][md.feedcode].last_match_mode = true;
-							m[current_date][md.feedcode].after_090000 = true;
+							info_ptr->after_090000 = true;
 						}
-
-						// if (md.is_open) {  // 開盤註記
-							
-							// if (prv_iter != cur_iter) {
-							// 	// std::cout << "prv_iter " << prv_iter->first << std::endl;
-							// 	if (prv_iter->second.find(md.feedcode) != prv_iter->second.end()) {
-
-							// 		// if (md.feedcode == "1474  ") {
-							// 		// 	// print_hexdump((char*)frame, md.md_len);
-							// 		// 	md.print_detail();
-							// 		// }
-
-							// 		if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
-
-							// 			auto px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
-
-							// 			if (px >= prv_iter->second[md.feedcode].uplimit_px) {
-							// 				m[current_date][md.feedcode].open_higher_last_limit = true;
-							// 			}
-							// 			m[current_date][md.feedcode].open_px = px;
-							// 			m[current_date][md.feedcode].last_match_mode = true;
-							// 		}
-							// 	}
-							// }
-						// }
 					}
 				}
 
