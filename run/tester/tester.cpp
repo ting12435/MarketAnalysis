@@ -43,7 +43,7 @@ void test3() {
 	// m["b"] = 1;
 	m["z"] = 1;
 
-	cur_iter = m.find("a");
+	cur_iter = m.find("z");
 
 	std::cout << "m.size(): " << m.size() << std::endl;
 	if (m.size() > 0) {
