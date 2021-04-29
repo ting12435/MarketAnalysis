@@ -37,18 +37,21 @@ void test2() {
 
 void test3() {
 	std::map<std::string, int> m;
-	std::map<std::string, int>::iterator iter;
+	std::map<std::string, int>::iterator prv_iter, cur_iter;
 
 	m["a"] = 1;
 	m["b"] = 1;
 	m["z"] = 1;
 
+	cur_iter = m.find("b");
+
 	std::cout << "m.size(): " << m.size() << std::endl;
 	if (m.size() > 0) {
-		iter = std::prev(m.find("z"));
+		prv_iter = std::prev(cur_iter);
 		std::cout << "m.begin() == m.end(): " << (m.begin() == m.end()) << std::endl;
-		std::cout << "iter == m.begin(): " << (iter == m.begin()) << std::endl;
-		std::cout << "iter == m.end(): " << (iter == m.end()) << std::endl;
+		std::cout << "prv_iter == cur_iter: " << (prv_iter == cur_iter) << std::endl;
+		std::cout << "prv_iter == m.begin(): " << (prv_iter == m.begin()) << std::endl;
+		std::cout << "prv_iter == m.end(): " << (prv_iter == m.end()) << std::endl;
 	}
 }
 
