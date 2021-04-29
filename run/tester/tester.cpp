@@ -39,7 +39,7 @@ void test3() {
 	std::map<std::string, int> m;
 	std::map<std::string, int>::iterator iter;
 
-	// m["a"] = 1;
+	m["a"] = 1;
 	m["b"] = 1;
 
 	std::cout << "m.size(): " << m.size() << std::endl;
