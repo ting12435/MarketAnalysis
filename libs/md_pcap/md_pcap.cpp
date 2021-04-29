@@ -67,7 +67,8 @@ printf("msg_len=%d\n", msg_len);
 printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
 printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
 printf("p=%p\n", p);
-// exit(-1);
+if (record_data_len == 0)
+exit(-1);
 	return (struct md*)p;
 }
 
