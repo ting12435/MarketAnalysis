@@ -260,13 +260,16 @@ bool pcap_file::read_global_header() {
 // std::cout << "c: ";
 	for (i = 0; i < LEN; i=i+2) {
 		c = this->ifs.get();
-// std::cout << c;
+printf("[%02x] ", c);
 		if (c == EOF) return false;
 		snprintf((char*)&buf[i], 2+1, "%02x", c);
 	}
-// std::cout << std::endl;
+std::cout << std::endl;
 
 	memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
+
+	this->global_hdr.magic_number = ntohl(this->global_hdr.magic_number);
+
 	print_hexdump((char*)buf, LEN);
 	this->print_global_header(&this->global_hdr);
 	exit(-1);
