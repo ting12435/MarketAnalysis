@@ -102,6 +102,7 @@ void uplimit() {
 	MD md;
 	int _px;
 	struct info *info_ptr;
+	char buf[1000];
 
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
@@ -207,8 +208,8 @@ void uplimit() {
 				}
 			}
 
-			printf("%s %s %4d %4d %.2f\n", prv_iter->first.date_str, cur_iter->first.date_str, fraction, denominator, (double)fraction/denominator);
-			// std::cout << prv_iter->first << "-" << cur_iter->first << " "  << fraction << " " << denominator << " " << (double)fraction/denominator << std::endl;
+			snprintf(buf, sizeof(buf), "%4d %4d %.2f\n", fraction, denominator, (double)fraction/denominator);
+			std::cout << prv_iter->first << "-" << cur_iter->first << " "  << buf << std::endl;
 		}
 	}
 	
