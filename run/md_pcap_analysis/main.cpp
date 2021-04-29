@@ -211,8 +211,8 @@ void uplimit() {
 
 		// std::cout << date_d.first << " cur_iter->second.size()=" << cur_iter->second.size() << std::endl;
 
-		// if (prv_iter != m.end()) {
-		if (prv_iter != cur_iter) {
+		if (prv_iter != m.end()) {
+		// if (prv_iter != cur_iter) {
 
 			fraction = denominator = 0;
 
