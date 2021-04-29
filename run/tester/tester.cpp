@@ -40,7 +40,7 @@ void test3() {
 	std::map<std::string, int>::iterator prv_iter, cur_iter;
 
 	m["a"] = 1;
-	m["b"] = 1;
+	// m["b"] = 1;
 	m["z"] = 1;
 
 	cur_iter = m.find("a");
