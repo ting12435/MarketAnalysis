@@ -40,13 +40,17 @@ void test3() {
 	std::map<std::string, int>::iterator iter;
 
 	m["a"] = 1;
-
-	iter = std::prev(m.begin());
+	m["b"] = 1;
 
 	std::cout << "m.size(): " << m.size() << std::endl;
-	std::cout << "m.begin() == m.end(): " << (m.begin() == m.end()) << std::endl;
-	std::cout << "iter == m.begin(): " << (iter == m.begin()) << std::endl;
-	std::cout << "iter == m.end(): " << (iter == m.end()) << std::endl;
+	if (m.size() > 0) {
+		iter = std::prev(m.begin());
+
+		std::cout << "m.size(): " << m.size() << std::endl;
+		std::cout << "m.begin() == m.end(): " << (m.begin() == m.end()) << std::endl;
+		std::cout << "iter == m.begin(): " << (iter == m.begin()) << std::endl;
+		std::cout << "iter == m.end(): " << (iter == m.end()) << std::endl;
+	}
 }
 
 
