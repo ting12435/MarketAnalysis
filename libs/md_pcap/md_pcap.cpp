@@ -48,7 +48,7 @@ struct md* OneDayPcap::get_md() {
 			else if (record_len < 42)
 				continue;
 			else {    // UDP
-				md_ptr = (struct md*)((char*)&this->record_data + 42);
+				md_ptr = (struct md*)(this->record_data + 42);
 				if (md_ptr->esc_code != 27)
 					continue;
 			}
