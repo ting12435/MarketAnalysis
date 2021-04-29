@@ -46,13 +46,15 @@ struct md* OneDayPcap::get_md() {
 		this->record_data_ed_ptr = this->record_data_st_ptr + record_len;
 	}
 	// this->record_data_ptr = (char*)&this->record_data + 42;
-
+printf("record_len=%d\n", record_len);
 printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
 printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
 
 	p = this->record_data_st_ptr;
 	md_ptr = (struct md*)p;
-	this->record_data_st_ptr += bcd_to_int(md_ptr->hdr.msg_len, 2);
+	int msg_len = bcd_to_int(md_ptr->hdr.msg_len, 2);
+	this->record_data_st_ptr += msg_len;
+printf("msg_len=%d\n", msg_len);
 printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
 printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
 printf("p=%p\n", p);
