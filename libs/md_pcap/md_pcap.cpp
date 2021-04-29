@@ -37,11 +37,22 @@ struct md* OneDayPcap::get_md() {
 	struct md *md_ptr;
 	char *p;
 
-
 	if ((this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) || 
 		(this->record_data_st_ptr > this->record_data_ed_ptr)) {
 
-		record_len = this->get_pcap_record_data();
+		while (true) {
+			record_len = this->get_pcap_record_data();
+
+			if (record_len < 0)
+				return nullptr;
+			else if (record_len < 42)
+				continue;
+			else {    // UDP
+				md_ptr = this->record_data + 42;
+				if (md_ptr->esc_code != 27)
+					continue;
+			}
+		}
 		this->record_data_st_ptr = this->record_data + 42;
 		this->record_data_ed_ptr = this->record_data_st_ptr + record_len;
 	}
@@ -64,7 +75,7 @@ exit(-1);
 }
 
 int OneDayPcap::get_pcap_record_data() {
-	int read_len;
+	int record_data_len;
 
 	// check file
 	if (this->cur_pcap_idx == -1) {
@@ -74,7 +85,7 @@ int OneDayPcap::get_pcap_record_data() {
 		}
 	}
 
-	while ((read_len = this->cur_pcap_file->read(this->record_data, sizeof(this->record_data))) < 0) {
+	while ((record_data_len = this->cur_pcap_file->read(this->record_data, sizeof(this->record_data))) < 0) {
 
 		this->error_ss << this->cur_pcap_file->get_error();
 
@@ -86,7 +97,7 @@ int OneDayPcap::get_pcap_record_data() {
 		}
 	}
 
-	return read_len;
+	return record_data_len;
 }
 
 //
