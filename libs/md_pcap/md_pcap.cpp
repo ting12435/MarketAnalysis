@@ -58,6 +58,7 @@ struct md* OneDayPcap::get_md() {
 if (record_data_len == 0) {
 printf("record_data_len=%d\n", record_data_len);
 print_hexdump(this->record_data, record_data_len);
+exit(-1);
 }
 // printf("---------------------------------\n");
 // printf("record_data_len=%d\n", record_data_len);
