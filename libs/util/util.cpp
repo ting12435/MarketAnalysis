@@ -252,22 +252,27 @@ if (read_len == 0) {
 }
 
 bool pcap_file::read_global_header() {
-// std::cout << "read_global_header\n";
 
-	const int LEN = 48;  // 24 bytes
-	unsigned char buf[LEN+1];
-	int i, c;
+	// const int LEN = 48;  // 24 bytes
+	// unsigned char buf[LEN+1];
+	// int i, c;
 
-// std::cout << "c: ";
-	for (i = 0; i < LEN; i=i+2) {
+	// for (i = 0; i < LEN; i=i+2) {
+	// 	c = this->ifs.get();
+	// 	if (c == EOF) return false;
+	// 	snprintf((char*)&buf[i], 2+1, "%02x", c);
+	// }
+
+	// memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
+
+	#define GLOBAL_HEADER_LEN 24
+	uint8_t c, *ptr = (uint8_t*)&this->global_hdr;
+
+	for (auto i = 0; i < GLOBAL_HEADER_LEN; i++) {
 		c = this->ifs.get();
-printf("[%02x] ", c);
 		if (c == EOF) return false;
-		snprintf((char*)&buf[i], 2+1, "%02x", c);
+		ptr++ = c;
 	}
-std::cout << std::endl;
-
-	memcpy(&this->global_hdr, buf, sizeof(buf));  // not check
 
 	this->global_hdr.magic_number = ntohl(this->global_hdr.magic_number);
 
