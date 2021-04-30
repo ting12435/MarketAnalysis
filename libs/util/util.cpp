@@ -227,7 +227,11 @@ int pcap_file::read(char *buf, int buf_len) {
 	read_len = MIN((int)this->current_record_hdr.incl_len, buf_len);
 
 if (read_len == 0) {
-
+print_hexdump((char*)&this->global_hdr, sizeof(this->global_hdr));
+this->print_global_header(&this->global_hdr);
+print_hexdump((char*)&this->current_record_hdr, sizeof(this->current_record_hdr));
+this->print_record_header(&this->current_record_hdr);
+exit(-1);
 }
 // if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
 // std::cout << "read_len=" << read_len << std::endl;
@@ -352,9 +356,9 @@ bool pcap_file::read_record_header() {
 		ptr++;
 	}
 
-	print_hexdump((char*)&this->current_record_hdr, sizeof(this->current_record_hdr));
-	this->print_record_header(&this->current_record_hdr);
-	exit(-1);
+	// print_hexdump((char*)&this->current_record_hdr, sizeof(this->current_record_hdr));
+	// this->print_record_header(&this->current_record_hdr);
+	// exit(-1);
 
 	return true;
 }
