@@ -51,6 +51,8 @@ struct md* OneDayPcap::get_md() {
 
 		this->record_data_st_ptr = this->record_data + 42;
 		this->record_data_ed_ptr = this->record_data + record_data_len - 4;
+	} else {
+		record_data_len = this->record_data_ed_ptr - this->record_data_st_ptr;
 	}
 
 if (record_data_len == 0) {
