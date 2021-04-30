@@ -81,7 +81,7 @@ print_hexdump(this->record_data, record_data_len);
 }
 
 int OneDayPcap::get_pcap_record_data() {
-	int record_data_len;
+	int record_data_len = -1;
 
 	// check file
 	if (this->cur_pcap_idx == -1) {
