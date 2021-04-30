@@ -277,9 +277,9 @@ bool pcap_file::read_global_header() {
 
 	// this->global_hdr.magic_number = ntohl(this->global_hdr.magic_number);
 
-	print_hexdump((char*)&this->global_hdr, sizeof(this->global_hdr));
-	this->print_global_header(&this->global_hdr);
-	exit(-1);
+	// print_hexdump((char*)&this->global_hdr, sizeof(this->global_hdr));
+	// this->print_global_header(&this->global_hdr);
+	// exit(-1);
 
 	return true;
 }
@@ -293,73 +293,68 @@ bool pcap_file::read_record_header() {
 	char ts_sec_reverse[8], ts_usec_reverse[8], incl_len_reverse[8], orig_len_reverse[8];
 	struct tm *timeinfo;
 
-// if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
-// std::cout << "read_record_header 0\n";
-// std::cout << "this->ifs.good()=" << this->ifs.good() << std::endl;
+	// for (i = 0; i < LEN; i=i+2) {
+	// 	c = this->ifs.get();
+	// 	if (c == EOF) return false;
+	// 	snprintf((char*)&buf[i], 2+1, "%02x", c);
+	// }
 
-	for (i = 0; i < LEN; i=i+2) {
+	// memcpy(ts_sec_reverse, &buf[0], 8);
+	// memcpy(ts_usec_reverse, &buf[8], 8);
+	// memcpy(incl_len_reverse, &buf[16], 8);
+	// memcpy(orig_len_reverse, &buf[24], 8);
+
+	// // ts_sec
+	// memcpy(&ts_sec[0], &ts_sec_reverse[6], 2);
+	// memcpy(&ts_sec[2], &ts_sec_reverse[4], 2);
+	// memcpy(&ts_sec[4], &ts_sec_reverse[2], 2);
+	// memcpy(&ts_sec[6], &ts_sec_reverse[0], 2);
+	// ts_sec[8] = '\0';
+	// this->current_record_hdr.ts_sec = strtol(ts_sec, NULL, 16) % 86400;
+
+	// //  timeinfo
+	// // timeinfo = localtime((time_t*)&this->ts_sec);
+	// // strftime(this->ts_sec_str, sizeof(this->ts_sec_str), "%H:%M:%S", timeinfo);
+
+	// // ts_usec
+	// memcpy(&ts_usec[0], &ts_usec_reverse[6], 2);
+	// memcpy(&ts_usec[2], &ts_usec_reverse[4], 2);
+	// memcpy(&ts_usec[4], &ts_usec_reverse[2], 2);
+	// memcpy(&ts_usec[6], &ts_usec_reverse[0], 2);
+	// ts_usec[8] = '\0';
+	// this->current_record_hdr.ts_usec = strtol(ts_usec, NULL, 16);
+
+	// // incl_len
+	// memcpy(&incl_len[0], &incl_len_reverse[6], 2);
+	// memcpy(&incl_len[2], &incl_len_reverse[4], 2);
+	// memcpy(&incl_len[4], &incl_len_reverse[2], 2);
+	// memcpy(&incl_len[6], &incl_len_reverse[0], 2);
+	// incl_len[8] = '\0';
+	// this->current_record_hdr.incl_len = strtol(incl_len, NULL, 16);
+
+	// // orig_len
+	// memcpy(&orig_len[0], &orig_len_reverse[6], 2);
+	// memcpy(&orig_len[2], &orig_len_reverse[4], 2);
+	// memcpy(&orig_len[4], &orig_len_reverse[2], 2);
+	// memcpy(&orig_len[6], &orig_len_reverse[0], 2);
+	// orig_len[8] = '\0';
+	// this->current_record_hdr.orig_len = strtol(orig_len, NULL, 16);
+
+	// if (this->current_record_hdr.incl_len > 1518 || this->current_record_hdr.orig_len  > 1518) return false;
+
+	#define RECORD_HEADER_LEN 16
+	uint8_t c, *ptr = (uint8_t*)&this->current_record_hdr;
+
+	for (auto i = 0; i < RECORD_HEADER_LEN; i++) {
 		c = this->ifs.get();
-// std::cout << c << std::endl;
 		if (c == EOF) return false;
-		snprintf((char*)&buf[i], 2+1, "%02x", c);
+		*ptr = c;
+		ptr++;
 	}
 
-// if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
-// std::cout << "read_record_header 1\n";
-
-	memcpy(ts_sec_reverse, &buf[0], 8);
-	memcpy(ts_usec_reverse, &buf[8], 8);
-	memcpy(incl_len_reverse, &buf[16], 8);
-	memcpy(orig_len_reverse, &buf[24], 8);
-
-	// ts_sec
-	memcpy(&ts_sec[0], &ts_sec_reverse[6], 2);
-	memcpy(&ts_sec[2], &ts_sec_reverse[4], 2);
-	memcpy(&ts_sec[4], &ts_sec_reverse[2], 2);
-	memcpy(&ts_sec[6], &ts_sec_reverse[0], 2);
-	ts_sec[8] = '\0';
-	this->current_record_hdr.ts_sec = strtol(ts_sec, NULL, 16) % 86400;
-
-// if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
-// std::cout << "read_record_header 2\n";
-
-	//  timeinfo
-	// timeinfo = localtime((time_t*)&this->ts_sec);
-	// strftime(this->ts_sec_str, sizeof(this->ts_sec_str), "%H:%M:%S", timeinfo);
-
-	// ts_usec
-	memcpy(&ts_usec[0], &ts_usec_reverse[6], 2);
-	memcpy(&ts_usec[2], &ts_usec_reverse[4], 2);
-	memcpy(&ts_usec[4], &ts_usec_reverse[2], 2);
-	memcpy(&ts_usec[6], &ts_usec_reverse[0], 2);
-	ts_usec[8] = '\0';
-	this->current_record_hdr.ts_usec = strtol(ts_usec, NULL, 16);
-
-// if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
-// std::cout << "read_record_header 3\n";
-
-	// incl_len
-	memcpy(&incl_len[0], &incl_len_reverse[6], 2);
-	memcpy(&incl_len[2], &incl_len_reverse[4], 2);
-	memcpy(&incl_len[4], &incl_len_reverse[2], 2);
-	memcpy(&incl_len[6], &incl_len_reverse[0], 2);
-	incl_len[8] = '\0';
-	this->current_record_hdr.incl_len = strtol(incl_len, NULL, 16);
-
-// std::cout << "this->current_record_hdr.incl_len=" << this->current_record_hdr.incl_len << std::endl;
-
-	// orig_len
-	memcpy(&orig_len[0], &orig_len_reverse[6], 2);
-	memcpy(&orig_len[2], &orig_len_reverse[4], 2);
-	memcpy(&orig_len[4], &orig_len_reverse[2], 2);
-	memcpy(&orig_len[6], &orig_len_reverse[0], 2);
-	orig_len[8] = '\0';
-	this->current_record_hdr.orig_len = strtol(orig_len, NULL, 16);
-
-// if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap")
-// std::cout << "read_record_header 5\n";
-
-	if (this->current_record_hdr.incl_len > 1518 || this->current_record_hdr.orig_len  > 1518) return false;
+	print_hexdump((char*)&this->current_record_hdr, sizeof(this->current_record_hdr));
+	this->print_record_header(&this->current_record_hdr);
+	exit(-1);
 
 	return true;
 }
@@ -399,6 +394,15 @@ void pcap_file::print_global_header(struct pcap_global_hdr *global_hdr) {
 }
 
 void pcap_file::print_record_header(struct pcap_record_hdr *record_hdr) {
+	printf("ts_sec: 0x%x(%u)\nts_usec: 0x%x(%u)\nincl_len: 0x%x(%u)\norig_len: 0x%x(%u)\n",
+		record_hdr->ts_sec,
+		record_hdr->ts_sec,
+		record_hdr->ts_usec,
+		record_hdr->ts_usec,
+		record_hdr->incl_len,
+		record_hdr->incl_len,
+		record_hdr->orig_len,
+		record_hdr->orig_len);
 
 }
 
