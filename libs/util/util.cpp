@@ -271,12 +271,13 @@ bool pcap_file::read_global_header() {
 	for (auto i = 0; i < GLOBAL_HEADER_LEN; i++) {
 		c = this->ifs.get();
 		if (c == EOF) return false;
-		ptr++ = c;
+		*ptr = c;
+		ptr++;
 	}
 
 	this->global_hdr.magic_number = ntohl(this->global_hdr.magic_number);
 
-	print_hexdump((char*)&this->global_hdr, LEN);
+	print_hexdump((char*)&this->global_hdr, sizeof(this->global_hdr));
 	this->print_global_header(&this->global_hdr);
 	exit(-1);
 
