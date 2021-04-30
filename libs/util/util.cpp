@@ -275,7 +275,7 @@ bool pcap_file::read_global_header() {
 		ptr++;
 	}
 
-	this->global_hdr.magic_number = ntohl(this->global_hdr.magic_number);
+	// this->global_hdr.magic_number = ntohl(this->global_hdr.magic_number);
 
 	print_hexdump((char*)&this->global_hdr, sizeof(this->global_hdr));
 	this->print_global_header(&this->global_hdr);
