@@ -285,13 +285,13 @@ bool pcap_file::read_global_header() {
 }
 
 bool pcap_file::read_record_header() {
-	const int LEN = 32;  // 16 bytes
-	unsigned char buf[LEN+1];
-	unsigned char c;
-	int i;
-	char ts_sec[9], ts_usec[9], incl_len[9], orig_len[9];
-	char ts_sec_reverse[8], ts_usec_reverse[8], incl_len_reverse[8], orig_len_reverse[8];
-	struct tm *timeinfo;
+	// const int LEN = 32;  // 16 bytes
+	// unsigned char buf[LEN+1];
+	// unsigned char c;
+	// int i;
+	// char ts_sec[9], ts_usec[9], incl_len[9], orig_len[9];
+	// char ts_sec_reverse[8], ts_usec_reverse[8], incl_len_reverse[8], orig_len_reverse[8];
+	// struct tm *timeinfo;
 
 	// for (i = 0; i < LEN; i=i+2) {
 	// 	c = this->ifs.get();
