@@ -161,8 +161,8 @@ void uplimit() {
 						// if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
 						// if (!info_ptr->after_090000 && md.match_time_sec >= 90000) {
 						if (md.is_open) {
-							// _px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
-							_px = md.ask_px[0] != 0 ? md.ask_px[0] : md.ask_px[1];
+							_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+							// _px = md.ask_px[0] != 0 ? md.ask_px[0] : md.ask_px[1];
 							info_ptr->first_px = _px;
 							// m[current_date][md.feedcode].last_match_mode = true;
 							// info_ptr->after_090000 = true;
