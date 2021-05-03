@@ -191,12 +191,12 @@ void uplimit() {
 	// std::cout << "--------------------" << std::endl;
 
 	//
-	std::cout << "m.size()=" << m.size() << std::endl;
-	for (const auto &date_d: m) {
-		cur_iter = m.find(date_d.first);
-		prv_iter = std::prev(cur_iter);
-		std::cout << date_d.first << " " << (prv_iter == cur_iter) << " " << (prv_iter == m.begin()) << " " << (prv_iter == m.end()) << std::endl;
-	}
+	// std::cout << "m.size()=" << m.size() << std::endl;
+	// for (const auto &date_d: m) {
+	// 	cur_iter = m.find(date_d.first);
+	// 	prv_iter = std::prev(cur_iter);
+	// 	std::cout << date_d.first << " " << (prv_iter == cur_iter) << " " << (prv_iter == m.begin()) << " " << (prv_iter == m.end()) << std::endl;
+	// }
 
 	// analysis
 	int fraction, denominator;
@@ -220,7 +220,7 @@ void uplimit() {
 					// auto px2 = cur_iter->second[stock_d.first].highest_px;
 					if (px1 > 0) {
 						denominator++;
-						// std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
+						std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
 						if (px2 >= px1) {
 							fraction++;
 						}
