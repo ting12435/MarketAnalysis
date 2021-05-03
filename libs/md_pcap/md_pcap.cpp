@@ -44,10 +44,10 @@ bool OneDayPcap::get_md(struct md *md_ptr) {
 		while (true) {
 			record_data_len = this->get_pcap_record_data();
 			if (record_data_len < 0) {
-				if (record_data_len == -1)
-					this->last_error = "read pcap error [" + this->cur_pcap_file.filename + "]";
+				if (record_data_len == -1) {
+					this->last_error = "read pcap error [" + this->cur_pcap_file->filename + "]";
 					return false;
-				else if (record_data_len == -2) {
+				} else if (record_data_len == -2) {
 					return true;
 				}
 			} else if (record_data_len > 42) {
