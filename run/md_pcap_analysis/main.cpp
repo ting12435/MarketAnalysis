@@ -146,7 +146,8 @@ void uplimit() {
 					
 						// up limit
 						if (!info_ptr->uplimit_flag) {
-							if (md.match_time_sec >= 90000) {
+							// if (md.match_time_sec >= 90000) {
+							if (md.match_time_sec >= 110000) {
 								// if (md.trade_limit == 0x2) {  // 漲停成交
 								if (md.b_limit == 0x2) {  // 漲停買進
 
@@ -231,7 +232,7 @@ void uplimit() {
 				}
 			}
 
-			snprintf(buf, sizeof(buf), "%4d %4d %.2f\n", fraction, denominator, (double)fraction/denominator);
+			snprintf(buf, sizeof(buf), "%4d %4d %.2f", fraction, denominator, (double)fraction/denominator);
 			std::cout << prv_iter->first << "-" << cur_iter->first << " "  << buf << std::endl;
 		}
 	}
