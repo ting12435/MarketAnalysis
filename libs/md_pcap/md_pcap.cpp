@@ -67,7 +67,7 @@ bool OneDayPcap::get_md(struct md **md_ptr) {
 		this->record_data_st_ptr = this->record_data + 42;
 		this->record_data_ed_ptr = this->record_data + record_data_len - 4;
 
-		printf("%d record_data_len=%d fmt=%x seq=%d\n", this->cur_pcap_idx, record_data_len, _md_ptr->hdr.fmt_code, bcd_to_int(_md_ptr->hdr.seq, 4));
+		// printf("%d record_data_len=%d fmt=%x seq=%d\n", this->cur_pcap_idx, record_data_len, _md_ptr->hdr.fmt_code, bcd_to_int(_md_ptr->hdr.seq, 4));
 	}
 
 // if (record_data_len == 0) {
@@ -84,13 +84,14 @@ bool OneDayPcap::get_md(struct md **md_ptr) {
 	int msg_len = bcd_to_int((*md_ptr)->hdr.msg_len, 2);
 	if (msg_len == 0) {
 		// error
-		print_hexdump(this->record_data, this->record_data_ed_ptr - this->record_data_st_ptr + 1);
+		// print_hexdump(this->record_data, this->record_data_ed_ptr - this->record_data_st_ptr + 1);
 		this->last_error = "msg_len=0 [" + this->cur_pcap_file->filename + "]";
 		return false;
 	}
 	this->record_data_st_ptr += msg_len;
 
-	if (this->record_data_st_ptr >= this->record_data_ed_ptr) {
+	if (this->record_data_st_ptr >= this->record_data_ed_ptr ||
+		*(this->record_data_st_ptr) != 27) {
 		this->record_data_st_ptr = nullptr;
 		this->record_data_ed_ptr = nullptr;
 	}
