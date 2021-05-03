@@ -84,6 +84,7 @@ bool OneDayPcap::get_md(struct md **md_ptr) {
 	int msg_len = bcd_to_int((*md_ptr)->hdr.msg_len, 2);
 	if (msg_len == 0) {
 		// error
+		print_hexdump(this->record_data, this->record_data_ed_ptr - this->record_data_st_ptr + 1);
 		this->last_error = "msg_len=0 [" + this->cur_pcap_file->filename + "]";
 		return false;
 	}
