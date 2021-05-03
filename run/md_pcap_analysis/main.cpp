@@ -334,7 +334,7 @@ void large_amount() {
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
 			info_ptr = (struct info*)&stock_d.second;
-			if (stock_d.first == "2330  ") {
+			if (stock_d.first == "2603  ") {
 				std::cout << date_d.first << " " << stock_d.first << " " << info_ptr->accm_trade_lot << std::endl;
 				std::cout << info_ptr->trade_bid_cnt << " " << info_ptr->trade_bid_lot << std::endl;
 				std::cout << info_ptr->trade_ask_cnt << " " << info_ptr->trade_ask_lot << std::endl;
