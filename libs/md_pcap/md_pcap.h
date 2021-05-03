@@ -129,7 +129,7 @@ public:
 	// std::string get_error() { return this->error_ss.str(); }
 	std::string get_last_error() { return this->last_error; }
 
-	// operator bool() const { return this->pcap_folder_exist; }
+	operator bool() const { return this->folder_exists(); }
 
 	Date date;
 	std::string date_folder;

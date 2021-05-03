@@ -229,65 +229,70 @@ void uplimit() {
 
 void large_amount() {
 
-	// struct info {
-	// 	int accm_trade_lot;
-	// };
+	struct info {
+		int accm_trade_lot;
+	};
 
-	// std::map<Date, std::map<std::string, struct info>> m;
+	std::map<Date, std::map<std::string, struct info>> m;
 
-	// struct md *frame;
-	// MD md;
-	// struct info *info_ptr;
+	struct md *frame;
+	MD md;
+	struct info *info_ptr;
 
-	// Date current_date(g_var.d1->date_str);
-	// while (current_date <= *(g_var.d2)) {
-	// 	OneDayPcap one_day_pcap(current_date);
-	// 	if (!one_day_pcap) {
-	// 		std::cout << "error: " << one_day_pcap.get_error();
-	// 	} else {
-	// 		// while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
-	// 		while ((frame = one_day_pcap.get_md()) != nullptr) {
+	Date current_date(g_var.d1->date_str);
+	while (current_date <= *(g_var.d2)) {
+		OneDayPcap one_day_pcap(current_date);
+		if (!one_day_pcap) {
+			std::cout << "error: " << one_day_pcap.get_last_error();
+		} else {
+			// while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+			while (true) {
 
-	// 			if (frame->esc_code != 27)
-	// 				continue;
+				if (!one_day_pcap.get_md(&frame)) {
+					std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
+					break;
+				}
 
-	// 			md.set_data(frame);
+				if (frame == nullptr)
+					break;
 
-	// 			if (md.fmt_code == 0x6) {
+				md.set_data(frame);
 
-	// 				if (m[current_date].find(md.feedcode) == m[current_date].end())
-	// 					m[current_date].emplace(md.feedcode, info{});
+				if (md.fmt_code == 0x6) {
 
-	// 				info_ptr = &m[current_date][md.feedcode];
+					if (m[current_date].find(md.feedcode) == m[current_date].end())
+						m[current_date].emplace(md.feedcode, info{});
 
-	// 				if (!md.is_est && md.trade_lt != -1)
-	// 					info_ptr->accm_trade_lot += md.trade_lt;
+					info_ptr = &m[current_date][md.feedcode];
 
-	// 				if (md.feedcode == "2330  ") {
-	// 					std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
+					if (!md.is_est && md.trade_lt != -1)
+						info_ptr->accm_trade_lot += md.trade_lt;
 
-	// 					if (md.match_time_sec > 90000)
-	// 						print_hexdump((char*)frame, md.md_len);
-	// 				}
+					// if (md.feedcode == "2330  ") {
+					// 	std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
 
-	// 			}
-	// 		}
-	// 	}
+						// if (md.match_time_sec > 90000)
+						// 	print_hexdump((char*)frame, md.md_len);
+					// }
 
-	// 	current_date.add(1);
-	// }
+				}
+			}
+		}
 
-	// std::cout << "--------------------" << std::endl;
+		current_date.add(1);
+	}
 
-	// // analysis
-	// for (const auto &date_d: m) {
-	// 	for (const auto &stock_d: date_d.second) {
+	std::cout << "--------------------" << std::endl;
 
-	// 		if (stock_d.first == "2330  ")
-	// 			std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.accm_trade_lot << std::endl;
+	// analysis
+	for (const auto &date_d: m) {
+		for (const auto &stock_d: date_d.second) {
 
-	// 	}
-	// }
+			if (stock_d.first == "2330  ")
+				std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.accm_trade_lot << std::endl;
+
+		}
+	}
 }
 
 void debug() {
