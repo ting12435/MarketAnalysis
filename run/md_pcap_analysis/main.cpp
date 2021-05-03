@@ -279,8 +279,8 @@ void large_amount() {
 					if (!md.is_est && md.trade_lt != -1)
 						info_ptr->accm_trade_lot += md.trade_lt;
 
-					// if (md.feedcode == "6128  ") {
-					// 	std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
+					if (md.feedcode == "2330  ") {
+						std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
 
 					// 	// if (md.match_time_sec > 90000)
 					// 	// 	print_hexdump((char*)frame, md.md_len);
