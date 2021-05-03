@@ -279,7 +279,7 @@ void large_amount() {
 					if (!md.is_est && md.trade_lt != -1)
 						info_ptr->accm_trade_lot += md.trade_lt;
 
-					if (md.feedcode == "3701  ") {
+					if (md.feedcode == "3383  ") {
 						std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
 
 						// if (md.match_time_sec > 90000)
@@ -299,7 +299,7 @@ void large_amount() {
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
 
-			if (stock_d.first == "3701  ")
+			if (stock_d.first == "3383  ")
 				std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.accm_trade_lot << std::endl;
 
 		}
