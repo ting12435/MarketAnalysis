@@ -78,7 +78,7 @@ bool OneDayPcap::get_md(struct md **md_ptr) {
 // printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
 
 	*md_ptr = (struct md*)this->record_data_st_ptr;
-	int msg_len = bcd_to_int(md_ptr->hdr.msg_len, 2);
+	int msg_len = bcd_to_int(*md_ptr->hdr.msg_len, 2);
 	this->record_data_st_ptr += msg_len;
 
 	if (this->record_data_st_ptr >= this->record_data_ed_ptr) {
