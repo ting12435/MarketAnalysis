@@ -15,7 +15,7 @@ __attribute__((constructor)) void __md_pcap_init() {
 /********** OneDayPcap **********/
 OneDayPcap::OneDayPcap(Date d) {
 	this->date = d;
-	this->cur_pcap_idx = -1;
+	this->cur_pcap_idx = 0;
 	this->cur_pcap_file = nullptr;
 	this->date_str = this->date.date_str.substr(0, 4) + this->date.date_str.substr(5, 2) + this->date.date_str.substr(8, 2);
 	this->date_folder = pcap_folder + this->date_str;
@@ -110,8 +110,9 @@ int OneDayPcap::get_pcap_record_data() {
 	int record_data_len = -1;
 
 	// check file
-	if (this->cur_pcap_idx == -1) {
-		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
+	// if (this->cur_pcap_idx == -1) {
+	if (this->cur_pcap_file == nullptr) {
+		if (!this->open_pcap_file(this->cur_pcap_idx)) {
 			this->last_error = this->cur_pcap_file->get_last_error();
 			return -2;
 		}
