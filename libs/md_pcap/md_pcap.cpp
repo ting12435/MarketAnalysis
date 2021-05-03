@@ -328,6 +328,8 @@ void MD::print_detail() {
 
 	ss << "vaild: " << this->vaild << std::endl;
 
+	ss << "-------------------------------------------" << std::endl;
+
 	std::cout << ss.str();
 }
 
