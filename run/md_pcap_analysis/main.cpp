@@ -307,6 +307,8 @@ void debug() {
 				break;
 			}
 
+			printf("frame=%p\n", frame);
+
 			if (frame == nullptr)
 				break;
 
