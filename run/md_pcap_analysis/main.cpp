@@ -332,7 +332,7 @@ void debug() {
 			}
 		}
 	} else {
-		std::cerr << "error: folder not exists [" << current_date << "]" << std::endl;
+		std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
 	}
 }
 
