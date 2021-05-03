@@ -314,7 +314,7 @@ void large_amount() {
 	// analysis
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
-			info_ptr = stock_d.second;
+			info_ptr = &stock_d.second;
 			if (stock_d.first == "2330  ") {
 				std::cout << date_d.first << " " << stock_d.first << " " << info_ptr->accm_trade_lot << std::endl;
 				std::cout << info_ptr->trade_bid_cnt << " " << info_ptr->trade_ask_cnt << " " << info_ptr->trade_gap_cnt << std::endl;
