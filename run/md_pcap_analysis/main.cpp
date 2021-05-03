@@ -334,5 +334,8 @@ void debug() {
 	} else {
 		std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
 	}
+
+	//
+	std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
 }
 
