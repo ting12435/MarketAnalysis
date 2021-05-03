@@ -92,139 +92,146 @@ int main(int argc, char *argv[]) {
 
 void uplimit() {
 
-	// struct info {
-	// 	int uplimit_px;
-	// 	int first_px;
-	// 	int highest_px;
-	// 	// bool last_match_mode;
-	// 	bool uplimit_flag;
-	// 	bool after_090000;
-	// };
+	struct info {
+		int uplimit_px;
+		int first_px;
+		int highest_px;
+		// bool last_match_mode;
+		bool uplimit_flag;
+		bool after_090000;
+	};
 
-	// std::map<Date, std::map<std::string, struct info>> m;
-	// std::map<Date, std::map<std::string, struct info>>::iterator cur_iter, prv_iter;
-	// struct md *frame;
-	// MD md;
-	// int _px;
-	// struct info *info_ptr;
-	// char buf[1000];
+	std::map<Date, std::map<std::string, struct info>> m;
+	std::map<Date, std::map<std::string, struct info>>::iterator cur_iter, prv_iter;
+	struct md *frame;
+	MD md;
+	int _px;
+	struct info *info_ptr;
+	char buf[1000];
 
-	// Date current_date(g_var.d1->date_str);
-	// while (current_date <= *(g_var.d2)) {
+	Date current_date(g_var.d1->date_str);
+	while (current_date <= *(g_var.d2)) {
 
-	// 	OneDayPcap one_day_pcap(current_date);
-	// 	if (!one_day_pcap) {
-	// 		std::cout << "error: " << one_day_pcap.get_error();
-	// 	} else {
+		OneDayPcap one_day_pcap(current_date);
+		if (!one_day_pcap) {
+			std::cout << "error: " << one_day_pcap.get_error();
+		} else {
 
-	// 		m.emplace(current_date, std::map<std::string, struct info>());
+			m.emplace(current_date, std::map<std::string, struct info>());
 			
-	// 		// while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
-	// 		while ((frame = one_day_pcap.get_md()) != nullptr) {
+			// while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
+			while (true) {
 
-	// 			if (frame->esc_code != 27)
-	// 				continue;
+				if (!one_day_pcap.get_md(&frame)) {
+					std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
+					break;
+				}
 
-	// 			md.set_data(frame);
+				if (frame == nullptr)
+					break;
+
+				md.set_data(frame);
 				
-	// 			if (md.is_md) {					
+				if (md.is_md) {					
 
-	// 				if (md.fmt_code == 0x6) {
+					if (md.fmt_code == 0x6) {
 
-	// 					if (m[current_date].find(md.feedcode) == m[current_date].end())
-	// 						m[current_date].emplace(md.feedcode, info{});
+						if (m[current_date].find(md.feedcode) == m[current_date].end())
+							m[current_date].emplace(md.feedcode, info{});
 
-	// 					info_ptr = &m[current_date][md.feedcode];
+						info_ptr = &m[current_date][md.feedcode];
 					
-	// 					// up limit
-	// 					if (!info_ptr->uplimit_flag) {
-	// 						if (md.match_time_sec >= 90000) {
-	// 							// if (md.trade_limit == 0x2) {  // 漲停成交
-	// 							if (md.b_limit == 0x2) {  // 漲停買進
+						// up limit
+						if (!info_ptr->uplimit_flag) {
+							if (md.match_time_sec >= 90000) {
+								// if (md.trade_limit == 0x2) {  // 漲停成交
+								if (md.b_limit == 0x2) {  // 漲停買進
 
-	// 								_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
-	// 								info_ptr->uplimit_px = _px;
-	// 								info_ptr->uplimit_flag = true;
-	// 							}
-	// 						}
-	// 					}
+									_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+									info_ptr->uplimit_px = _px;
+									info_ptr->uplimit_flag = true;
+								}
+							}
+						}
 
-	// 					// first px after 09:00
-	// 					// if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
-	// 					if (!info_ptr->after_090000 && md.match_time_sec >= 90000) {
-	// 						_px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
-	// 						info_ptr->first_px = _px;
-	// 						// m[current_date][md.feedcode].last_match_mode = true;
-	// 						info_ptr->after_090000 = true;
-	// 					}
+						// first px after 09:00
+						// if (!m[current_date][md.feedcode].last_match_mode && md.match_mode) {
+						// if (!info_ptr->after_090000 && md.match_time_sec >= 90000) {
+						if (md.is_open) {
+							// _px = md.bid_px[0] != 0 ? md.bid_px[0] : md.bid_px[1];
+							_px = md.ask_px[0] != 0 ? md.ask_px[0] : md.ask_px[1];
+							info_ptr->first_px = _px;
+							// m[current_date][md.feedcode].last_match_mode = true;
+							// info_ptr->after_090000 = true;
+						}
 
-	// 					// highest_px
-	// 					if (md.match_time_sec >= 90000) {
-	// 						if (md.trade_px >= info_ptr->highest_px)
-	// 							info_ptr->highest_px = md.trade_px;
-	// 					}
-	// 				}
-	// 			}
+						// highest_px
+						if (md.match_time_sec >= 90000) {
+							if (md.trade_px >= info_ptr->highest_px)
+								info_ptr->highest_px = md.trade_px;
+						}
+					}
+				}
 
-	// 		}
-	// 		// std::cout << "error: " << one_day_pcap.get_error() << std::endl;
-	// 	}
+			}
+			// std::cout << "error: " << one_day_pcap.get_error() << std::endl;
+		}
 
-	// 	current_date.add(1);
+		current_date.add(1);
+	}
+
+	std::cout << "--------------------" << std::endl;
+
+	//
+	// std::cout << "m.size()=" << m.size() << std::endl;
+	// for (const auto &date_d: m) {
+	// 	std::cout << date_d.first << " date_d.second.size()=" << date_d.second.size() << std::endl;
 	// }
 
 	// std::cout << "--------------------" << std::endl;
 
-	// //
-	// // std::cout << "m.size()=" << m.size() << std::endl;
-	// // for (const auto &date_d: m) {
-	// // 	std::cout << date_d.first << " date_d.second.size()=" << date_d.second.size() << std::endl;
-	// // }
+	//
+	std::cout << "m.size()=" << m.size() << std::endl;
+	for (const auto &date_d: m) {
+		cur_iter = m.find(date_d.first);
+		prv_iter = std::prev(cur_iter);
+		std::cout << date_d.first << " " << (prv_iter == cur_iter) << " " << (prv_iter == m.begin()) << " " << (prv_iter == m.end()) << std::endl;
+	}
 
-	// // std::cout << "--------------------" << std::endl;
-
-	// //
+	// analysis
+	int fraction, denominator;
 	// std::cout << "m.size()=" << m.size() << std::endl;
-	// for (const auto &date_d: m) {
-	// 	cur_iter = m.find(date_d.first);
-	// 	prv_iter = std::prev(cur_iter);
-	// 	std::cout << date_d.first << " " << (prv_iter == cur_iter) << " " << (prv_iter == m.begin()) << " " << (prv_iter == m.end()) << std::endl;
-	// }
+	for (const auto &date_d: m) {
+		cur_iter = m.find(date_d.first);
+		prv_iter = std::prev(cur_iter);
 
-	// // analysis
-	// int fraction, denominator;
-	// // std::cout << "m.size()=" << m.size() << std::endl;
-	// for (const auto &date_d: m) {
-	// 	cur_iter = m.find(date_d.first);
-	// 	prv_iter = std::prev(cur_iter);
+		// std::cout << date_d.first << " cur_iter->second.size()=" << cur_iter->second.size() << std::endl;
 
-	// 	// std::cout << date_d.first << " cur_iter->second.size()=" << cur_iter->second.size() << std::endl;
+		if ((m.size() == 2 && prv_iter != cur_iter) || 
+			(m.size() > 2 && prv_iter != m.end())) {
 
-	// 	if ((m.size() == 2 && prv_iter != cur_iter) || 
-	// 		(m.size() > 2 && prv_iter != m.end())) {
+			fraction = denominator = 0;
 
-	// 		fraction = denominator = 0;
+			for (const auto &stock_d: date_d.second) {
+				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
+					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
+					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
+					auto px2 = cur_iter->second[stock_d.first].first_px;
+					// auto px2 = cur_iter->second[stock_d.first].highest_px;
+					if (px1 > 0) {
+						denominator++;
+						// std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
+						if (px2 >= px1) {
+							fraction++;
+						}
+					}
+				}
+			}
 
-	// 		for (const auto &stock_d: date_d.second) {
-	// 			if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
-	// 				cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
-	// 				auto px1 = prv_iter->second[stock_d.first].uplimit_px;
-	// 				// auto px2 = cur_iter->second[stock_d.first].first_px;
-	// 				auto px2 = cur_iter->second[stock_d.first].highest_px;
-	// 				if (px1 > 0) {
-	// 					denominator++;
-	// 					// std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
-	// 					if (px2 >= px1) {
-	// 						fraction++;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-
-	// 		snprintf(buf, sizeof(buf), "%4d %4d %.2f\n", fraction, denominator, (double)fraction/denominator);
-	// 		std::cout << prv_iter->first << "-" << cur_iter->first << " "  << buf << std::endl;
-	// 	}
-	// }
+			snprintf(buf, sizeof(buf), "%4d %4d %.2f\n", fraction, denominator, (double)fraction/denominator);
+			std::cout << prv_iter->first << "-" << cur_iter->first << " "  << buf << std::endl;
+		}
+	}
 }
 
 void large_amount() {
@@ -268,12 +275,12 @@ void large_amount() {
 					if (!md.is_est && md.trade_lt != -1)
 						info_ptr->accm_trade_lot += md.trade_lt;
 
-					if (md.feedcode == "2330  ") {
-						std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
+					// if (md.feedcode == "2330  ") {
+					// 	std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
 
-						// if (md.match_time_sec > 90000)
-						// 	print_hexdump((char*)frame, md.md_len);
-					}
+					// 	// if (md.match_time_sec > 90000)
+					// 	// 	print_hexdump((char*)frame, md.md_len);
+					// }
 
 				}
 			}
