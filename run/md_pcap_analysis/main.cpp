@@ -312,6 +312,8 @@ void debug() {
 
 			md.set_data(frame);
 
+			printf("len=%d fmt=%x seq=%d\n", md.md_len, md.fmt_code, md.seq);
+
 			if (md.is_md && md.fmt_code == 0x6) {
 
 				// if (md.feedcode == "2009  ") {
