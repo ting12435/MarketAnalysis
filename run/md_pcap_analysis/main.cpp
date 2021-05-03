@@ -251,6 +251,7 @@ void large_amount() {
 		int trade_oth_cnt;
 		int trade_oth_lot;
 		std::map<int, int> trade_bid_map;  // K:trade lot, V:count
+		std::map<int, int> trade_ask_map;  // K:trade lot, V:count
 	};
 
 	std::map<Date, std::map<std::string, struct info>> m;
@@ -292,13 +293,16 @@ void large_amount() {
 							info_ptr->trade_bid_cnt++;
 							info_ptr->trade_bid_lot += md.trade_lt;
 
-							if (info_ptr->trade_bid_map.find(md.trade_lt) == info_ptr->trade_bid_map.end())
-								info_ptr->trade_bid_map.emplace(md.trade_lt, 0);
+							// if (info_ptr->trade_bid_map.find(md.trade_lt) == info_ptr->trade_bid_map.end())
+							// 	info_ptr->trade_bid_map.emplace(md.trade_lt, 0);
 							info_ptr->trade_bid_map[md.trade_lt]++;
 
 						} else if (md.trade_px == md.ask_px[0]) {
 							info_ptr->trade_ask_cnt++;
 							info_ptr->trade_ask_lot += md.trade_lt;
+
+							info_ptr->trade_ask_map[md.trade_lt]++;
+
 						} else if (md.bid_px[0] != -1 && md.ask_px[0] != -1) {
 							info_ptr->trade_gap_cnt++;
 							info_ptr->trade_gap_lot += md.trade_lt;
@@ -337,7 +341,10 @@ void large_amount() {
 				std::cout << info_ptr->trade_gap_cnt << " " << info_ptr->trade_gap_lot << std::endl;
 				std::cout << info_ptr->trade_oth_cnt << " " << info_ptr->trade_oth_lot << std::endl;
 				for (const auto &m: info_ptr->trade_bid_map) {
-					std::cout << m.first << " " << m.second << std::endl;
+					std::cout << m.first << "," << m.second << std::endl;
+				}
+				for (const auto &m: info_ptr->trade_ask_map) {
+					std::cout << m.first << "," << m.second << std::endl;
 				}
 			}
 		}
