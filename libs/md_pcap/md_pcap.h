@@ -120,12 +120,16 @@ public:
 	OneDayPcap(Date);
 	// ~OneDayPcap() = defalut;
 
-	struct md* get_md();
+	// struct md* get_md();
+	bool get_md(struct md*);  // false: error occurs, ptr==nullptr: read finished
 	// struct md* get_pcap_record_data();
 
-	std::string get_error() { return this->error_ss.str(); }
+	bool folder_exists();
 
-	operator bool() const { return this->pcap_folder_exist; }
+	// std::string get_error() { return this->error_ss.str(); }
+	std::string get_last_error() { return this->last_error; }
+
+	// operator bool() const { return this->pcap_folder_exist; }
 
 	Date date;
 	std::string date_folder;
@@ -141,9 +145,10 @@ private:
 	pcap_file *cur_pcap_file;
 	std::string date_str;
 
-	std::stringstream error_ss;
+	// std::stringstream error_ss;
+	std::string last_error;
 
-	bool pcap_folder_exist;
+	// bool pcap_folder_exist;
 
 	char *record_data_st_ptr;
 	char *record_data_ed_ptr;

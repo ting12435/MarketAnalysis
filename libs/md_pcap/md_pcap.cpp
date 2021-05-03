@@ -20,46 +20,52 @@ OneDayPcap::OneDayPcap(Date d) {
 	this->date_str = this->date.date_str.substr(0, 4) + this->date.date_str.substr(5, 2) + this->date.date_str.substr(8, 2);
 	this->date_folder = pcap_folder + this->date_str;
 
-	this->pcap_folder_exist = File::dir_exists(this->date_folder);
-	// std::cout << date_folder << " " << this->pcap_folder_exist << std::endl;
-	if (!this->pcap_folder_exist) {
-		this->error_ss << "pcap folder not exist [" << this->date_folder << "]";
-	}
-
 	this->record_data_st_ptr = nullptr;
 	this->record_data_ed_ptr = nullptr;
-// printf("record_data=%p\n", this->record_data);
 }
 
-struct md* OneDayPcap::get_md() {
+bool OneDayPcap::folder_exists() {
+	return File::dir_exists(this->date_folder);
+	// this->pcap_folder_exist = File::dir_exists(this->date_folder);
+	// // std::cout << date_folder << " " << this->pcap_folder_exist << std::endl;
+	// if (!this->pcap_folder_exist) {
+	// 	this->error_ss << "pcap folder not exist [" << this->date_folder << "]";
+	// }
+}
 
-	int record_data_len;
-	struct md *md_ptr;
+bool OneDayPcap::get_md(struct md *md_ptr) {
+
+	md_ptr = nullptr;
 
 	if (this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) {
 
+		int record_data_len;
+		struct md *_md_ptr;
 		while (true) {
 			record_data_len = this->get_pcap_record_data();
-			if (record_data_len < 0)
-				return nullptr;
-			else if (record_data_len > 42) {
-				md_ptr = (struct md*)(this->record_data + 42);
-				if (md_ptr->esc_code == 27)
+			if (record_data_len < 0) {
+				if (record_data_len == -1)
+					this->last_error = "read pcap error [" + this->cur_pcap_file.filename + "]";
+					return false;
+				else if (record_data_len == -2) {
+					return true;
+				}
+			} else if (record_data_len > 42) {
+				_md_ptr = (struct md*)(this->record_data + 42);
+				if (_md_ptr->esc_code == 27)
 					break;
 			}
 		}
 
 		this->record_data_st_ptr = this->record_data + 42;
 		this->record_data_ed_ptr = this->record_data + record_data_len - 4;
-	} else {
-		record_data_len = this->record_data_ed_ptr - this->record_data_st_ptr + 1;
 	}
 
-if (record_data_len == 0) {
-printf("record_data_len=%d\n", record_data_len);
-print_hexdump(this->record_data, record_data_len);
-exit(-1);
-}
+// if (record_data_len == 0) {
+// printf("record_data_len=%d\n", record_data_len);
+// print_hexdump(this->record_data, record_data_len);
+// exit(-1);
+// }
 // printf("---------------------------------\n");
 // printf("record_data_len=%d\n", record_data_len);
 // printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
@@ -80,29 +86,36 @@ exit(-1);
 // printf("p=%p\n", p);
 // if (record_data_len == 0)
 // exit(-1);
-	return md_ptr;
+	return true;
 }
 
 int OneDayPcap::get_pcap_record_data() {
+	/*
+		return:
+			>0: read success
+			-1: read error
+			-2: open error (read finished)
+	*/
+
 	int record_data_len = -1;
 
 	// check file
 	if (this->cur_pcap_idx == -1) {
 		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
-			this->error_ss << this->cur_pcap_file->get_error();
-			return -1;
+			this->last_error << this->cur_pcap_file->get_last_error();
+			return -2;
 		}
 	}
 
-	while ((record_data_len = this->cur_pcap_file->read(this->record_data, sizeof(this->record_data))) < 0) {
+	while ((record_data_len = this->cur_pcap_file->read(this->record_data, sizeof(this->record_data))) <= 0) {
 
-		this->error_ss << this->cur_pcap_file->get_error();
+		// this->error_ss << this->cur_pcap_file->get_error();
 
 		this->close_pcap_file(this->cur_pcap_idx);
 
 		if (!this->open_pcap_file(++this->cur_pcap_idx)) {
-			this->error_ss << this->cur_pcap_file->get_error();
-			return -1;
+			// this->last_error << this->cur_pcap_file->get_last_error();
+			return -2;
 		}
 	}
 
@@ -143,17 +156,21 @@ bool OneDayPcap::open_pcap_file(int idx) {
 	std::string fn_str = fn_ss.str();
 
 	if (!File::file_exists(fn_str)) {
-		this->error_ss << fn_str << " not exists" << std::endl;
+		this->last_error << "file not exists [" << fn_str << "]";
 		return false;
 	}
 
 std::cout << fn_str << std::endl;
-	this->cur_pcap_file = new pcap_file(fn_str);
-	if (!*(this->cur_pcap_file)) {
-		this->error_ss << this->cur_pcap_file->get_error();
-// std::cout << this->error_ss.str() << std::endl;
+	this->cur_pcap_file = new pcap_file();
+	if (this->cur_pcap_file.open(fn_str) < 0) {
+		this->last_error << this->cur_pcap_file->get_last_error();;
 		return false;
 	}
+// 	if (!*(this->cur_pcap_file)) {
+// 		this->error_ss << this->cur_pcap_file->get_error();
+// // std::cout << this->error_ss.str() << std::endl;
+// 		return false;
+// 	}
 
 	return true;
 }

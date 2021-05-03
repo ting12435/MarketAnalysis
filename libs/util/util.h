@@ -53,14 +53,31 @@ public:
 
 class pcap_file {
 public:
-	pcap_file(std::string filename);
+	pcap_file();
 	~pcap_file();
 
+	/**
+	 * \brief open pcap file
+	 * \return 
+	 *		0 : success
+	 *		-1: open error
+	 *		-2: read global header error
+	 */
+	int open(std::string fn);
+
+	/**
+	 * \brief read pcap file
+	 * \return 
+	 *		>0: read len
+	 *		0 : read record header error
+	 *		-1: read error
+	 */
 	int read(char *buf, int buf_len);
 
-	bool eof() { return this->ifs.eof(); }
+	// bool eof() { return this->ifs.eof(); }
 
-	std::string get_error() { return this->error_ss.str(); }
+	// std::string get_error() { return this->error_ss.str(); }
+	std::string get_last_error() { return this->last_error; }
 
 	operator bool() const { return this->vaild; }
 
@@ -93,7 +110,8 @@ private:
 	void print_record_header(struct pcap_record_hdr*);
 
 	bool vaild;
-	std::stringstream error_ss;
+	// std::stringstream error_ss;
+	std::string last_error;
 };
 
 std::vector<std::string> split(const std::string& s, std::string delim = ",", int split_cnt = -1);

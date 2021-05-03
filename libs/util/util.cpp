@@ -182,25 +182,8 @@ bool File::dir_exists(const std::string& dir_name) {
 }
 
 /********** pcap_file **********/
-pcap_file::pcap_file(std::string filename) {
-	this->filename = filename;
-	this->vaild = true;
-	
-	// open file
-	this->ifs.open(this->filename, std::ios::in);
-	if (!this->ifs.good()) {
-		this->vaild = false;
-		this->error_ss << "open file error " << this->filename << std::endl;;
-	}
-	
-	// read global
-	memset(&this->global_hdr, 0, sizeof(struct pcap_global_hdr));
-	if (this) {
-		if (!this->read_global_header()) {
-			this->vaild = false;
-			this->error_ss << this->filename << " read_global_header error\n";
-		}
-	}
+pcap_file::pcap_file() {
+	this->vaild = false;
 }
 
 pcap_file::~pcap_file() {
@@ -209,21 +192,39 @@ pcap_file::~pcap_file() {
 	this->ifs.close();
 }
 
+int pcap_file::open(std::string fn) {
+	this->filename = fn;
+	// open file
+	this->ifs.open(this->filename, std::ios::in);
+	if (!this->ifs.good()) {
+		this->vaild = false;
+		this->last_error = "open file error [" + this->filename + "]";
+		return -1;
+	}
+	
+	// read global
+	memset(&this->global_hdr, 0, sizeof(struct pcap_global_hdr));
+	if (!this->read_global_header()) {
+		this->vaild = false;
+		this->last_error = "read_global_header error [" + this->filename + "]";
+		return -2;
+	}
+
+	this->vaild = true;
+	return 0;
+}
+
 int pcap_file::read(char *buf, int buf_len) {
-	int read_len = -1;
+	int read_len;
 	memset(buf, 0, buf_len);
-
-// std::cout << "read in\n";
-
 
 	// read header
 	if (!this->read_record_header()) {
 		this->vaild = false;
-		this->error_ss << this->filename << " read_record_header error\n";
-		goto read_finished;
+		this->last_error = "read_record_header error [" + this->filename + "]";
+		return 0;
 	}
 
-// std::cout << "read aa\n";
 	read_len = MIN((int)this->current_record_hdr.incl_len, buf_len);
 
 
@@ -233,9 +234,8 @@ int pcap_file::read(char *buf, int buf_len) {
 	// read data
 	if (!this->read_record_data(buf, read_len)) {
 		this->vaild = false;
-		this->error_ss << this->filename << " read_record_data error\n";
-		read_len = -1;
-		goto read_finished;
+		this->last_error = "read_record_data error [" + this->filename + "]";
+		return -1;
 	}
 
 // if (this->filename == "/data/database/2in1/tcpdump/20210427/TSE_20210427.pcap") {
@@ -244,14 +244,13 @@ int pcap_file::read(char *buf, int buf_len) {
 
 // std::cout << "read out\n";
 
-	read_finished:
-if (read_len == 0) {
-print_hexdump((char*)&this->global_hdr, sizeof(this->global_hdr));
-this->print_global_header(&this->global_hdr);
-print_hexdump((char*)&this->current_record_hdr, sizeof(this->current_record_hdr));
-this->print_record_header(&this->current_record_hdr);
-exit(-1);
-}
+// if (read_len == 0) {
+// print_hexdump((char*)&this->global_hdr, sizeof(this->global_hdr));
+// this->print_global_header(&this->global_hdr);
+// print_hexdump((char*)&this->current_record_hdr, sizeof(this->current_record_hdr));
+// this->print_record_header(&this->current_record_hdr);
+// exit(-1);
+// }
 // std::cout << "read finished\n";
 	return read_len;
 }
