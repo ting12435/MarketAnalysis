@@ -219,8 +219,8 @@ void uplimit() {
 				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
 					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
 					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
-					auto px2 = cur_iter->second[stock_d.first].first_px;
-					// auto px2 = cur_iter->second[stock_d.first].highest_px;
+					// auto px2 = cur_iter->second[stock_d.first].first_px;
+					auto px2 = cur_iter->second[stock_d.first].highest_px;
 					if (px1 > 0) {
 						denominator++;
 						std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
