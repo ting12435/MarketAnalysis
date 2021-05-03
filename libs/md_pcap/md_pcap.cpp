@@ -19,8 +19,9 @@ OneDayPcap::OneDayPcap(Date d) {
 	this->cur_pcap_file = nullptr;
 	this->date_str = this->date.date_str.substr(0, 4) + this->date.date_str.substr(5, 2) + this->date.date_str.substr(8, 2);
 	if (this->date_str == "20210503")
-		this->date_str += "_1330";
-	this->date_folder = pcap_folder + this->date_str;
+		this->date_folder = pcap_folder + this->date_str;
+	else
+		this->date_folder = pcap_folder + this->date_str + "_1330";
 
 	this->record_data_st_ptr = nullptr;
 	this->record_data_ed_ptr = nullptr;
