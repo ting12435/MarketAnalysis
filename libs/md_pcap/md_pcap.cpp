@@ -18,6 +18,8 @@ OneDayPcap::OneDayPcap(Date d) {
 	this->cur_pcap_idx = 0;
 	this->cur_pcap_file = nullptr;
 	this->date_str = this->date.date_str.substr(0, 4) + this->date.date_str.substr(5, 2) + this->date.date_str.substr(8, 2);
+	if (this->date_str == "20210503")
+		this->date_str += "_1330";
 	this->date_folder = pcap_folder + this->date_str;
 
 	this->record_data_st_ptr = nullptr;
@@ -170,8 +172,6 @@ bool OneDayPcap::open_pcap_file(int idx) {
 // std::cout << this->date << " open_pcap_file " << idx << std::endl;
 	// TSE_20210423.pcap22
 	std::stringstream fn_ss;
-	if (this->date_str == "20210503")
-		this->date_str += "_1330";
 	fn_ss << this->date_folder << "/" << pcap_market << "_" << this->date_str << ".pcap" << (idx == 0 ? "" : std::to_string(idx));
 
 	std::string fn_str = fn_ss.str();
