@@ -92,6 +92,7 @@ bool OneDayPcap::get_md(struct md *md_ptr) {
 // printf("p=%p\n", p);
 // if (record_data_len == 0)
 // exit(-1);
+printf("md_ptr=%p\n", md_ptr);
 	return true;
 }
 
