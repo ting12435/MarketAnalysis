@@ -25,7 +25,7 @@ OneDayPcap::OneDayPcap(Date d) {
 }
 
 bool OneDayPcap::folder_exists() {
-	if (!File::dir_exists(this->date_folder);) {
+	if (!File::dir_exists(this->date_folder)) {
 		this->last_error = "folder not exists [" + this->date_folder + "]";
 		return false;
 	}
