@@ -37,9 +37,9 @@ bool OneDayPcap::folder_exists() {
 	// }
 }
 
-bool OneDayPcap::get_md(struct md *md_ptr) {
-printf("md_ptr=%p\n", md_ptr);
-	md_ptr = nullptr;
+bool OneDayPcap::get_md(struct md **md_ptr) {
+// printf("md_ptr=%p\n", md_ptr);
+	*md_ptr = nullptr;
 
 	if (this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) {
 
@@ -77,7 +77,7 @@ printf("md_ptr=%p\n", md_ptr);
 // printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
 // printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
 
-	md_ptr = (struct md*)this->record_data_st_ptr;
+	*md_ptr = (struct md*)this->record_data_st_ptr;
 	int msg_len = bcd_to_int(md_ptr->hdr.msg_len, 2);
 	this->record_data_st_ptr += msg_len;
 
@@ -92,7 +92,7 @@ printf("md_ptr=%p\n", md_ptr);
 // printf("p=%p\n", p);
 // if (record_data_len == 0)
 // exit(-1);
-printf("md_ptr=%p\n", md_ptr);
+// printf("md_ptr=%p\n", md_ptr);
 	return true;
 }
 

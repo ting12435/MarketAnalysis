@@ -302,7 +302,7 @@ void debug() {
 		// while ((frame = one_day_pcap.get_md()) != nullptr) {
 		while (true) {
 
-			if (!one_day_pcap.get_md(frame)) {
+			if (!one_day_pcap.get_md(&frame)) {
 				std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
 				break;
 			}

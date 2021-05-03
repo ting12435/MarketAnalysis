@@ -121,7 +121,7 @@ public:
 	// ~OneDayPcap() = defalut;
 
 	// struct md* get_md();
-	bool get_md(struct md*);  // false: error occurs, ptr==nullptr: read finished
+	bool get_md(struct md**);  // false: error occurs, ptr==nullptr: read finished
 	// struct md* get_pcap_record_data();
 
 	bool folder_exists();
