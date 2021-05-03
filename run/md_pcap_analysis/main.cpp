@@ -114,7 +114,7 @@ void uplimit() {
 
 		OneDayPcap one_day_pcap(current_date);
 		if (!one_day_pcap) {
-			std::cout << "error: " << one_day_pcap.get_error();
+			std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;;
 		} else {
 
 			m.emplace(current_date, std::map<std::string, struct info>());
@@ -250,7 +250,7 @@ void large_amount() {
 	while (current_date <= *(g_var.d2)) {
 		OneDayPcap one_day_pcap(current_date);
 		if (!one_day_pcap) {
-			std::cout << "error: " << one_day_pcap.get_last_error();
+			std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;;
 		} else {
 			// while ((frame = one_day_pcap.get_pcap_record_data()) != nullptr) {
 			while (true) {
