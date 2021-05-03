@@ -325,7 +325,7 @@ void debug() {
 			md.set_data(frame);
 
 			if (md.is_md && md.fmt_code == 0x6 && md.feedcode == "1592  ") {
-				frame->print_detail();
+				md->print_detail();
 				if (md.match_time_sec > 90005)
 					exit(-1);
 			}
