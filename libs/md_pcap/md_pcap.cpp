@@ -64,7 +64,7 @@ bool OneDayPcap::get_md(struct md **md_ptr) {
 		this->record_data_st_ptr = this->record_data + 42;
 		this->record_data_ed_ptr = this->record_data + record_data_len - 4;
 
-		printf("%d record_data_len=%d fmt=%d seq=%d\n", this->cur_pcap_idx, record_data_len, _md_ptr->fmt_code, _md_ptr->seq);
+		printf("%d record_data_len=%d fmt=%d seq=%d\n", this->cur_pcap_idx, record_data_len, _md_ptr->hdr.fmt_code, _md_ptr->hdr.seq);
 	}
 
 // if (record_data_len == 0) {
