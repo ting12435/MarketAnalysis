@@ -22,6 +22,9 @@ OneDayPcap::OneDayPcap(Date d) {
 
 	this->record_data_st_ptr = nullptr;
 	this->record_data_ed_ptr = nullptr;
+
+	// 
+	this->cur_pcap_idx = 85;
 }
 
 bool OneDayPcap::folder_exists() {
