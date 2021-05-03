@@ -242,6 +242,9 @@ void large_amount() {
 
 	struct info {
 		int accm_trade_lot;
+		int trade_bid_cnt;
+		int trade_ask_cnt;
+		int trade_gap_cnt;
 	};
 
 	std::map<Date, std::map<std::string, struct info>> m;
@@ -276,17 +279,28 @@ void large_amount() {
 
 					info_ptr = &m[current_date][md.feedcode];
 
-					if (!md.is_est && md.trade_lt != -1)
+					if (!md.is_est && md.trade_lt != -1) {
 						info_ptr->accm_trade_lot += md.trade_lt;
 
-					if (md.feedcode == "2330  ") {
-						// std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
-
-						if (md.match_time_sec > 90000 && md.only_display_trade) {
-							// print_hexdump((char*)frame, md.md_len);
-							md.print_detail();
+						if (md.trade_px == md.bid_px[0])
+							info_ptr->trade_bid_cnt++;
+						else if (md.trade_px == md.ask_px[0])
+							info_ptr->trade_ask_cnt++;
+						else {
+							if (md.bid_px[0] != -1 && md.ask_px[0] != -1) {
+								info_ptr->trade_gap_cnt++;
+							}
 						}
 					}
+
+					// if (md.feedcode == "2330  ") {
+					// 	// std::cout << md.trade_lt << " " << md.accm_trade_lot << " " << info_ptr->accm_trade_lot << std::endl;
+
+					// 	if (md.match_time_sec > 90000 && md.only_display_trade) {
+					// 		// print_hexdump((char*)frame, md.md_len);
+					// 		md.print_detail();
+					// 	}
+					// }
 
 				}
 			}
@@ -300,10 +314,11 @@ void large_amount() {
 	// analysis
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
-
-			if (stock_d.first == "2330  ")
-				std::cout << date_d.first << " " << stock_d.first << " " << stock_d.second.accm_trade_lot << std::endl;
-
+			info_ptr = stock_d.second;
+			if (stock_d.first == "2330  ") {
+				std::cout << date_d.first << " " << stock_d.first << " " << info_ptr->accm_trade_lot << std::endl;
+				std::cout << info_ptr->trade_bid_cnt << " " << info_ptr->trade_ask_cnt << " " << info_ptr->trade_gap_cnt << std::endl;
+			}
 		}
 	}
 }
