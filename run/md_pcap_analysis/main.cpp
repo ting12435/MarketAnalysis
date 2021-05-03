@@ -12,6 +12,7 @@
 void uplimit();
 void large_amount();
 void debug();
+void debug_seq_check();
 
 struct var {
 	std::string type;
@@ -76,6 +77,8 @@ int main(int argc, char *argv[]) {
 		large_amount();
 	else if (g_var.type == "debug")
 		debug();
+	else if (g_var.type == "debug_seq_check")
+		debug_seq_check();
 
 	return 0;
 
@@ -303,6 +306,37 @@ void large_amount() {
 }
 
 void debug() {
+	struct md *frame = nullptr;
+	MD md;
+
+	Date current_date("2021-04-28");
+	OneDayPcap one_day_pcap(current_date);
+	if (one_day_pcap.folder_exists()) {
+		while (true) {
+
+			if (!one_day_pcap.get_md(&frame)) {
+				std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
+				break;
+			}
+
+			if (frame == nullptr)
+				break;
+
+			md.set_data(frame);
+
+			if (md.is_md && md.fmt_code == 0x6 && md.feedcode == "1592  ") {
+				MD::print_md(frame);
+				if (md.match_time_sec > 90005)
+					exit(-1);
+			}
+		}
+	} else {
+		std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
+	}
+
+}
+
+void debug_seq_check() {
 	struct md *frame = nullptr;
 	MD md;
 	int last_seq = 0;
