@@ -333,7 +333,7 @@ void debug() {
 	} else {
 		std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
 	}
-
+	std::cout << "finished!!" << std::endl;
 }
 
 void debug_seq_check() {
