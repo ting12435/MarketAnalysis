@@ -327,7 +327,7 @@ void MD::print_detail() {
 	std::cout << ss.str();
 }
 
-void MD::print_md(struct md *md_ptr) {
+// void MD::print_md(struct md *md_ptr) {
 	// std::stringstream ss;
 	// char buf[100];
 	// std::string field;
@@ -415,7 +415,7 @@ void MD::print_md(struct md *md_ptr) {
 
 	// print:
 	// std::cout << ss.str();
-}
+// }
 
 void MD::clear() {
 	this->is_md = false;

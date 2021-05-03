@@ -159,7 +159,7 @@ public:
 	void set_data(struct md*);
 	void print_detail();
 
-	static void print_md(struct md*);
+	// static void print_md(struct md*);
 
 	bool is_md;
 
