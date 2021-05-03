@@ -291,7 +291,7 @@ void large_amount() {
 }
 
 void debug() {
-	struct md *frame;
+	struct md *frame = nullptr;
 	MD md;
 	int last_seq = 0;
 
