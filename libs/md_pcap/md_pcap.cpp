@@ -71,7 +71,7 @@ bool OneDayPcap::get_md(struct md *md_ptr) {
 // exit(-1);
 // }
 // printf("---------------------------------\n");
-// printf("record_data_len=%d\n", record_data_len);
+printf("record_data_len=%d\n", record_data_len);
 // printf("record_data_st_ptr=%p\n", this->record_data_st_ptr);
 // printf("record_data_ed_ptr=%p\n", this->record_data_ed_ptr);
 
