@@ -38,7 +38,7 @@ bool OneDayPcap::folder_exists() {
 }
 
 bool OneDayPcap::get_md(struct md *md_ptr) {
-
+printf("md_ptr=%p\n", md_ptr);
 	md_ptr = nullptr;
 
 	if (this->record_data_st_ptr == nullptr || this->record_data_ed_ptr == nullptr) {
