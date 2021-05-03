@@ -156,13 +156,13 @@ bool OneDayPcap::open_pcap_file(int idx) {
 	std::string fn_str = fn_ss.str();
 
 	if (!File::file_exists(fn_str)) {
-		this->last_error = "file not exists [" << fn_str << "]";
+		this->last_error = "file not exists [" + fn_str + "]";
 		return false;
 	}
 
 std::cout << fn_str << std::endl;
 	this->cur_pcap_file = new pcap_file();
-	if (this->cur_pcap_file.open(fn_str) < 0) {
+	if (this->cur_pcap_file->open(fn_str) < 0) {
 		this->last_error = this->cur_pcap_file->get_last_error();;
 		return false;
 	}
