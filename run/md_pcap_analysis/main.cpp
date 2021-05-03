@@ -243,8 +243,13 @@ void large_amount() {
 	struct info {
 		int accm_trade_lot;
 		int trade_bid_cnt;
+		int trade_bid_lot;
 		int trade_ask_cnt;
+		int trade_ask_lot;
 		int trade_gap_cnt;
+		int trade_gap_lot;
+		int trade_oth_cnt;
+		int trade_oth_lot;
 	};
 
 	std::map<Date, std::map<std::string, struct info>> m;
@@ -282,14 +287,18 @@ void large_amount() {
 					if (!md.is_est && md.trade_lt != -1) {
 						info_ptr->accm_trade_lot += md.trade_lt;
 
-						if (md.trade_px == md.bid_px[0])
+						if (md.trade_px == md.bid_px[0]) {
 							info_ptr->trade_bid_cnt++;
-						else if (md.trade_px == md.ask_px[0])
+							info_ptr->trade_bid_lot += md.trade_lt;
+						} else if (md.trade_px == md.ask_px[0]) {
 							info_ptr->trade_ask_cnt++;
-						else {
-							if (md.bid_px[0] != -1 && md.ask_px[0] != -1) {
-								info_ptr->trade_gap_cnt++;
-							}
+							info_ptr->trade_ask_lot += md.trade_lt;
+						} else if (md.bid_px[0] != -1 && md.ask_px[0] != -1) {
+							info_ptr->trade_gap_cnt++;
+							info_ptr->trade_gap_lot += md.trade_lt;
+						} else {
+							info_ptr->trade_oth_cnt++;
+							info_ptr->trade_oth_lot += md.trade_lt;
 						}
 					}
 
@@ -317,7 +326,10 @@ void large_amount() {
 			info_ptr = (struct info*)&stock_d.second;
 			if (stock_d.first == "2330  ") {
 				std::cout << date_d.first << " " << stock_d.first << " " << info_ptr->accm_trade_lot << std::endl;
-				std::cout << info_ptr->trade_bid_cnt << " " << info_ptr->trade_ask_cnt << " " << info_ptr->trade_gap_cnt << std::endl;
+				std::cout << info_ptr->trade_bid_cnt << " " << info_ptr->trade_bid_lot << std::endl;
+				std::cout << info_ptr->trade_ask_cnt << " " << info_ptr->trade_ask_lot << std::endl;
+				std::cout << info_ptr->trade_gap_cnt << " " << info_ptr->trade_gap_lot << std::endl;
+				std::cout << info_ptr->trade_oth_cnt << " " << info_ptr->trade_oth_lot << std::endl;
 			}
 		}
 	}
