@@ -254,7 +254,6 @@ void large_amount() {
 		int trade_px;
 		int trade_lt;
 		int accm_trade_lot;
-		double avg_lt;
 	};
 
 	struct info {
@@ -270,6 +269,7 @@ void large_amount() {
 		std::map<int, int> trade_bid_map;  // K:trade lot, V:count
 		std::map<int, int> trade_ask_map;  // K:trade lot, V:count
 		std::vector<struct trade_list> trade_list_vec;
+		int trade_list_accm_trade_lot;
 	};
 
 	std::map<Date, std::map<std::string, struct info>> m;
@@ -336,9 +336,8 @@ void large_amount() {
 							v.ask_px = md.ask_px[0];
 							v.trade_px = md.trade_px;
 							v.trade_lt = md.trade_lt;
-							v.accm_trade_lot += md.trade_lt;
 							info_ptr->trade_list_vec.push_back(v);
-
+							info_ptr->trade_list_accm_trade_lot += md.trade_lt;
 						}
 
 						// if (md.feedcode == g_var.feedcode + "  " && md.match_time_sec == 133000) {
@@ -383,8 +382,9 @@ void large_amount() {
 				// }
 
 				for (const auto &v: info_ptr->trade_list_vec) {
-					std::cout << v.match_time_sec << "," << v.bid_px << "," << v.ask_px << "," << v.trade_px << "," << v.trade_lt << "," << v.accm_trade_lot << "," << v.accm_trade_lot/info_ptr->trade_list_vec.size() << std::endl;
+					std::cout << v.match_time_sec << "," << v.bid_px << "," << v.ask_px << "," << v.trade_px << "," << v.trade_lt << "," << v.accm_trade_lot << std::endl;
 				}
+				std::cout << (double)info_ptr->.trade_list_accm_trade_lot/info_ptr->trade_list_vec.size() << std::endl;
 			}
 		}
 	}
