@@ -253,7 +253,9 @@ void large_amount() {
 		int ask_px;
 		int trade_px;
 		int trade_lt;
+		int trade_cnt;
 		int accm_trade_lot;
+		double avg_lt;
 	};
 
 	struct info {
@@ -335,8 +337,10 @@ void large_amount() {
 							v.ask_px = md.ask_px[0];
 							v.trade_px = md.trade_px;
 							v.trade_lt = md.trade_lt;
+							v.trade_cnt++;
 							v.accm_trade_lot = md.accm_trade_lot;
 							info_ptr->trade_list_vec.push_back(v);
+
 						}
 
 						// if (md.feedcode == g_var.feedcode + "  " && md.match_time_sec == 133000) {
@@ -381,7 +385,7 @@ void large_amount() {
 				// }
 
 				for (const auto &v: info_ptr->trade_list_vec) {
-					std::cout << v.match_time_sec << "," << v.bid_px << "," << v.ask_px << "," << v.trade_px << "," << v.trade_lt << "," << v.accm_trade_lot << std::endl;
+					std::cout << v.match_time_sec << "," << v.bid_px << "," << v.ask_px << "," << v.trade_px << "," << v.trade_lt << "," << v.accm_trade_lot << "," << v.accm_trade_lot/v.trade_cnt << std::endl;
 				}
 			}
 		}
