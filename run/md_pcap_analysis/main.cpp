@@ -240,6 +240,15 @@ void uplimit() {
 
 void large_amount() {
 
+	struct trade_list {
+		int match_time_sec;
+		int bid_px;
+		int ask_px;
+		int trade_px;
+		int trade_lt;
+		int accm_trade_lot;
+	};
+
 	struct info {
 		int accm_trade_lot;
 		int trade_bid_cnt;
@@ -252,6 +261,7 @@ void large_amount() {
 		int trade_oth_lot;
 		std::map<int, int> trade_bid_map;  // K:trade lot, V:count
 		std::map<int, int> trade_ask_map;  // K:trade lot, V:count
+		std::vector<struct trade_list> trade_list_vec;
 	};
 
 	std::map<Date, std::map<std::string, struct info>> m;
@@ -310,6 +320,15 @@ void large_amount() {
 							info_ptr->trade_oth_cnt++;
 							info_ptr->trade_oth_lot += md.trade_lt;
 						}
+
+						struct trade_list v;
+						v.match_time_sec = md.match_time_sec;
+						v.bid_px = md.bid_px[0];
+						v.ask_px = md.ask_px[0];
+						v.trade_px = md.trade_px;
+						v.trade_lt = md.trade_lt;
+						v.accm_trade_lot = md.accm_trade_lot;
+						info_ptr->trade_list_vec.push_back(v);
 					}
 
 					// if (md.feedcode == "2330  ") {
@@ -334,17 +353,21 @@ void large_amount() {
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
 			info_ptr = (struct info*)&stock_d.second;
-			if (stock_d.first == "2603  ") {
-				std::cout << date_d.first << " " << stock_d.first << " " << info_ptr->accm_trade_lot << std::endl;
-				std::cout << info_ptr->trade_bid_cnt << " " << info_ptr->trade_bid_lot << std::endl;
-				std::cout << info_ptr->trade_ask_cnt << " " << info_ptr->trade_ask_lot << std::endl;
-				std::cout << info_ptr->trade_gap_cnt << " " << info_ptr->trade_gap_lot << std::endl;
-				std::cout << info_ptr->trade_oth_cnt << " " << info_ptr->trade_oth_lot << std::endl;
-				for (const auto &m: info_ptr->trade_bid_map) {
-					std::cout << m.first << "," << m.second << std::endl;
-				}
-				for (const auto &m: info_ptr->trade_ask_map) {
-					std::cout << m.first << "," << m.second << std::endl;
+			if (stock_d.first == "4529  ") {
+				// std::cout << date_d.first << " " << stock_d.first << " " << info_ptr->accm_trade_lot << std::endl;
+				// std::cout << info_ptr->trade_bid_cnt << " " << info_ptr->trade_bid_lot << std::endl;
+				// std::cout << info_ptr->trade_ask_cnt << " " << info_ptr->trade_ask_lot << std::endl;
+				// std::cout << info_ptr->trade_gap_cnt << " " << info_ptr->trade_gap_lot << std::endl;
+				// std::cout << info_ptr->trade_oth_cnt << " " << info_ptr->trade_oth_lot << std::endl;
+				// for (const auto &m: info_ptr->trade_bid_map) {
+				// 	std::cout << m.first << "," << m.second << std::endl;
+				// }
+				// for (const auto &m: info_ptr->trade_ask_map) {
+				// 	std::cout << m.first << "," << m.second << std::endl;
+				// }
+
+				for (const auto &v: info_ptr->trade_list_vec) {
+					std::cout << v.match_time_sec << "," << v.bid_px << "," << v.ask_px << "," << v.trade_px << "," << v.trade_lt << "," << v.accm_trade_lot << std::endl;
 				}
 			}
 		}
