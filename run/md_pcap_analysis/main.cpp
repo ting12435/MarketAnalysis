@@ -384,7 +384,7 @@ void large_amount() {
 				for (const auto &v: info_ptr->trade_list_vec) {
 					std::cout << v.match_time_sec << "," << v.bid_px << "," << v.ask_px << "," << v.trade_px << "," << v.trade_lt << "," << v.accm_trade_lot << std::endl;
 				}
-				std::cout << (double)info_ptr->.trade_list_accm_trade_lot/info_ptr->trade_list_vec.size() << std::endl;
+				std::cout << (double)info_ptr->trade_list_accm_trade_lot/info_ptr->trade_list_vec.size() << std::endl;
 			}
 		}
 	}
