@@ -336,7 +336,7 @@ void large_amount() {
 							v.ask_px = md.ask_px[0];
 							v.trade_px = md.trade_px;
 							v.trade_lt = md.trade_lt;
-							v.accm_trade_lot = md.accm_trade_lot;
+							v.accm_trade_lot += md.trade_lt;
 							info_ptr->trade_list_vec.push_back(v);
 
 						}
