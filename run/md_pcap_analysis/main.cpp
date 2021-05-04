@@ -337,10 +337,10 @@ void large_amount() {
 						v.accm_trade_lot = md.accm_trade_lot;
 						info_ptr->trade_list_vec.push_back(v);
 
-						// if (md.feedcode == g_var.feedcode + "  " && md.trade_lt == 0) {
-						// 	md.print_detail();
-						// 	exit(-1);
-						// }
+						if (md.feedcode == g_var.feedcode + "  " && md.match_time_sec == 133000) {
+							md.print_detail();
+							exit(-1);
+						}
 					}
 
 					// if (md.feedcode == "2330  ") {
