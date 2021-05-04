@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// assert(check_g_var());
-	check_g_var()
+	check_g_var();
 
 	pcap_folder = PCAP_FOLDER;
 	pcap_market = "TSE";
