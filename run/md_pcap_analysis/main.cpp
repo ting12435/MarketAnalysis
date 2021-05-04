@@ -328,19 +328,21 @@ void large_amount() {
 							info_ptr->trade_oth_lot += md.trade_lt;
 						}
 
-						struct trade_list v;
-						v.match_time_sec = md.match_time_sec;
-						v.bid_px = md.bid_px[0];
-						v.ask_px = md.ask_px[0];
-						v.trade_px = md.trade_px;
-						v.trade_lt = md.trade_lt;
-						v.accm_trade_lot = md.accm_trade_lot;
-						info_ptr->trade_list_vec.push_back(v);
-
-						if (md.feedcode == g_var.feedcode + "  " && md.match_time_sec == 133000) {
-							md.print_detail();
-							exit(-1);
+						if (!md.is_open && !md.is_close) {
+							struct trade_list v;
+							v.match_time_sec = md.match_time_sec;
+							v.bid_px = md.bid_px[0];
+							v.ask_px = md.ask_px[0];
+							v.trade_px = md.trade_px;
+							v.trade_lt = md.trade_lt;
+							v.accm_trade_lot = md.accm_trade_lot;
+							info_ptr->trade_list_vec.push_back(v);
 						}
+
+						// if (md.feedcode == g_var.feedcode + "  " && md.match_time_sec == 133000) {
+						// 	md.print_detail();
+						// 	exit(-1);
+						// }
 					}
 
 					// if (md.feedcode == "2330  ") {
