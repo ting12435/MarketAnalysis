@@ -18,12 +18,14 @@ struct var {
 	std::string type;
 	Date *d1;
 	Date *d2;
+	std::string feedcode;
 } g_var;
 
 void init_g_var() {
 	g_var.type = "";
 	g_var.d1 = nullptr;
 	g_var.d2 = nullptr;
+	g_var.feedcode = "";
 }
 
 bool check_g_var() {
@@ -39,7 +41,8 @@ bool check_g_var() {
 static struct option long_options[] = {
 	{"type", required_argument, NULL, 0},
 	{"d1", required_argument, NULL, 1},
-	{"d2", required_argument, NULL, 2}
+	{"d2", required_argument, NULL, 2},
+	{"feedcode", required_argument, NULL, 3}
 };
 
 int main(int argc, char *argv[]) {
@@ -61,12 +64,16 @@ int main(int argc, char *argv[]) {
 			case 2:
 				g_var.d2 = new Date(optarg);
 				break;
+			case 3:
+				g_var.feedcode = optarg;
+				break;
 			default:
 				goto usage_error;
 		}
 	}
 
 	// assert(check_g_var());
+	check_g_var()
 
 	pcap_folder = PCAP_FOLDER;
 	pcap_market = "TSE";
@@ -84,11 +91,11 @@ int main(int argc, char *argv[]) {
 
 	usage_error:
 	fprintf(stderr, "Usage: %s\n", argv[0]);
-	fprintf(stderr, "%9s [--type] [--d1] [--d2]\n", " ");
+	fprintf(stderr, "%9s [--type] [--d1] [--d2] [--feedcode]\n", " ");
 	fprintf(stderr, "  --type: [uplimit] [large_amount] [debug]\n");
 	fprintf(stderr, "\ne.g.\n");
 	fprintf(stderr, "taskset -c 5 %s --type debug\n", argv[0]);
-	fprintf(stderr, "taskset -c 5 %s --type large_amount --d1 2021-04-26 --d2 2021-04-28\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type large_amount --d1 2021-05-04 --feedcode 4529\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-23 --d2 2021-04-26\n", argv[0]);
 	return EXIT_FAILURE;
 }
@@ -353,7 +360,7 @@ void large_amount() {
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
 			info_ptr = (struct info*)&stock_d.second;
-			if (stock_d.first == "4529  ") {
+			if (stock_d.first == g_var.feedcode + "  ") {
 				// std::cout << date_d.first << " " << stock_d.first << " " << info_ptr->accm_trade_lot << std::endl;
 				// std::cout << info_ptr->trade_bid_cnt << " " << info_ptr->trade_bid_lot << std::endl;
 				// std::cout << info_ptr->trade_ask_cnt << " " << info_ptr->trade_ask_lot << std::endl;
