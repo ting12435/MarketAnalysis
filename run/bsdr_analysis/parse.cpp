@@ -21,6 +21,7 @@ void parse_one_issuer();
 void parse_issuers();
 void parse_debug();
 void parse_one_stock_issuers_distribution();
+void parse_trade_amount();
 
 void init_g_var() {
 	// memset(&g_var, 0, sizeof(g_var));
@@ -93,13 +94,15 @@ int main(int argc, char *argv[]) {
 		parse();
 	else if (g_var.parse_type == "one_stock_issuers_distribution")
 		parse_one_stock_issuers_distribution();
+	else if (g_var.parse_type == "trade_amount")
+		parse_trade_amount();
 
 	return 0;
 
 	usage_error:
 	fprintf(stderr, "Usage: %s\n", argv[0]);
 	fprintf(stderr, "%9s [--type] [--d1] [--d2] [--issuer] [--stock]\n", " ");
-	fprintf(stderr, "  --type: [debug], [one_issuer], [one_issuer_bsnet], [issuers], [test], [one_stock_issuers_distribution]\n");
+	fprintf(stderr, "  --type: [debug], [one_issuer], [one_issuer_bsnet], [issuers], [test], [one_stock_issuers_distribution] [trade_amount]\n");
 	fprintf(stderr, "\ne.g.\n");
 	fprintf(stderr, "taskset -c 5 %s --type one_issuer_bsnet --d1 2021-04-20 --d2 2021-04-21 --issuer 5850\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type one_stock_issuers_distribution --d1 2021-04-22 --stock 3661\n", argv[0]);
@@ -330,5 +333,33 @@ void parse_one_stock_issuers_distribution() {
 	}
 	my_file.close();
 }
+
+void parse_trade_amount() {
+	bsdr_date_issuer_stock_t d = BSDR::get_analysis_data_date_issuer_stock(*g_var.d1, *g_var.d2, Market::ALL);
+	std::map<std::string, std::map<Date, struct trade_detail>> m;
+
+	for (const auto &date_d: d) {
+		for (const auto &issuer_d: date_d.second) {
+			for (const auto &stock_d: issuer_d.second) {
+				if (stock_d.first == g_var.stock) {
+					m[issuer_d.first][d.first].b_lot += stock_d.second.b_lot;
+					m[issuer_d.first][d.first].s_lot += stock_d.second.s_lot;
+					m[issuer_d.first][d.first].b_amount += stock_d.second.b_amount;
+					m[issuer_d.first][d.first].s_amount += stock_d.second.s_amount;
+				}
+			}
+		}
+	}
+
+	// output
+	for (const auto &issuer_d: m) {
+		std::cout << issuer_d.first << ",";
+		for (const auto &date_d: issuer_d.second) {
+			std::cout << data_d.second.b_amount + data_d.second.s_amount << ",";
+		}
+		std::cout << endl;
+	}
+}
+
 
 
