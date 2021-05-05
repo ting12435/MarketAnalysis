@@ -153,8 +153,8 @@ void uplimit() {
 					
 						// up limit
 						if (!info_ptr->uplimit_flag) {
-							// if (md.match_time_sec >= 90000) {
-							if (md.match_time_sec >= 110000) {
+							if (md.match_time_sec >= 90000) {
+							// if (md.match_time_sec >= 110000) {
 								// if (md.trade_limit == 0x2) {  // 漲停成交
 								if (md.b_limit == 0x2) {  // 漲停買進
 
@@ -210,37 +210,45 @@ void uplimit() {
 	// }
 
 	// analysis
-	int fraction, denominator;
-	// std::cout << "m.size()=" << m.size() << std::endl;
+	// int fraction, denominator;
+	// for (const auto &date_d: m) {
+	// 	cur_iter = m.find(date_d.first);
+	// 	prv_iter = std::prev(cur_iter);
+
+	// 	// std::cout << date_d.first << " cur_iter->second.size()=" << cur_iter->second.size() << std::endl;
+
+	// 	if ((m.size() == 2 && prv_iter != cur_iter) || 
+	// 		(m.size() > 2 && prv_iter != m.end())) {
+
+	// 		fraction = denominator = 0;
+
+	// 		for (const auto &stock_d: date_d.second) {
+	// 			if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
+	// 				cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
+	// 				auto px1 = prv_iter->second[stock_d.first].uplimit_px;
+	// 				// auto px2 = cur_iter->second[stock_d.first].first_px;
+	// 				auto px2 = cur_iter->second[stock_d.first].highest_px;
+	// 				if (px1 > 0) {
+	// 					denominator++;
+	// 					std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
+	// 					if (px2 >= px1) {
+	// 						fraction++;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+
+	// 		snprintf(buf, sizeof(buf), "%4d %4d %.2f", fraction, denominator, (double)fraction/denominator);
+	// 		std::cout << prv_iter->first << "-" << cur_iter->first << " "  << buf << std::endl;
+	// 	}
+	// }
+
 	for (const auto &date_d: m) {
-		cur_iter = m.find(date_d.first);
-		prv_iter = std::prev(cur_iter);
-
-		// std::cout << date_d.first << " cur_iter->second.size()=" << cur_iter->second.size() << std::endl;
-
-		if ((m.size() == 2 && prv_iter != cur_iter) || 
-			(m.size() > 2 && prv_iter != m.end())) {
-
-			fraction = denominator = 0;
-
-			for (const auto &stock_d: date_d.second) {
-				if (prv_iter->second.find(stock_d.first) != prv_iter->second.end() && 
-					cur_iter->second.find(stock_d.first) != cur_iter->second.end()) {
-					auto px1 = prv_iter->second[stock_d.first].uplimit_px;
-					// auto px2 = cur_iter->second[stock_d.first].first_px;
-					auto px2 = cur_iter->second[stock_d.first].highest_px;
-					if (px1 > 0) {
-						denominator++;
-						std::cout << prv_iter->first << " " << cur_iter->first << " " << stock_d.first << " " << px1 << " " << px2 << " " << (px2 >= px1) << std::endl;
-						if (px2 >= px1) {
-							fraction++;
-						}
-					}
-				}
+		for (const auto &stock_d: date_d.second) {
+			info_ptr = stock_d.second;
+			if (info_ptr->uplimit_flag) {
+				std::cout << stock_d.first << std::endl;
 			}
-
-			snprintf(buf, sizeof(buf), "%4d %4d %.2f", fraction, denominator, (double)fraction/denominator);
-			std::cout << prv_iter->first << "-" << cur_iter->first << " "  << buf << std::endl;
 		}
 	}
 }
