@@ -245,7 +245,7 @@ void uplimit() {
 
 	for (const auto &date_d: m) {
 		for (const auto &stock_d: date_d.second) {
-			info_ptr = stock_d.second;
+			info_ptr = &stock_d.second;
 			if (info_ptr->uplimit_flag) {
 				std::cout << stock_d.first << std::endl;
 			}
