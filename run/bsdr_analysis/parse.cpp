@@ -106,6 +106,7 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "\ne.g.\n");
 	fprintf(stderr, "taskset -c 5 %s --type one_issuer_bsnet --d1 2021-04-20 --d2 2021-04-21 --issuer 5850\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type one_stock_issuers_distribution --d1 2021-04-22 --stock 3661\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type trade_amount --d1 2021-05-03 --d2 2021-05-04\n", argv[0]);
 	return EXIT_FAILURE;
 }
 
