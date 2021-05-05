@@ -357,7 +357,7 @@ void parse_trade_amount() {
 		for (const auto &date_d: issuer_d.second) {
 			std::cout << date_d.second.b_amount + date_d.second.s_amount << ",";
 		}
-		std::cout << endl;
+		std::cout << std::endl;
 	}
 }
 
