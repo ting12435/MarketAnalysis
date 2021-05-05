@@ -336,7 +336,7 @@ void parse_one_stock_issuers_distribution() {
 
 void parse_trade_amount() {
 	bsdr_date_issuer_stock_t d = BSDR::get_analysis_data_date_issuer_stock(*g_var.d1, *g_var.d2, Market::ALL);
-	std::map<std::string, std::map<Date, struct trade_detail>> m;
+	std::map<std::string, std::map<std::string, struct trade_detail>> m;
 
 	for (const auto &date_d: d) {
 		for (const auto &issuer_d: date_d.second) {
