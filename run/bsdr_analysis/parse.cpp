@@ -342,12 +342,10 @@ void parse_trade_amount() {
 	for (const auto &date_d: d) {
 		for (const auto &issuer_d: date_d.second) {
 			for (const auto &stock_d: issuer_d.second) {
-				if (stock_d.first == g_var.stock) {
-					m[issuer_d.first][date_d.first].b_lot += stock_d.second.b_lot;
-					m[issuer_d.first][date_d.first].s_lot += stock_d.second.s_lot;
-					m[issuer_d.first][date_d.first].b_amount += stock_d.second.b_amount;
-					m[issuer_d.first][date_d.first].s_amount += stock_d.second.s_amount;
-				}
+				m[issuer_d.first][date_d.first].b_lot += stock_d.second.b_lot;
+				m[issuer_d.first][date_d.first].s_lot += stock_d.second.s_lot;
+				m[issuer_d.first][date_d.first].b_amount += stock_d.second.b_amount;
+				m[issuer_d.first][date_d.first].s_amount += stock_d.second.s_amount;
 			}
 		}
 	}
