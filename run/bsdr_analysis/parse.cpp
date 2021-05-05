@@ -351,13 +351,15 @@ void parse_trade_amount() {
 	}
 
 	// output
+	std::ofstream my_file("output/output");
 	for (const auto &issuer_d: m) {
-		std::cout << issuer_d.first << ",";
+		my_file << issuer_d.first << ",";
 		for (const auto &date_d: issuer_d.second) {
-			std::cout << date_d.second.b_amount + date_d.second.s_amount << ",";
+			my_file << date_d.second.b_amount + date_d.second.s_amount << ",";
 		}
-		std::cout << std::endl;
+		my_file << std::endl;
 	}
+	my_file.close();
 }
 
 
