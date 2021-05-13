@@ -447,13 +447,15 @@ void interactive() {
 
 					if (is_open) {
 
-						std::cout << std::setfill('0') << std::setw(6) << md.match_time_sec << ":" << std::setfill('0') << std::setw(6) << md.match_time_usec;
+						std::cout << std::setfill('0') << std::setw(6) << md.match_time_sec;
+						std::cout << ":";
+						std::cout << std::setfill('0') << std::setw(6) << md.match_time_usec;
 
-						// std::cout << " ";
+						std::cout << " ";
 
-						// for (auto i = 4; i >= 0; i++) {
-						// 	std::cout << std::setw(7) << std::setprecision(2) << (double)md.bid_px[i]/10000;
-						// }
+						for (auto i = 4; i >= 0; i++) {
+							std::cout << std::setw(7) << std::setprecision(2) << (double)md.bid_px[i]/10000;
+						}
 
 						// std::cout << " | ";
 
