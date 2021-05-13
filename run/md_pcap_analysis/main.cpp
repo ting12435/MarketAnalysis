@@ -470,7 +470,7 @@ void interactive() {
 
 						std::cout << std::endl;
 
-						std::cout << std::setw(14) << std::setfill();
+						std::cout << std::setw(14) << std::setfill(' ');
 
 						for (auto i = 4; i >= 0; i++) {
 							std::cout << std::setw(7)<< md.bid_lt[i];
