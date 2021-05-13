@@ -456,7 +456,8 @@ void interactive() {
 						for (auto i = 4; i >= 0; i++) {
 							// std::cout << std::setw(7) << std::setprecision(2) << (double)md.bid_px[i]/10000;
 							auto px = (double)md.bid_px[i]/10000;
-							std::cout << px;
+							// std::cout << px;
+							printf("%f\n", px);
 						}
 
 						// std::cout << " | ";
