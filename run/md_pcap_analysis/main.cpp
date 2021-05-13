@@ -461,6 +461,7 @@ void interactive() {
 							bool f = false;
 							std::cout << (f ? "[" : " ");
 							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000 << " ";
+							std::cout << std::setw(6) << " ";
 							std::cout << (f ? "]" : " ");
 						}
 
@@ -478,6 +479,7 @@ void interactive() {
 							bool f = false;
 							std::cout << (f ? "[" : " ");
 							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000 << " ";
+							std::cout << std::setw(6) << " ";
 							std::cout << (f ? "]" : " ");
 						}
 
