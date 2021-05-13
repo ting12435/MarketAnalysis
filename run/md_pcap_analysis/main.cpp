@@ -447,7 +447,7 @@ void interactive() {
 
 					if (is_open) {
 
-						std::cout << std::setfill(0) << std::setw(6) << md.match_time_sec << ":" << md.match_time_usec;
+						std::cout << std::setfill('0') << std::setw(6) << md.match_time_sec << ":" << md.match_time_usec;
 
 						// std::cout << " ";
 
