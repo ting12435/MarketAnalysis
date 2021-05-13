@@ -458,11 +458,13 @@ void interactive() {
 
 						// bid px
 						for (auto i = 4; i >= 0; i--) {
-							// bool f = false;
-							// std::cout << (f ? "[" : " ");
-							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000 << " ";
-							std::cout << std::setw(6) << " ";
-							// std::cout << (f ? "]" : " ");
+							if (md.only_display_trade) {
+								std::cout << std::setw(13) << " ";
+							} else {
+								std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000 << " ";
+								std::cout << std::setw(6) << " ";
+							}
+							
 						}
 
 						std::cout << "| ";
@@ -476,11 +478,12 @@ void interactive() {
 
 						// ask px
 						for (auto i = 0; i <= 4; i++) {
-							// bool f = false;
-							// std::cout << (f ? "[" : " ");
-							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000 << " ";
-							std::cout << std::setw(6) << " ";
-							// std::cout << (f ? "]" : " ");
+							if (md.only_display_trade) {
+								std::cout << std::setw(13) << " ";
+							} else {
+								std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000 << " ";
+								std::cout << std::setw(6) << " ";
+							}
 						}
 
 						std::cout << std::endl;
@@ -490,21 +493,25 @@ void interactive() {
 						// bid lt
 						for (auto i = 4; i >= 0; i--) {
 
-							auto px = md.bid_px[i];
-							auto lt = md.bid_lt[i];
-							if (bid_pxlt_map.find(px) == bid_pxlt_map.end()) bid_pxlt_map[px] = 0;
-							auto change_lt = lt - bid_pxlt_map[px];
+							if (md.only_display_trade) {
+								std::cout << std::setw(13) << " ";
+							} else {
+								auto px = md.bid_px[i];
+								auto lt = md.bid_lt[i];
+								if (bid_pxlt_map.find(px) == bid_pxlt_map.end()) bid_pxlt_map[px] = 0;
+								auto change_lt = lt - bid_pxlt_map[px];
 
-							// std::cout << (f ? "[" : " ");
-							std::cout << std::setw(7) << md.bid_lt[i] << " ";
+								// std::cout << (f ? "[" : " ");
+								std::cout << std::setw(7) << md.bid_lt[i] << " ";
 
-							if (change_lt != 0)
-								std::cout << "(" << std::setw(4) << change_lt << ")";
-							else
-								std::cout << std::setw(6) << " ";
-							// std::cout << (f ? "]" : " ");
+								if (change_lt != 0)
+									std::cout << "(" << std::setw(4) << change_lt << ")";
+								else
+									std::cout << std::setw(6) << " ";
+								// std::cout << (f ? "]" : " ");
 
-							bid_pxlt_map[px] = lt;
+								bid_pxlt_map[px] = lt;
+							}
 						}
 
 						std::cout << "| ";
@@ -519,22 +526,26 @@ void interactive() {
 						// ask lt
 						for (auto i = 0; i <= 4; i++) {
 
-							auto px = md.ask_px[i];
-							auto lt = md.ask_lt[i];
-							if (ask_pxlt_map.find(px) == ask_pxlt_map.end()) ask_pxlt_map[px] = 0;
-							auto change_lt = lt - ask_pxlt_map[px];
-							
+							if (md.only_display_trade) {
+								std::cout << std::setw(13) << " ";
+							} else {
+								auto px = md.ask_px[i];
+								auto lt = md.ask_lt[i];
+								if (ask_pxlt_map.find(px) == ask_pxlt_map.end()) ask_pxlt_map[px] = 0;
+								auto change_lt = lt - ask_pxlt_map[px];
+								
 
-							// std::cout << (f ? "[" : " ");
-							std::cout << std::setw(7) << md.ask_lt[i] << " ";
+								// std::cout << (f ? "[" : " ");
+								std::cout << std::setw(7) << md.ask_lt[i] << " ";
 
-							if (change_lt != 0)
-								std::cout << "(" << std::setw(4) << change_lt << ")";
-							else
-								std::cout << std::setw(6) << " ";
-							// std::cout << (f ? "]" : " ");
+								if (change_lt != 0)
+									std::cout << "(" << std::setw(4) << change_lt << ")";
+								else
+									std::cout << std::setw(6) << " ";
+								// std::cout << (f ? "]" : " ");
 
-							ask_pxlt_map[px] = lt;
+								ask_pxlt_map[px] = lt;
+							}
 						}
 
 						std::cout << std::endl;
