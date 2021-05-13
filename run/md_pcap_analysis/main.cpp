@@ -4,7 +4,7 @@
 #include <cassert>
 #include <cstring>
 #include <getopt.h>
-#include <unistd.h>
+// #include <unistd.h>
 
 #include "md_pcap/md_pcap.h"
 #include "util/util.h"
@@ -454,48 +454,48 @@ void interactive() {
 
 						std::cout << " ";
 
-						for (auto i = 4; i >= 0; i++) {
-							// std::cout << std::setw(7) << std::setprecision(2) << (double)md.bid_px[i]/10000;
-							auto px = (double)md.bid_px[i]/10000;
+						for (auto i = 4; i >= 0; i--) {
+							std::cout << std::setw(7) << std::setprecision(2) << (double)md.bid_px[i]/10000;
+							// auto px = md.bid_px[i];
 							// std::cout << px;
-							printf("%f\n", px);
+							// printf("%f\n", px);
 						}
 
-						// std::cout << " | ";
+						std::cout << " | ";
 
-						// if (md.with_trade)
-						// 	std::cout << (double)md.trade_px/10000;
-						// else
-						// 	std::cout << " ";
+						if (md.with_trade)
+							std::cout << (double)md.trade_px/10000;
+						else
+							std::cout << " ";
 
-						// std::cout << " | ";
+						std::cout << " | ";
 
-						// for (auto i = 0; i >= 4; i++) {
-						// 	std::cout << std::setw(7) << std::setprecision(2) << (double)md.ask_px[i]/10000;
-						// }
+						for (auto i = 0; i >= 4; i++) {
+							std::cout << std::setw(7) << std::setprecision(2) << (double)md.ask_px[i]/10000;
+						}
 
-						// std::cout << std::endl;
+						std::cout << std::endl;
 
-						// std::cout << std::setw(14) << std::setfill(' ');
+						std::cout << std::setw(14) << std::setfill(' ');
 
-						// for (auto i = 4; i >= 0; i++) {
-						// 	std::cout << std::setw(7)<< md.bid_lt[i];
-						// }
+						for (auto i = 4; i >= 0; i--) {
+							std::cout << std::setw(7)<< md.bid_lt[i];
+						}
 
-						// std::cout << " | ";
+						std::cout << " | ";
 
-						// if (md.with_trade)
-						// 	std::cout << md.with_trade;
-						// else
-						// 	std::cout << " ";
+						if (md.with_trade)
+							std::cout << md.with_trade;
+						else
+							std::cout << " ";
 
-						// std::cout << " | ";
+						std::cout << " | ";
 
-						// for (auto i = 0; i >= 4; i++) {
-						// 	std::cout << std::setw(7) << std::setprecision(2) << md.ask_lt[i];
-						// }
+						for (auto i = 0; i >= 4; i++) {
+							std::cout << std::setw(7) << std::setprecision(2) << md.ask_lt[i];
+						}
 
-						// std::cout << std::endl;
+						std::cout << std::endl;
 
 						/*
 						printf("%06d:%06d: %7.2f %7.2f %7.2f %7.2f %7.2f | ", \
@@ -539,8 +539,7 @@ void interactive() {
 							md.ask_lt[4]);
 						*/
 
-						// getchar();
-						sleep(100);
+						getchar();
 					}
 				}
 			}
