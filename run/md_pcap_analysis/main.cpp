@@ -441,9 +441,9 @@ void interactive() {
 							(double)md.bid_px[0]/10000);
 
 						if (md.with_trade)
-							printf("%7.2f\n", (double)md.trade_px/10000);
+							printf("%7.2f", (double)md.trade_px/10000);
 						else
-							printf("%7s\n", " ");
+							printf("%7s", " ");
 
 						printf(" | %7.2f %7.2f %7.2f %7.2f %7.2f\n", \
 							(double)md.ask_px[0]/10000, \
@@ -461,9 +461,9 @@ void interactive() {
 							md.bid_lt[0]);
 
 						if (md.with_trade)
-							printf("%7d\n", md.trade_lt);
+							printf("%7d", md.trade_lt);
 						else
-							printf("%7s\n", " ");
+							printf("%7s", " ");
 
 						printf(" | %7d %7d %7d %7d %7d\n", \
 							md.ask_lt[0], \
