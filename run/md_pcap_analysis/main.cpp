@@ -409,8 +409,6 @@ void large_amount() {
 void interactive() {
 
 	struct priv_md {
-		int trade_px;
-		int trade_lt;
 		int bid_px[5];
 		int bid_lt[5];
 		int ask_px[5];
@@ -457,7 +455,10 @@ void interactive() {
 						std::cout << " " << std::setfill(' ');
 
 						for (auto i = 4; i >= 0; i--) {
+							std::cout << md.bid_px[i] != priv.bid_px[i] ? "[" : " ";
 							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000 << " ";
+							std::cout << md.bid_px[i] != priv.bid_px[i] ? "]" : " ";
+							priv.bid_px[i] = md.bid_px[i];
 						}
 
 						std::cout << "| ";
@@ -465,12 +466,15 @@ void interactive() {
 						if (md.with_trade)
 							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.trade_px/10000;
 						else
-							std::cout << " ";
+							std::cout << std::setw(7) << " ";
 
 						std::cout << " | ";
 
 						for (auto i = 0; i <= 4; i++) {
+							std::cout << md.ask_px[i] != priv.ask_px[i] ? "[" : " ";
 							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000 << " ";
+							std::cout << md.ask_px[i] != priv.ask_px[i] ? "]" : " ";
+							priv.ask_px[i] = md.ask_px[i];
 						}
 
 						std::cout << std::endl;
@@ -478,7 +482,10 @@ void interactive() {
 						std::cout << std::setw(14) << " ";
 
 						for (auto i = 4; i >= 0; i--) {
+							std::cout << md.bid_lt[i] != priv.bid_lt[i] ? "[" : " ";
 							std::cout << std::setw(7) << md.bid_lt[i] << " ";
+							std::cout << md.bid_lt[i] != priv.bid_lt[i] ? "]" : " ";
+							priv.bid_lt[i] = md.bid_lt[i];
 						}
 
 						std::cout << "| ";
@@ -486,12 +493,15 @@ void interactive() {
 						if (md.with_trade)
 							std::cout << std::setw(7) << md.with_trade;
 						else
-							std::cout << " ";
+							std::cout << std::setw(7) << " ";
 
 						std::cout << " | ";
 
 						for (auto i = 0; i <= 4; i++) {
+							std::cout << md.ask_lt[i] != priv.ask_lt[i] ? "[" : " ";
 							std::cout << std::setw(7) << md.ask_lt[i] << " ";
+							std::cout << md.ask_lt[i] != priv.ask_lt[i] ? "]" : " ";
+							priv.ask_lt[i] = md.ask_lt[i];
 						}
 
 						std::cout << std::endl;
