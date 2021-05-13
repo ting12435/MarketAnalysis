@@ -432,7 +432,7 @@ void interactive() {
 					if (md.is_open) is_open = true;
 
 					if (is_open) {
-						printf("%06d:%06d: %6.2f %6.2f %6.2f %6.2f %6.2f | %6.2f | %6.2f %6.2f %6.2f %6.2f %6.2f\n", \
+						printf("%06d:%06d: %7.2f %7.2f %7.2f %7.2f %7.2f | %7.2f | %7.2f %7.2f %7.2f %7.2f %7.2f\n", \
 							md.match_time_sec, md.match_time_usec, \
 							(double)md.bid_px[4]/10000, \
 							(double)md.bid_px[3]/10000, \
