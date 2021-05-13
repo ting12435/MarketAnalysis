@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstring>
 #include <getopt.h>
+#include <unistd.h>
 
 #include "md_pcap/md_pcap.h"
 #include "util/util.h"
