@@ -434,16 +434,16 @@ void interactive() {
 					if (is_open) {
 						printf("%d:%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", \
 							md.match_time_sec, md.match_time_usec, \
-							md.bid_px[4], md.bid_lt[4] \
-							md.bid_px[3], md.bid_lt[3] \
-							md.bid_px[2], md.bid_lt[2] \
-							md.bid_px[1], md.bid_lt[1] \
-							md.bid_px[0], md.bid_lt[0] \
-							md.trade_px, md.trade_px \
-							md.ask_px[0], md.ask_lt[0] \
-							md.ask_px[1], md.ask_lt[1] \
-							md.ask_px[2], md.ask_lt[2] \
-							md.ask_px[3], md.ask_lt[3] \
+							md.bid_px[4], md.bid_lt[4], \
+							md.bid_px[3], md.bid_lt[3], \
+							md.bid_px[2], md.bid_lt[2], \
+							md.bid_px[1], md.bid_lt[1], \
+							md.bid_px[0], md.bid_lt[0], \
+							md.trade_px, md.trade_px, \
+							md.ask_px[0], md.ask_lt[0], \
+							md.ask_px[1], md.ask_lt[1], \
+							md.ask_px[2], md.ask_lt[2], \
+							md.ask_px[3], md.ask_lt[3], \
 							md.ask_px[4], md.ask_lt[4]);
 						getchar();
 					}
