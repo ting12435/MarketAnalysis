@@ -458,11 +458,11 @@ void interactive() {
 
 						// bid px
 						for (auto i = 4; i >= 0; i--) {
-							bool f = false;
-							std::cout << (f ? "[" : " ");
+							// bool f = false;
+							// std::cout << (f ? "[" : " ");
 							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000 << " ";
 							std::cout << std::setw(6) << " ";
-							std::cout << (f ? "]" : " ");
+							// std::cout << (f ? "]" : " ");
 						}
 
 						std::cout << "| ";
@@ -476,11 +476,11 @@ void interactive() {
 
 						// ask px
 						for (auto i = 0; i <= 4; i++) {
-							bool f = false;
-							std::cout << (f ? "[" : " ");
+							// bool f = false;
+							// std::cout << (f ? "[" : " ");
 							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000 << " ";
 							std::cout << std::setw(6) << " ";
-							std::cout << (f ? "]" : " ");
+							// std::cout << (f ? "]" : " ");
 						}
 
 						std::cout << std::endl;
