@@ -457,8 +457,7 @@ void interactive() {
 							md.ask_lt[1], \
 							md.ask_lt[2], \
 							md.ask_lt[3], \
-							md.ask_lt[4], \
-							);
+							md.ask_lt[4]);
 						getchar();
 					}
 				}
