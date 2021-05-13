@@ -1,6 +1,7 @@
 #include <map>
 #include <iterator>
 #include <cassert>
+#include <cstring>
 #include <getopt.h>
 
 #include "md_pcap/md_pcap.h"
