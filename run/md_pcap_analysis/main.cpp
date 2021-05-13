@@ -457,23 +457,20 @@ void interactive() {
 						std::cout << " " << std::setfill(' ');
 
 						for (auto i = 4; i >= 0; i--) {
-							std::cout << std::setw(7) << std::setprecision(2) << (double)md.bid_px[i]/10000 << " ";
-							// auto px = md.bid_px[i];
-							// std::cout << px;
-							// printf("%f\n", px);
+							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000 << " ";
 						}
 
 						std::cout << "| ";
 
 						if (md.with_trade)
-							std::cout << (double)md.trade_px/10000;
+							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.trade_px/10000;
 						else
 							std::cout << " ";
 
 						std::cout << " | ";
 
 						for (auto i = 0; i <= 4; i++) {
-							std::cout << std::setw(7) << std::setprecision(2) << (double)md.ask_px[i]/10000 << " ";
+							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000 << " ";
 						}
 
 						std::cout << std::endl;
