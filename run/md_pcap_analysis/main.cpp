@@ -457,7 +457,10 @@ void interactive() {
 
 						std::cout << " | ";
 
-						std::cout << md.with_trade ? (double)md.trade_px/10000 : " ";
+						if (md.with_trade)
+							std::cout << (double)md.trade_px/10000;
+						else
+							std::cout << " ";
 
 						std::cout << " | ";
 
@@ -475,7 +478,10 @@ void interactive() {
 
 						std::cout << " | ";
 
-						std::cout << md.with_trade ? md.trade_lt : " ";
+						if (md.with_trade)
+							std::cout << md.with_trade;
+						else
+							std::cout << " ";
 
 						std::cout << " | ";
 
