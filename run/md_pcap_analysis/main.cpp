@@ -404,10 +404,22 @@ void large_amount() {
 }
 
 void interactive() {
+
+	struct priv_md {
+		int trade_px;
+		int trade_lt;
+		int bid_px[5];
+		int bid_lt[5];
+		int ask_px[5];
+		int ask_lt[5];
+	} priv;
+
 	struct md *frame;
 	MD md;
 
 	bool is_open = false;
+
+	memset(&priv, 0, sizeof(priv));
 
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
@@ -432,45 +444,83 @@ void interactive() {
 					if (md.is_open) is_open = true;
 
 					if (is_open) {
-						printf("%06d:%06d: %7.2f %7.2f %7.2f %7.2f %7.2f | ", \
-							md.match_time_sec, md.match_time_usec, \
-							(double)md.bid_px[4]/10000, \
-							(double)md.bid_px[3]/10000, \
-							(double)md.bid_px[2]/10000, \
-							(double)md.bid_px[1]/10000, \
-							(double)md.bid_px[0]/10000);
 
-						if (md.with_trade)
-							printf("%7.2f", (double)md.trade_px/10000);
-						else
-							printf("%7s", " ");
+						std::cout << std::setw(6) << md.match_time_sec << ":" << md.match_time_usec;
 
-						printf(" | %7.2f %7.2f %7.2f %7.2f %7.2f\n", \
-							(double)md.ask_px[0]/10000, \
-							(double)md.ask_px[1]/10000, \
-							(double)md.ask_px[2]/10000, \
-							(double)md.ask_px[3]/10000, \
-							(double)md.ask_px[4]/10000);
+						std::cout << " ";
 
-						printf("%14s %7d %7d %7d %7d %7d | ", \
-							" ", \
-							md.bid_lt[4], \
-							md.bid_lt[3], \
-							md.bid_lt[2], \
-							md.bid_lt[1], \
-							md.bid_lt[0]);
+						for (auto i = 4; i >= 0; i++) {
+							std::cout << std::setw(7) << std::setprecision(2) << (double)md.bid_px[i]/10000;
+						}
 
-						if (md.with_trade)
-							printf("%7d", md.trade_lt);
-						else
-							printf("%7s", " ");
+						std::cout << " | ";
 
-						printf(" | %7d %7d %7d %7d %7d\n", \
-							md.ask_lt[0], \
-							md.ask_lt[1], \
-							md.ask_lt[2], \
-							md.ask_lt[3], \
-							md.ask_lt[4]);
+						std::cout << md.with_trade ? (double)md.trade_px/10000 : " ";
+
+						std::cout << " | ";
+
+						for (auto i = 0; i >= 4; i++) {
+							std::cout << std::setw(7) << std::setprecision(2) << (double)md.ask_px[i]/10000;
+						}
+
+						std::cout << std::endl;
+
+						std::cout << std::setw(14) << std::setfill();
+
+						for (auto i = 4; i >= 0; i++) {
+							std::cout << std::setw(7)<< md.bid_lt[i];
+						}
+
+						std::cout << " | ";
+
+						std::cout << md.with_trade ? md.trade_lt : " ";
+
+						std::cout << " | ";
+
+						for (auto i = 0; i >= 4; i++) {
+							std::cout << std::setw(7) << std::setprecision(2) << md.ask_lt[i];
+						}
+
+
+						// printf("%06d:%06d: %7.2f %7.2f %7.2f %7.2f %7.2f | ", \
+						// 	md.match_time_sec, md.match_time_usec, \
+						// 	(double)md.bid_px[4]/10000, \
+						// 	(double)md.bid_px[3]/10000, \
+						// 	(double)md.bid_px[2]/10000, \
+						// 	(double)md.bid_px[1]/10000, \
+						// 	(double)md.bid_px[0]/10000);
+
+						// if (md.with_trade)
+						// 	printf("%7.2f", (double)md.trade_px/10000);
+						// else
+						// 	printf("%7s", " ");
+
+						// printf(" | %7.2f %7.2f %7.2f %7.2f %7.2f\n", \
+						// 	(double)md.ask_px[0]/10000, \
+						// 	(double)md.ask_px[1]/10000, \
+						// 	(double)md.ask_px[2]/10000, \
+						// 	(double)md.ask_px[3]/10000, \
+						// 	(double)md.ask_px[4]/10000);
+
+						// printf("%14s %7d %7d %7d %7d %7d | ", \
+						// 	" ", \
+						// 	md.bid_lt[4], \
+						// 	md.bid_lt[3], \
+						// 	md.bid_lt[2], \
+						// 	md.bid_lt[1], \
+						// 	md.bid_lt[0]);
+
+						// if (md.with_trade)
+						// 	printf("%7d", md.trade_lt);
+						// else
+						// 	printf("%7s", " ");
+
+						// printf(" | %7d %7d %7d %7d %7d\n", \
+						// 	md.ask_lt[0], \
+						// 	md.ask_lt[1], \
+						// 	md.ask_lt[2], \
+						// 	md.ask_lt[3], \
+						// 	md.ask_lt[4]);
 
 						getchar();
 					}
