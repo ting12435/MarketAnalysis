@@ -13,6 +13,7 @@ void uplimit();
 void large_amount();
 void debug();
 void debug_seq_check();
+void interactive();
 
 struct var {
 	std::string type;
@@ -86,6 +87,8 @@ int main(int argc, char *argv[]) {
 		debug();
 	else if (g_var.type == "debug_seq_check")
 		debug_seq_check();
+	else if (g_var.type == "interactive")
+		interactive();
 
 	return 0;
 
@@ -97,6 +100,7 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "taskset -c 5 %s --type debug\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type large_amount --d1 2021-05-04 --feedcode 4529\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-23 --d2 2021-04-26\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type interactive --d1 2021-05-13\n", argv[0]);
 	return EXIT_FAILURE;
 }
 
@@ -396,6 +400,58 @@ void large_amount() {
 				std::cout << (double)info_ptr->trade_list_accm_trade_lot/info_ptr->trade_list_vec.size() << std::endl;
 			}
 		}
+	}
+}
+
+void interactive() {
+	struct md *frame;
+	MD md;
+
+	bool is_open = false;
+
+	Date current_date(g_var.d1->date_str);
+	while (current_date <= *(g_var.d2)) {
+		OneDayPcap one_day_pcap(current_date);
+		if (!one_day_pcap) {
+			std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;;
+		} else {
+			while (true) {
+
+				if (!one_day_pcap.get_md(&frame)) {
+					std::cerr << "error: " << one_day_pcap.get_last_error() << std::endl;
+					break;
+				}
+
+				if (frame == nullptr)
+					break;
+
+				md.set_data(frame);
+
+				if (md.fmt_code == 0x6 && md.feedcode == g_var.feedcode) {
+
+					if (md.is_open) is_open = true;
+
+					if (is_open) {
+						printf("%d:%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", \
+							md.match_time_sec, md.match_time_usec, \
+							md.bid_px[4], md.bid_lt[4] \
+							md.bid_px[3], md.bid_lt[3] \
+							md.bid_px[2], md.bid_lt[2] \
+							md.bid_px[1], md.bid_lt[1] \
+							md.bid_px[0], md.bid_lt[0] \
+							md.trade_px, md.trade_px \
+							md.ask_px[0], md.ask_lt[0] \
+							md.ask_px[1], md.ask_lt[1] \
+							md.ask_px[2], md.ask_lt[2] \
+							md.ask_px[3], md.ask_lt[3] \
+							md.ask_px[4], md.ask_lt[4]);
+						getchar();
+					}
+				}
+			}
+		}
+
+		current_date.add(1);
 	}
 }
 
