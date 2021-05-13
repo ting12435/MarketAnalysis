@@ -538,7 +538,8 @@ void interactive() {
 							md.ask_lt[4]);
 						*/
 
-						getchar();
+						// getchar();
+						sleep(100);
 					}
 				}
 			}
