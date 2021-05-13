@@ -461,8 +461,12 @@ void interactive() {
 							if (md.only_display_trade) {
 								std::cout << std::setw(14) << " ";
 							} else {
-								std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000;
-								std::cout << std::setw(7) << " ";
+								if (md.bid_lt[i] != -1) {
+									std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000;
+									std::cout << std::setw(7) << " ";
+								} else {
+									std::cout << std::setw(14) << " ";
+								}
 							}
 							
 						}
@@ -481,8 +485,12 @@ void interactive() {
 							if (md.only_display_trade) {
 								std::cout << std::setw(14) << " ";
 							} else {
-								std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000;
-								std::cout << std::setw(7) << " ";
+								if (md.ask_lt[i] != -1) {
+									std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000;
+									std::cout << std::setw(7) << " ";
+								} else {
+									std::cout << std::setw(14) << " ";
+								}
 							}
 						}
 
@@ -501,14 +509,16 @@ void interactive() {
 								if (bid_pxlt_map.find(px) == bid_pxlt_map.end()) bid_pxlt_map[px] = 0;
 								auto change_lt = lt - bid_pxlt_map[px];
 
-								// std::cout << (f ? "[" : " ");
-								std::cout << std::setw(7) << md.bid_lt[i];
+								if (md.bid_lt[i] != -1) {
+									std::cout << std::setw(7) << md.bid_lt[i];
 
-								if (change_lt != 0)
-									std::cout << "(" << std::setw(5) << change_lt << ")";
-								else
-									std::cout << std::setw(7) << " ";
-								// std::cout << (f ? "]" : " ");
+									if (change_lt != 0)
+										std::cout << "(" << std::setw(5) << change_lt << ")";
+									else
+										std::cout << std::setw(7) << " ";
+								} else {
+									std::cout << std::setw(14) << " ";
+								}
 
 								bid_pxlt_map[px] = lt;
 							}
@@ -534,15 +544,16 @@ void interactive() {
 								if (ask_pxlt_map.find(px) == ask_pxlt_map.end()) ask_pxlt_map[px] = 0;
 								auto change_lt = lt - ask_pxlt_map[px];
 								
+								if (md.ask_lt[i] != -1) {
+									std::cout << std::setw(7) << md.ask_lt[i];
 
-								// std::cout << (f ? "[" : " ");
-								std::cout << std::setw(7) << md.ask_lt[i];
-
-								if (change_lt != 0)
-									std::cout << "(" << std::setw(5) << change_lt << ")";
-								else
-									std::cout << std::setw(7) << " ";
-								// std::cout << (f ? "]" : " ");
+									if (change_lt != 0)
+										std::cout << "(" << std::setw(5) << change_lt << ")";
+									else
+										std::cout << std::setw(7) << " ";
+								} else {
+									std::cout << std::setw(14) << " ";
+								}
 
 								ask_pxlt_map[px] = lt;
 							}
