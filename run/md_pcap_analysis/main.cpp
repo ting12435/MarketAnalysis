@@ -420,7 +420,8 @@ void interactive() {
 	struct md *frame;
 	MD md;
 
-	bool is_open = false;
+	// bool is_open = false;
+	bool print_flag = false;
 
 	// memset(&priv, 0, sizeof(priv));
 
@@ -444,9 +445,11 @@ void interactive() {
 
 				if (md.fmt_code == 0x6 && md.feedcode == g_var.feedcode + "  ") {
 
-					if (md.is_open) is_open = true;
+					// if (md.is_open) is_open = true;
+					if (md.match_time_sec > 93000) print_flag = true;
 
-					if (is_open) {
+					// if (is_open) {
+					if (print_flag) {
 
 						std::cout << std::setfill('0');
 
