@@ -432,19 +432,19 @@ void interactive() {
 					if (md.is_open) is_open = true;
 
 					if (is_open) {
-						printf("%d:%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", \
+						printf("%06d:%06d: %4.2f %4d %4.2f %4d %4.2f %4d %4.2f %4d %4.2f %4d | %4.2f %4d | %4.2f %4d %4.2f %4d %4.2f %4d %4.2f %4d %4.2f %4d\n", \
 							md.match_time_sec, md.match_time_usec, \
-							md.bid_px[4], md.bid_lt[4], \
-							md.bid_px[3], md.bid_lt[3], \
-							md.bid_px[2], md.bid_lt[2], \
-							md.bid_px[1], md.bid_lt[1], \
-							md.bid_px[0], md.bid_lt[0], \
-							md.trade_px, md.trade_px, \
-							md.ask_px[0], md.ask_lt[0], \
-							md.ask_px[1], md.ask_lt[1], \
-							md.ask_px[2], md.ask_lt[2], \
-							md.ask_px[3], md.ask_lt[3], \
-							md.ask_px[4], md.ask_lt[4]);
+							(double)md.bid_px[4]/10000, md.bid_lt[4], \
+							(double)md.bid_px[3]/10000, md.bid_lt[3], \
+							(double)md.bid_px[2]/10000, md.bid_lt[2], \
+							(double)md.bid_px[1]/10000, md.bid_lt[1], \
+							(double)md.bid_px[0]/10000, md.bid_lt[0], \
+							(double)md.trade_px/10000, md.trade_px, \
+							(double)md.ask_px[0]/10000, md.ask_lt[0], \
+							(double)md.ask_px[1]/10000, md.ask_lt[1], \
+							(double)md.ask_px[2]/10000, md.ask_lt[2], \
+							(double)md.ask_px[3]/10000, md.ask_lt[3], \
+							(double)md.ask_px[4]/10000, md.ask_lt[4]);
 						getchar();
 					}
 				}
