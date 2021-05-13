@@ -6,8 +6,8 @@
 #include "md_pcap/md_pcap.h"
 #include "util/util.h"
 
-#define PCAP_FOLDER "/data/database/2in1/tcpdump/"
-// #define PCAP_FOLDER "/data/tim/"
+// #define PCAP_FOLDER "/data/database/2in1/tcpdump/"
+#define PCAP_FOLDER "/data/tim/"
 
 void uplimit();
 void large_amount();
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "taskset -c 5 %s --type debug\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type large_amount --d1 2021-05-04 --feedcode 4529\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-23 --d2 2021-04-26\n", argv[0]);
-	fprintf(stderr, "taskset -c 5 %s --type interactive --d1 2021-05-13\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type interactive --d1 2021-04-28\n", argv[0]);
 	return EXIT_FAILURE;
 }
 
