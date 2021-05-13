@@ -427,7 +427,7 @@ void interactive() {
 
 				md.set_data(frame);
 
-				if (md.fmt_code == 0x6 && md.feedcode == g_var.feedcode) {
+				if (md.fmt_code == 0x6 && md.feedcode == g_var.feedcode + "  ") {
 
 					if (md.is_open) is_open = true;
 
