@@ -484,7 +484,7 @@ void interactive() {
 						std::cout << "| ";
 
 						if (md.with_trade)
-							std::cout << md.with_trade;
+							std::cout << std::setw(7) << md.with_trade;
 						else
 							std::cout << " ";
 
