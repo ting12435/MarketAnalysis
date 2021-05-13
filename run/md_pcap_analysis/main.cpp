@@ -422,7 +422,7 @@ void interactive() {
 
 	bool is_open = false;
 
-	memset(&priv, 0, sizeof(priv));
+	// memset(&priv, 0, sizeof(priv));
 
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
