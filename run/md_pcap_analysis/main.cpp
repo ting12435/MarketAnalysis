@@ -452,7 +452,7 @@ void interactive() {
 							md.bid_lt[2], \
 							md.bid_lt[1], \
 							md.bid_lt[0], \
-							md.trade_px,  \
+							md.trade_lt,  \
 							md.ask_lt[0], \
 							md.ask_lt[1], \
 							md.ask_lt[2], \
