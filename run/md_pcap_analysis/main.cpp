@@ -489,6 +489,7 @@ void interactive() {
 							std::cout << std::setw(7) << std::setprecision(2) << md.ask_lt[i];
 						}
 
+						std::cout << std::endl;
 
 						/*
 						printf("%06d:%06d: %7.2f %7.2f %7.2f %7.2f %7.2f | ", \
