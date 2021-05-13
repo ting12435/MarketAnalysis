@@ -472,13 +472,13 @@ void interactive() {
 
 						std::cout << " | ";
 
-						for (auto i = 0; i >= 4; i++) {
+						for (auto i = 0; i <= 4; i++) {
 							std::cout << std::setw(7) << std::setprecision(2) << (double)md.ask_px[i]/10000 << " ";
 						}
 
 						std::cout << std::endl;
 
-						std::cout << std::setw(14);
+						std::cout << std::setw(14) << " ";
 
 						for (auto i = 4; i >= 0; i--) {
 							std::cout << std::setw(7) << md.bid_lt[i] << " ";
@@ -493,7 +493,7 @@ void interactive() {
 
 						std::cout << " | ";
 
-						for (auto i = 0; i >= 4; i++) {
+						for (auto i = 0; i <= 4; i++) {
 							std::cout << std::setw(7) << md.ask_lt[i] << " ";
 						}
 
