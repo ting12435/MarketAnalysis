@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "taskset -c 5 %s --type debug\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type large_amount --d1 2021-05-04 --feedcode 4529\n", argv[0]);
 	fprintf(stderr, "taskset -c 5 %s --type uplimit --d1 2021-04-23 --d2 2021-04-26\n", argv[0]);
-	fprintf(stderr, "taskset -c 5 %s --type interactive --d1 2021-04-28\n", argv[0]);
+	fprintf(stderr, "taskset -c 5 %s --type interactive --d1 2021-04-28 --feedcode 2603\n", argv[0]);
 	return EXIT_FAILURE;
 }
 
