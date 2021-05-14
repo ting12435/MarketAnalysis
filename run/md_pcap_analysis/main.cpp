@@ -516,7 +516,7 @@ void interactive() {
 								if (md.bid_lt[i] != -1) {
 									std::cout << std::setw(7) << md.bid_lt[i];
 
-									if (change_lt != 0 && change_lt != md.trade_lt)
+									if (change_lt != 0 && change_lt != md.trade_lt*-1)
 										std::cout << "(" << std::setw(5) << change_lt << ")";
 									else
 										std::cout << std::setw(7) << " ";
@@ -551,7 +551,7 @@ void interactive() {
 								if (md.ask_lt[i] != -1) {
 									std::cout << std::setw(7) << md.ask_lt[i];
 
-									if (change_lt != 0 && change_lt != md.trade_lt)
+									if (change_lt != 0 && change_lt != md.trade_lt*-1)
 										std::cout << "(" << std::setw(5) << change_lt << ")";
 									else
 										std::cout << std::setw(7) << " ";
