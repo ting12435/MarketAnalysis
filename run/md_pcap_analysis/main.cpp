@@ -528,7 +528,7 @@ void interactive() {
 									if (change_lt != 0 && change_lt != md.trade_lt*-1) {
 										std::cout << "(" << std::setw(5) << change_lt << ")";
 										if (!first_flag)
-											cancel.bid_lt += change_lt*-1;
+											cancel.bid_lt += change_lt;
 									} else
 										std::cout << std::setw(7) << " ";
 								} else {
@@ -565,7 +565,7 @@ void interactive() {
 									if (change_lt != 0 && change_lt != md.trade_lt*-1) {
 										std::cout << "(" << std::setw(5) << change_lt << ")";
 										if (!first_flag)
-											cancel.ask_lt += change_lt*-1;
+											cancel.ask_lt += change_lt;
 									} else
 										std::cout << std::setw(7) << " ";
 								} else {
@@ -591,8 +591,8 @@ void interactive() {
 
 						// cancel
 						std::cout << "|";
-						std::cout << std::setw(5) << cancel.bid_lt;
-						std::cout << std::setw(5) << cancel.ask_lt;
+						std::cout << std::setw(6) << cancel.bid_lt;
+						std::cout << std::setw(6) << cancel.ask_lt;
 
 
 
