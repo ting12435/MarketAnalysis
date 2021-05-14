@@ -339,7 +339,7 @@ std::string MD::get_match_time_str() {
 	snprintf(buf, sizeof(buf), "%02d:%02d:%02d.%06d", 
 		this->match_time_sec/10000,
 		(this->match_time_sec/100) % 100,
-		this->match_time_sec % 10000,
+		this->match_time_sec % 100,
 		this->match_time_usec);
 	return std::string(buf);
 }
