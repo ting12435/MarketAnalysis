@@ -426,7 +426,7 @@ void interactive() {
 	MD md;
 
 	// bool is_open = false;
-	bool print_flag = false;
+	bool print_flag = false, first_flag = true;
 
 	memset(&trades, 0, sizeof(trades));
 	memset(&cancel, 0, sizeof(cancel));
@@ -525,7 +525,8 @@ void interactive() {
 
 									if (change_lt != 0 && change_lt != md.trade_lt*-1) {
 										std::cout << "(" << std::setw(5) << change_lt << ")";
-										cancel.bid_lt += change_lt*-1;
+										if (first_flag)
+											cancel.bid_lt += change_lt*-1;
 									} else
 										std::cout << std::setw(7) << " ";
 								} else {
@@ -561,7 +562,8 @@ void interactive() {
 
 									if (change_lt != 0 && change_lt != md.trade_lt*-1) {
 										std::cout << "(" << std::setw(5) << change_lt << ")";
-										cancel.ask_lt += change_lt*-1;
+										if (first_flag)
+											cancel.ask_lt += change_lt*-1;
 									} else
 										std::cout << std::setw(7) << " ";
 								} else {
@@ -593,6 +595,8 @@ void interactive() {
 
 
 						std::cout << std::endl;
+
+						if (first_flag) first_flag = false;
 
 
 						getchar();
