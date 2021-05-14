@@ -454,7 +454,7 @@ void interactive() {
 						// print
 						std::cout << md.get_match_time_str();
 
-						std::cout << " |";
+						std::cout << "|";
 
 						std::cout << std::setfill(' ');
 
@@ -465,9 +465,9 @@ void interactive() {
 							} else {
 								if (md.bid_lt[i] != -1) {
 									std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000;
-									std::cout << std::setw(7) << " ";
+									std::cout << std::setw(6) << " ";
 								} else {
-									std::cout << std::setw(14) << " ";
+									std::cout << std::setw(13) << " ";
 								}
 							}
 							
@@ -489,9 +489,9 @@ void interactive() {
 							} else {
 								if (md.ask_lt[i] != -1) {
 									std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000;
-									std::cout << std::setw(7) << " ";
+									std::cout << std::setw(6) << " ";
 								} else {
-									std::cout << std::setw(14) << " ";
+									std::cout << std::setw(13) << " ";
 								}
 							}
 						}
@@ -500,7 +500,7 @@ void interactive() {
 
 						std::cout << std::endl;
 
-						std::cout << std::setw(17) << " ";
+						std::cout << std::setw(16) << " ";
 
 						// bid lt
 						for (auto i = 4; i >= 0; i--) {
@@ -517,11 +517,11 @@ void interactive() {
 									std::cout << std::setw(7) << md.bid_lt[i];
 
 									if (change_lt != 0 && change_lt != md.trade_lt*-1)
-										std::cout << "(" << std::setw(5) << change_lt << ")";
+										std::cout << "(" << std::setw(4) << change_lt << ")";
 									else
-										std::cout << std::setw(7) << " ";
+										std::cout << std::setw(6) << " ";
 								} else {
-									std::cout << std::setw(14) << " ";
+									std::cout << std::setw(13) << " ";
 								}
 
 								bid_pxlt_map[px] = lt;
@@ -552,11 +552,11 @@ void interactive() {
 									std::cout << std::setw(7) << md.ask_lt[i];
 
 									if (change_lt != 0 && change_lt != md.trade_lt*-1)
-										std::cout << "(" << std::setw(5) << change_lt << ")";
+										std::cout << "(" << std::setw(4) << change_lt << ")";
 									else
-										std::cout << std::setw(7) << " ";
+										std::cout << std::setw(6) << " ";
 								} else {
-									std::cout << std::setw(14) << " ";
+									std::cout << std::setw(13) << " ";
 								}
 
 								ask_pxlt_map[px] = lt;
@@ -573,9 +573,9 @@ void interactive() {
 							else trades.oth_lt += md.trade_lt;
 						}
 
-						std::cout << std::setw(7) << trades.lt;
-						std::cout << std::setw(7) << trades.bid_lt;
-						std::cout << std::setw(7) << trades.ask_lt;
+						std::cout << std::setw(6) << trades.lt;
+						std::cout << std::setw(6) << trades.bid_lt;
+						std::cout << std::setw(6) << trades.ask_lt;
 
 
 						std::cout << std::endl;
