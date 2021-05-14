@@ -566,7 +566,7 @@ void interactive() {
 						std::cout << std::endl;
 
 
-						getchar();
+						// getchar();
 					}
 				}
 			}
