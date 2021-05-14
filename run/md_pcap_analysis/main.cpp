@@ -496,6 +496,8 @@ void interactive() {
 							}
 						}
 
+						std::cout << "| ";
+
 						std::cout << std::endl;
 
 						std::cout << std::setw(17) << " ";
@@ -566,8 +568,8 @@ void interactive() {
 						// trades
 						if (md.with_trade) {
 							trades.lt += md.trade_lt;
-							if (md.trade_px == md.bid_px[0])  trades.bid_lt += md.trade_lt;
-							else if (md.trade_px == md.ask_px[0])  trades.ask_lt += md.trade_lt;
+							if (md.trade_px == md.bid_px[0] || md.bid_px[0] == 0)  trades.bid_lt += md.trade_lt;
+							else if (md.trade_px == md.ask_px[0] || md.ask_px[0] == 0)  trades.ask_lt += md.trade_lt;
 							else trades.oth_lt += md.trade_lt;
 						}
 
