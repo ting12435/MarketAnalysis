@@ -564,12 +564,16 @@ void interactive() {
 						std::cout << "| ";
 
 						// trades
-						trades.lt += md.trade_lt;
-						if (md.trade_px == md.bid_px[0])  trades.bid_lt += md.trade_lt;
-						else if (md.trade_px == md.ask_px[0])  trades.ask_lt += md.trade_lt;
-						else trades.oth_lt += md.trade_lt;
+						if (md.with_trade) {
+							trades.lt += md.trade_lt;
+							if (md.trade_px == md.bid_px[0])  trades.bid_lt += md.trade_lt;
+							else if (md.trade_px == md.ask_px[0])  trades.ask_lt += md.trade_lt;
+							else trades.oth_lt += md.trade_lt;
+						}
 
-						std::cout << std::setw(7) << trades.lt << trades.bid_lt << trades.ask_lt;
+						std::cout << std::setw(7) << trades.lt;
+						std::cout << std::setw(7) << trades.bid_lt;
+						std::cout << std::setw(7) << trades.ask_lt;
 
 
 						std::cout << std::endl;
