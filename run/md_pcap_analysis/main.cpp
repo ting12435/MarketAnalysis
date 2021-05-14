@@ -408,12 +408,12 @@ void large_amount() {
 
 void interactive() {
 
-	// struct priv_md {
-	// 	int bid_px[5];
-	// 	int bid_lt[5];
-	// 	int ask_px[5];
-	// 	int ask_lt[5];
-	// } priv;
+	struct trades {
+		int lt;
+		int bid_lt;
+		int ask_lt;
+		int oth_lt;
+	} trades;
 
 	std::map<int, int> bid_pxlt_map, ask_pxlt_map;
 
@@ -423,7 +423,7 @@ void interactive() {
 	// bool is_open = false;
 	bool print_flag = false;
 
-	// memset(&priv, 0, sizeof(priv));
+	memset(&trades, 0, sizeof(trades));
 
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
@@ -451,14 +451,12 @@ void interactive() {
 					// if (is_open) {
 					if (print_flag) {
 
-						std::cout << std::setfill('0');
-
+						// print
 						std::cout << md.get_match_time_str();
-						// std::cout << std::setw(6)<< md.match_time_sec;
-						// std::cout << ":";
-						// std::cout << std::setw(6)<< md.match_time_usec;
 
-						std::cout << " " << std::setfill(' ');
+						std::cout << " |";
+
+						std::cout << std::setfill(' ');
 
 						// bid px
 						for (auto i = 4; i >= 0; i--) {
@@ -500,7 +498,7 @@ void interactive() {
 
 						std::cout << std::endl;
 
-						std::cout << std::setw(16) << " ";
+						std::cout << std::setw(17) << " ";
 
 						// bid lt
 						for (auto i = 4; i >= 0; i--) {
@@ -563,10 +561,21 @@ void interactive() {
 							}
 						}
 
+						std::cout << "| ";
+
+						// trades
+						trades.lt += md.trade_lt;
+						if (md.trade_px == md.bid_px[0])  trades.bid_lt += md.trade_lt;
+						else if (md.trade_px == md.ask_px[0])  trades.ask_lt += md.trade_lt;
+						else trades.oth_lt += md.trade_lt;
+
+						std::cout << std::setw(7) << trades.lt << trades.bid_lt << trades.ask_lt;
+
+
 						std::cout << std::endl;
 
 
-						// getchar();
+						getchar();
 					}
 				}
 			}
