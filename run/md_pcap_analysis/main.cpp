@@ -604,7 +604,7 @@ void interactive() {
 						if (first_flag) first_flag = false;
 
 
-						getchar();
+						// getchar();
 					}
 				}
 			}
