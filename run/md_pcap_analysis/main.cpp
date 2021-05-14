@@ -9,8 +9,8 @@
 #include "md_pcap/md_pcap.h"
 #include "util/util.h"
 
-#define PCAP_FOLDER "/data/database/2in1/tcpdump/"
-// #define PCAP_FOLDER "/data/tim/"
+// #define PCAP_FOLDER "/data/database/2in1/tcpdump/"
+#define PCAP_FOLDER "/data/tim/"
 
 void uplimit();
 void large_amount();
@@ -446,7 +446,7 @@ void interactive() {
 				if (md.fmt_code == 0x6 && md.feedcode == g_var.feedcode + "  ") {
 
 					// if (md.is_open) is_open = true;
-					if (md.match_time_sec > 93000) print_flag = true;
+					if (md.match_time_sec > 93300) print_flag = true;
 
 					// if (is_open) {
 					if (print_flag) {
