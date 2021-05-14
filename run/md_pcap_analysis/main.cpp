@@ -415,6 +415,11 @@ void interactive() {
 		int oth_lt;
 	} trades;
 
+	struct cancel {
+		int bid_lt;
+		int ask_lt;
+	} cancel;
+
 	std::map<int, int> bid_pxlt_map, ask_pxlt_map;
 
 	struct md *frame;
@@ -424,6 +429,7 @@ void interactive() {
 	bool print_flag = false;
 
 	memset(&trades, 0, sizeof(trades));
+	memset(&cancel, 0, sizeof(cancel));
 
 	Date current_date(g_var.d1->date_str);
 	while (current_date <= *(g_var.d2)) {
@@ -517,9 +523,10 @@ void interactive() {
 								if (md.bid_lt[i] != -1) {
 									std::cout << std::setw(7) << md.bid_lt[i];
 
-									if (change_lt != 0 && change_lt != md.trade_lt*-1)
+									if (change_lt != 0 && change_lt != md.trade_lt*-1) {
 										std::cout << "(" << std::setw(5) << change_lt << ")";
-									else
+										cancel.bid_lt += change_lt*-1;
+									} else
 										std::cout << std::setw(7) << " ";
 								} else {
 									std::cout << std::setw(14) << " ";
@@ -552,9 +559,10 @@ void interactive() {
 								if (md.ask_lt[i] != -1) {
 									std::cout << std::setw(7) << md.ask_lt[i];
 
-									if (change_lt != 0 && change_lt != md.trade_lt*-1)
+									if (change_lt != 0 && change_lt != md.trade_lt*-1) {
 										std::cout << "(" << std::setw(5) << change_lt << ")";
-									else
+										cancel.ask_lt += change_lt*-1;
+									} else
 										std::cout << std::setw(7) << " ";
 								} else {
 									std::cout << std::setw(14) << " ";
@@ -564,9 +572,8 @@ void interactive() {
 							}
 						}
 
-						std::cout << "|";
-
 						// trades
+						std::cout << "|";
 						if (md.with_trade) {
 							trades.lt += md.trade_lt;
 							if (md.trade_px == md.bid_px[0] || md.bid_px[0] == 0)  trades.bid_lt += md.trade_lt;
@@ -577,6 +584,12 @@ void interactive() {
 						std::cout << std::setw(5) << trades.lt;
 						std::cout << std::setw(5) << trades.bid_lt;
 						std::cout << std::setw(5) << trades.ask_lt;
+
+						// cancel
+						std::cout << "|";
+						std::cout << std::setw(5) << cancel.bid_lt;
+						std::cout << std::setw(5) << cancel.ask_lt;
+
 
 
 						std::cout << std::endl;
