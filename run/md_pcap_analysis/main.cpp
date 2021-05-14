@@ -525,7 +525,7 @@ void interactive() {
 
 									if (change_lt != 0 && change_lt != md.trade_lt*-1) {
 										std::cout << "(" << std::setw(5) << change_lt << ")";
-										if (first_flag)
+										if (!first_flag)
 											cancel.bid_lt += change_lt*-1;
 									} else
 										std::cout << std::setw(7) << " ";
@@ -562,7 +562,7 @@ void interactive() {
 
 									if (change_lt != 0 && change_lt != md.trade_lt*-1) {
 										std::cout << "(" << std::setw(5) << change_lt << ")";
-										if (first_flag)
+										if (!first_flag)
 											cancel.ask_lt += change_lt*-1;
 									} else
 										std::cout << std::setw(7) << " ";
