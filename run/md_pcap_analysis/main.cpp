@@ -503,7 +503,7 @@ void interactive() {
 						}
 
 						std::cout << "|";
-						std::cout << std::setw(15) << " ";
+						std::cout << std::setw(17) << " ";
 						std::cout << "|";
 
 						std::cout << std::endl;
@@ -586,12 +586,15 @@ void interactive() {
 						}
 
 						std::cout << std::setw(5) << trades.lt;
+						std::cout << " ";
 						std::cout << std::setw(5) << trades.bid_lt;
+						std::cout << " ";
 						std::cout << std::setw(5) << trades.ask_lt;
 
 						// cancel
 						std::cout << "|";
 						std::cout << std::setw(6) << cancel.bid_lt;
+						std::cout << " ";
 						std::cout << std::setw(6) << cancel.ask_lt;
 
 
