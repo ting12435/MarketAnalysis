@@ -503,6 +503,8 @@ void interactive() {
 						}
 
 						std::cout << "|";
+						std::cout << std::setw(15) << " ";
+						std::cout << "|";
 
 						std::cout << std::endl;
 
