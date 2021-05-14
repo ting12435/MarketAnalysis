@@ -334,6 +334,16 @@ void MD::print_detail() {
 	std::cout << ss.str();
 }
 
+std::string MD::get_match_time_str() {
+	char buf[16];  // 00:00:00.123456
+	snprintf(buf, sizeof(buf), "%02d:%02d:%02d.%06d", 
+		this->match_time_sec/10000,
+		(this->match_time_sec/100) % 100,
+		this->match_time_sec % 10000,
+		this->match_time_usec);
+	return std::string(buf);
+}
+
 // void MD::print_md(struct md *md_ptr) {
 	// std::stringstream ss;
 	// char buf[100];

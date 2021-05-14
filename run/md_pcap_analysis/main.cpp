@@ -453,9 +453,10 @@ void interactive() {
 
 						std::cout << std::setfill('0');
 
-						std::cout << std::setw(6)<< md.match_time_sec;
-						std::cout << ":";
-						std::cout << std::setw(6)<< md.match_time_usec;
+						std::cout << md.get_match_time_str();
+						// std::cout << std::setw(6)<< md.match_time_sec;
+						// std::cout << ":";
+						// std::cout << std::setw(6)<< md.match_time_usec;
 
 						std::cout << " " << std::setfill(' ');
 
@@ -499,7 +500,7 @@ void interactive() {
 
 						std::cout << std::endl;
 
-						std::cout << std::setw(14) << " ";
+						std::cout << std::setw(16) << " ";
 
 						// bid lt
 						for (auto i = 4; i >= 0; i--) {

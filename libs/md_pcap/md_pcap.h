@@ -159,6 +159,8 @@ public:
 	void set_data(struct md*);
 	void print_detail();
 
+	std::string get_match_time_str();
+
 	// static void print_md(struct md*);
 
 	bool is_md;
