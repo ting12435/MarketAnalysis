@@ -461,7 +461,7 @@ void interactive() {
 						// bid px
 						for (auto i = 4; i >= 0; i--) {
 							if (md.only_display_trade) {
-								std::cout << std::setw(14) << " ";
+								std::cout << std::setw(13) << " ";
 							} else {
 								if (md.bid_lt[i] != -1) {
 									std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.bid_px[i]/10000;
@@ -473,19 +473,19 @@ void interactive() {
 							
 						}
 
-						std::cout << "| ";
+						std::cout << "|";
 
 						if (md.with_trade)
 							std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.trade_px/10000;
 						else
 							std::cout << std::setw(7) << " ";
 
-						std::cout << " | ";
+						std::cout << "|";
 
 						// ask px
 						for (auto i = 0; i <= 4; i++) {
 							if (md.only_display_trade) {
-								std::cout << std::setw(14) << " ";
+								std::cout << std::setw(13) << " ";
 							} else {
 								if (md.ask_lt[i] != -1) {
 									std::cout << std::setw(7) << std::fixed << std::setprecision(2) << (double)md.ask_px[i]/10000;
@@ -496,17 +496,18 @@ void interactive() {
 							}
 						}
 
-						std::cout << "| ";
+						std::cout << "|";
 
 						std::cout << std::endl;
 
-						std::cout << std::setw(16) << " ";
+						std::cout << std::setw(15) << " ";
+						std::cout << "|";
 
 						// bid lt
 						for (auto i = 4; i >= 0; i--) {
 
 							if (md.only_display_trade) {
-								std::cout << std::setw(14) << " ";
+								std::cout << std::setw(13) << " ";
 							} else {
 								auto px = md.bid_px[i];
 								auto lt = md.bid_lt[i];
@@ -528,20 +529,20 @@ void interactive() {
 							}
 						}
 
-						std::cout << "| ";
+						std::cout << "|";
 
 						if (md.with_trade)
-							std::cout << std::setw(7) << std::setw(7) << md.trade_lt;
+							std::cout << std::setw(7) << md.trade_lt;
 						else
 							std::cout << std::setw(7) << " ";
 
-						std::cout << " | ";
+						std::cout << "|";
 
 						// ask lt
 						for (auto i = 0; i <= 4; i++) {
 
 							if (md.only_display_trade) {
-								std::cout << std::setw(14) << " ";
+								std::cout << std::setw(13) << " ";
 							} else {
 								auto px = md.ask_px[i];
 								auto lt = md.ask_lt[i];
@@ -563,7 +564,7 @@ void interactive() {
 							}
 						}
 
-						std::cout << "| ";
+						std::cout << "|";
 
 						// trades
 						if (md.with_trade) {
