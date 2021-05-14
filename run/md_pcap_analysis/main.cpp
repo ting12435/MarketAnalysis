@@ -520,7 +520,7 @@ void interactive() {
 									if (change_lt != 0 && change_lt != md.trade_lt*-1)
 										std::cout << "(" << std::setw(5) << change_lt << ")";
 									else
-										std::cout << std::setw(6) << " ";
+										std::cout << std::setw(7) << " ";
 								} else {
 									std::cout << std::setw(14) << " ";
 								}
@@ -555,7 +555,7 @@ void interactive() {
 									if (change_lt != 0 && change_lt != md.trade_lt*-1)
 										std::cout << "(" << std::setw(5) << change_lt << ")";
 									else
-										std::cout << std::setw(6) << " ";
+										std::cout << std::setw(7) << " ";
 								} else {
 									std::cout << std::setw(14) << " ";
 								}
